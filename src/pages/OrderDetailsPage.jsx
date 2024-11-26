@@ -38,9 +38,13 @@ export default function OrderDetailsPage() {
   const { userInfo } = useSelector((state) => state.auth);
   const [payOrder] = usePayOrderMutation();
   const [isValidated, setIsValidated] = useState(false);
+  const [isPaid, setIsPaid] = useState(false);
 
   const changeOrderToPaid = async () => {
     const res = await payOrder(id).unwrap();
+    if(res.success){
+      setIsPaid(true);
+    }
   };
   useEffect(() => {
     if (search.split("=")[1] === "VALID") {
@@ -63,7 +67,7 @@ export default function OrderDetailsPage() {
       };
       const {
         data: { data },
-      } = await axios.post("/api/payments/ssl-request", payment_data, config);
+      } = await axios.post(`${BASE_URL}/api/payments/ssl-request`, payment_data, config);
       window.location.replace(data?.GatewayPageURL);
     } catch (error) {
       console.error("Payment Error:", error);
@@ -131,7 +135,7 @@ export default function OrderDetailsPage() {
                 Email: <span className="fw-lighter ">{order.user.email}</span>
               </p>
               <h5 className="fw-bold text-uppercase">Your Order Status</h5>
-              {order.isPaid ? (
+              {order.isPaid || isPaid? (
                 <p className="bg-info text-light px-2 fw-bold d-flex align-items-center">
                   <TiTick size={23} />
                   &nbsp;Paid at {order.paidAt}
@@ -216,7 +220,7 @@ export default function OrderDetailsPage() {
               </ListGroup.Item>
             </ListGroup>
             <div className="text-center mt-2">
-              {!order.isPaid ? (
+              {!isPaid  ? (
                 <Button
                   onClick={paymentHandler}
                   className="px-4 text-light text-uppercase rounded-0 shadow"

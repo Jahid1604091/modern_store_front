@@ -47,7 +47,7 @@ const Header = () => {
         </Container>
       </Navbar>
     </header>
-    <Sidebar/>
+    {/* <Sidebar/> */}
     </>
   );
 };
