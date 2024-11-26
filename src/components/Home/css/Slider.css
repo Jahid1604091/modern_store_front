@@ -1,0 +1,51 @@
+/* Slider Styles */
+.carousel-item img {
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .carousel-item img:hover {
+    transform: scale(1.05);
+  }
+  
+  .carousel-caption {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px;
+    border-radius: 8px;
+  }
+  
+  .carousel-caption h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  .carousel-caption p {
+    font-size: 16px;
+    color: #ddd;
+  }
+  
+  .carousel-indicators [data-bs-target] {
+    background-color: #000;
+  }
+  
+  .carousel-control-next-icon,
+  .carousel-control-prev-icon {
+    filter: invert(100%);
+  }
+  
+  .loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+  }
+  
+  .alert-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  

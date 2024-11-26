@@ -1,0 +1,59 @@
+/* Styling for Latest Products Page */
+
+.latest-products-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .search-input {
+    width: 300px;
+    border-radius: 25px;
+    padding: 10px 20px;
+  }
+  
+  .search-button {
+    border-radius: 25px;
+    padding: 8px 20px;
+  }
+  
+  .product-grid .col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .product-grid .col .card {
+    transition: transform 0.3s ease;
+  }
+  
+  .product-grid .col .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .pagination .page-link {
+    border-radius: 50%;
+    padding: 8px 12px;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .pagination .page-link:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
