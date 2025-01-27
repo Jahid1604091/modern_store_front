@@ -24,6 +24,12 @@ export const productApiSlice = apiSlice.injectEndpoints({
 
             })
         }),
+
+        getCategories: builder.query({
+            query: () => `${BASE_URL}/api/categories`,
+            providesTags: ['Category'],
+            keepUnusedDataFor: 5,
+        }),
     })
 });
 
@@ -31,4 +37,5 @@ export const {
     useGetProductsQuery,
     useGetProductQuery,
     useIncrementProductViewMutation,
+    useGetCategoriesQuery
 } = productApiSlice;
