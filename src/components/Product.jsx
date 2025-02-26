@@ -1,15 +1,14 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
+import { BASE_URL } from "../utils/constants";
 
 const Product = ({ product }) => {
-
   return (
     <Card className="h-100">
       <Link to={`/products/${product._id}`}>
         <Card.Img
-          src={product.image}
+          src={`${BASE_URL}/${product.image}`}
           variant="top"
           className="p-3"
           style={{ height: "200px", objectFit: "contain" }}
