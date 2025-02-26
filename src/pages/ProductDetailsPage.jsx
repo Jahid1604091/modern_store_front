@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Container,
   Row,
@@ -21,6 +21,7 @@ import { addToCart } from "../slices/cartSlice";
 import { throttle } from "lodash";
 import AlertDismissible from "../components/Alert";
 import Loader from "../components/Loader";
+import { BASE_URL } from "../utils/constants";
 
 const ProductDetailsPage = () => {
   const navigate = useNavigate();
@@ -36,7 +37,6 @@ const ProductDetailsPage = () => {
   const [incrementProductView] = useIncrementProductViewMutation();
   const [qty, setQty] = useState(1);
   const [successMessage, setSuccessMessage] = useState("");
-
   const incrementQty = () => {
     if (qty < product.countInStock) {
       setQty((prevQty) => prevQty + 1);
@@ -107,7 +107,7 @@ const ProductDetailsPage = () => {
             {/* Product Image */}
             <Col md={6}>
               <Image
-                src={product.image}
+                src={`${BASE_URL}/${product.image}`}
                 alt={product.name}
                 fluid
                 className="rounded shadow-sm"
@@ -131,7 +131,7 @@ const ProductDetailsPage = () => {
                   <strong>Brand:</strong> {product.brand}
                 </ListGroup.Item>
                 <ListGroup.Item className="py-3">
-                  <strong>Category:</strong> {product.category}
+                  <strong>Category:</strong> {product.category.name}
                 </ListGroup.Item>
               </ListGroup>
             </Col>
@@ -201,6 +201,14 @@ const ProductDetailsPage = () => {
                         >
                           Add to Cart
                         </Button>
+                        <Link
+                          to="/shipping"
+                          className="btn btn-block"
+                          type="submit"
+                          disabled={product.countInStock === 0}
+                        >
+                          Proceed to Checkout
+                        </Link>
                       </ListGroup.Item>
                     </>
                   )}
