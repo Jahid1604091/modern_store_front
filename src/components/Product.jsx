@@ -1,10 +1,9 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
+import Rating from "./Rating";
 
 const Product = ({ product }) => {
-
   return (
     <Card className="h-100">
       <Link to={`/products/${product._id}`}>
@@ -22,8 +21,15 @@ const Product = ({ product }) => {
             {product.name}
           </Card.Title>
         </Link>
-        <Card.Text as="div" className="mt-auto">
-          <strong>${product.price}</strong>
+        <Card.Text as="div" className="mt-auto d-flex justify-content-between align-items-center">
+          <strong>
+            {product.currency || "BDT"} {product.price}
+          </strong>
+          <Rating
+            rating={product.rating}
+            reviews={product.numReviews}
+            // showReviewNumber
+          />
         </Card.Text>
       </Card.Body>
     </Card>
