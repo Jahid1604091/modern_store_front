@@ -2,6 +2,7 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
+import Rating from "./Rating";
 
 const Product = ({ product }) => {
   return (
@@ -21,8 +22,15 @@ const Product = ({ product }) => {
             {product.name}
           </Card.Title>
         </Link>
-        <Card.Text as="div" className="mt-auto">
-          <strong>${product.price}</strong>
+        <Card.Text as="div" className="mt-auto d-flex justify-content-between align-items-center">
+          <strong>
+            {product.currency || "BDT"} {product.price}
+          </strong>
+          <Rating
+            rating={product.rating}
+            reviews={product.numReviews}
+            // showReviewNumber
+          />
         </Card.Text>
       </Card.Body>
     </Card>
