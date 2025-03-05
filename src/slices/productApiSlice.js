@@ -24,6 +24,22 @@ export const productApiSlice = apiSlice.injectEndpoints({
 
             })
         }),
+
+        getCategories: builder.query({
+            query: () => `${BASE_URL}/api/categories`,
+            providesTags: ['Category'],
+            keepUnusedDataFor: 5,
+        }),
+
+        addReview: builder.mutation({
+            query: (data) => ({
+                url: `${BASE_URL}/api/products/${data.id}/review`,
+                method: "POST",
+                body:data
+            }),
+            invalidatesTags:['Product']
+        }),
+
     })
 });
 
@@ -31,4 +47,6 @@ export const {
     useGetProductsQuery,
     useGetProductQuery,
     useIncrementProductViewMutation,
+    useGetCategoriesQuery,
+    useAddReviewMutation,
 } = productApiSlice;

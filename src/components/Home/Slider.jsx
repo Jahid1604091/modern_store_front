@@ -3,6 +3,7 @@ import { useGetProductsQuery } from "../../slices/productApiSlice";
 import Loader from "../Loader";
 import AlertDismissible from "../Alert";
 import "./css/Slider.css"; // Import the custom CSS file
+import { BASE_URL } from "../../utils/constants";
 
 function Slider() {
   const {
@@ -11,6 +12,7 @@ function Slider() {
     isError,
     isSuccess,
   } = useGetProductsQuery({});
+
 
   // Conditional rendering for loader and error messages
   if (isLoading) {
@@ -39,7 +41,7 @@ function Slider() {
           <Carousel.Item key={product.id}>
             <img
               className="d-block w-100"
-              src={product.image}
+              src={`${BASE_URL}/${product.image}`}
               alt={product.name}
             />
             <Carousel.Caption>

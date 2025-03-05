@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useCreateOrderMutation } from "../slices/orderApliSlice";
 import { clearCart } from "../slices/cartSlice";
+import { BASE_URL } from "../utils/constants";
 
 export default function PlaceOrderPage() {
   const dispatch = useDispatch();
@@ -94,9 +95,8 @@ export default function PlaceOrderPage() {
                       <Row>
                         <Col md={1}>
                           <Image
-                            src={item.image}
+                            src={`${BASE_URL}/${item.image}`}
                             alt={item.name}
-                            roundedCircle
                             fluid
                           />
                         </Col>
@@ -146,7 +146,7 @@ export default function PlaceOrderPage() {
                     <span className="bg-info text-light px-2 py-1 rounded">
                       {cart.totalPrice}
                     </span>{" "}
-                    ${" "}
+                    Tk
                   </Col>
                 </Row>
               </ListGroup.Item>
