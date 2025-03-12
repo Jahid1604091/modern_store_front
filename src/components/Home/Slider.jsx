@@ -46,7 +46,7 @@ function Slider() {
             />
             <Carousel.Caption>
               <h3>{product.name}</h3>
-              <p>{product.description || "No description available"}</p>
+              <p className="d-none d-md-block">{product.description || "No description available"}</p>
             </Carousel.Caption>
           </Carousel.Item>
         ))}
