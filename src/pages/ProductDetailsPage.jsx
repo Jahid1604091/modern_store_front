@@ -47,7 +47,7 @@ const ProductDetailsPage = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   const incrementQty = () => {
-    if (qty < product.countInStock) {
+    if (qty < product.stock_quantity) {
       setQty((prevQty) => prevQty + 1);
     }
   };
@@ -130,7 +130,7 @@ const ProductDetailsPage = () => {
             <Col md={4}>
               <Image
                 src={`${BASE_URL}/${product.image}`}
-                alt={product.name}
+                alt={product.name || "Product Image"}
                 fluid
                 className="rounded shadow-lg"
                 style={{ maxHeight: "400px", objectFit: "cover" }}
@@ -141,7 +141,7 @@ const ProductDetailsPage = () => {
             <Col md={5}>
               <ListGroup variant="flush" className="shadow-sm rounded-3">
                 <ListGroup.Item className="py-3">
-                  <h3 className="fw-bold">{product.name}</h3>
+                  <h3 className="fw-bold">{product?.name}</h3>
                 </ListGroup.Item>
                 <ListGroup.Item className="py-3">
                   <Rating
@@ -157,7 +157,7 @@ const ProductDetailsPage = () => {
                   <strong>Brand:</strong> {product.brand}
                 </ListGroup.Item>
                 <ListGroup.Item className="py-3">
-                  <strong>Category:</strong> {product.category.name}
+                  <strong>Category:</strong> { product?.category?.name}
                 </ListGroup.Item>
               </ListGroup>
 
@@ -190,20 +190,20 @@ const ProductDetailsPage = () => {
                   </Button>
                 </Form>
 
-                {product?.reviews.length === 0 ? (
+                {product?.reviews?.length === 0 ? (
                   <div className="text-muted mt-3">No reviews yet</div>
                 ) : (
                   <>
                     <h5 className="fw-bold mt-4">Customer Reviews</h5>
                     <ListGroup className="mt-3">
-                      {product?.reviews.map((r) => (
+                      {product?.reviews?.map((r) => (
                         <ListGroup.Item
-                          key={r._id}
+                          key={r.id}
                           className="d-flex justify-content-between align-items-start shadow-sm mb-2 rounded-3"
                         >
                           <div className="ms-2 me-auto">
-                            <div className="fw-bold">{r.name}</div>
-                            <p className="mb-0">{r.comment}</p>
+                            <div className="fw-bold">{r?.name}</div>
+                            <p className="mb-0">{r?.comment}</p>
                           </div>
                           <Rating rating={r?.rating} />
                         </ListGroup.Item>
@@ -237,7 +237,7 @@ const ProductDetailsPage = () => {
                     <Row>
                       <Col>Status:</Col>
                       <Col>
-                        {product.countInStock > 0 ? (
+                        {product.stock_quantity > 0 ? (
                           <span className="text-success">In Stock</span>
                         ) : (
                           <span className="text-danger">Out of Stock</span>
@@ -246,7 +246,7 @@ const ProductDetailsPage = () => {
                     </Row>
                   </ListGroup.Item>
 
-                  {product.countInStock > 0 && (
+                  {product.stock_quantity > 0 && (
                     <>
                       <ListGroup.Item className="py-3">
                         <Row>
@@ -270,7 +270,7 @@ const ProductDetailsPage = () => {
                             <Button
                               variant="outline-secondary"
                               onClick={incrementQty}
-                              disabled={qty >= product.countInStock}
+                              disabled={qty >= product.stock_quantity}
                               className="shadow-sm"
                             >
                               +
@@ -284,7 +284,7 @@ const ProductDetailsPage = () => {
                           onClick={handleAddToCart}
                           className="w-100 mb-2"
                           variant="primary"
-                          disabled={product.countInStock === 0}
+                          disabled={product.stock_quantity === 0}
                         >
                           Add to Cart
                         </Button>

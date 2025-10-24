@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -118,7 +118,7 @@ export default function OrderDetailsPage() {
           <ListGroup variant="flush">
             <ListGroup.Item className="border-0 pb-0">
               <h5 className="fw-bold text-uppercase">
-                Your Order Id: {order._id}
+                Your Order Id: {order.id}
               </h5>
               <p>
                 <span>Shipping Address: </span>

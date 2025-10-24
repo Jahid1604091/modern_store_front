@@ -5,8 +5,8 @@ import {
   removeFromCart,
   incrementQuantity,
   decrementQuantity,
-} from "../slices/cartSlice"; // Adjust the import according to your cart slice file
-import { AiOutlineMinus, AiOutlinePlus, AiOutlineDelete } from "react-icons/ai"; // Import icons
+} from "../slices/cartSlice"; 
+import { AiOutlineMinus, AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {

@@ -7,7 +7,7 @@ import Rating from "./Rating";
 const Product = ({ product }) => {
   return (
     <Card className="h-100">
-      <Link to={`/products/${product._id}`}>
+      <Link to={`/products/${product.id}`}>
         <Card.Img
           src={`${BASE_URL}/${product.image}`}
           variant="top"
@@ -17,7 +17,7 @@ const Product = ({ product }) => {
       </Link>
 
       <Card.Body className="d-flex flex-column">
-        <Link to={`/products/${product._id}`} className="text-decoration-none">
+        <Link to={`/products/${product.id}`} className="text-decoration-none">
           <Card.Title as="h5" className="text-dark">
             {product.name}
           </Card.Title>
