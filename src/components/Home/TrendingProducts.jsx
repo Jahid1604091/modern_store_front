@@ -90,7 +90,7 @@ export default function TrendingProducts({
                       {product.currency} {product.price}
                     </ProductPrice>
                     <Link
-                      to={`/products/${product._id}`}
+                      to={`/products/${product.id}`}
                       className="btn btn-outline-info text-capitalize"
                     >
                       view details
