@@ -14,55 +14,100 @@ const Categories = () => {
   } = useGetCategoriesQuery();
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="white" expand="lg" className="categories-navbar shadow-sm">
       <Container>
-        {/* <Navbar.Brand href="#">Categories</Navbar.Brand> */}
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mx-auto">
-            {isLoading && <Loader/>}
-            {isError && <p>Error loading categories.</p>}
-            {isSuccess &&
+        <Navbar.Brand href="#" className="d-lg-none fw-bold text-primary">
+          Categories
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="categories-navbar-nav" className="border-0">
+          <span className="navbar-toggler-icon"></span>
+        </Navbar.Toggle>
+        <Navbar.Collapse id="categories-navbar-nav">
+          <Nav className="mx-auto gap-1">
+            {isLoading && (
+              <div className="d-flex justify-content-center w-100 py-3">
+                <Loader />
+              </div>
+            )}
+            
+            {isError && (
+              <div className="alert alert-danger mx-3 mb-0" role="alert">
+                <i className="bi bi-exclamation-triangle me-2"></i>
+                Unable to load categories. Please try again.
+              </div>
+            )}
+            
+            {isSuccess && categories?.data?.length > 0 ? (
               categories.data.map((category, index) => (
-                <React.Fragment key={index}>
+                <React.Fragment key={category.id || index}>
                   {category.subcategories?.length > 0 ? (
                     <NavDropdown
-                      title={category.name}
-                      id={`nav-dropdown-${index}`}
+                      title={
+                        <span className="category-title">
+                          <i className="bi bi-grid me-2"></i>
+                          {category.name}
+                        </span>
+                      }
+                      id={`nav-dropdown-${category.id || index}`}
+                      className="category-dropdown"
                     >
-                      {category.subcategories.map((subcategory, subIndex) => (
+                      {category.subcategories.map((subcategory, subIndex) =>
                         subcategory.subcategories?.length > 0 ? (
                           <NavDropdown
-                            title={subcategory.name}
-                            id={`nav-subdropdown-${index}-${subIndex}`}
-                            key={subIndex}
+                            title={
+                              <span className="subcategory-title">
+                                <i className="bi bi-chevron-right me-2"></i>
+                                {subcategory.name}
+                              </span>
+                            }
+                            id={`nav-subdropdown-${category.id || index}-${subIndex}`}
+                            key={subcategory.id || subIndex}
                             drop="end"
+                            className="nested-dropdown"
                           >
                             {subcategory.subcategories.map(
                               (nestedSubcategory, nestedIndex) => (
                                 <NavDropdown.Item
                                   href="#"
-                                  key={nestedIndex}
+                                  key={nestedSubcategory.id || nestedIndex}
+                                  className="nested-item"
                                 >
-                                  {nestedSubcategory}
+                                  <i className="bi bi-dot me-1"></i>
+                                  {nestedSubcategory.name || nestedSubcategory}
                                 </NavDropdown.Item>
                               )
                             )}
                           </NavDropdown>
                         ) : (
-                          <NavDropdown.Item href="#" key={subIndex}>
+                          <NavDropdown.Item
+                            href="#"
+                            key={subcategory.id || subIndex}
+                            className="subcategory-item"
+                          >
+                            <i className="bi bi-tag me-2"></i>
                             {subcategory.name}
                           </NavDropdown.Item>
                         )
-                      ))}
+                      )}
                     </NavDropdown>
                   ) : (
-                    <Nav.Link href="#" key={index}>
+                    <Nav.Link
+                      href="#"
+                      className="category-link"
+                    >
+                      <i className="bi bi-bookmark me-2"></i>
                       {category.name}
                     </Nav.Link>
                   )}
                 </React.Fragment>
-              ))}
+              ))
+            ) : (
+              isSuccess && (
+                <div className="text-muted text-center w-100 py-3">
+                  No categories available
+                </div>
+              )
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
