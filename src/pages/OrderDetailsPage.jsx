@@ -118,15 +118,15 @@ export default function OrderDetailsPage() {
           <ListGroup variant="flush">
             <ListGroup.Item className="border-0 pb-0">
               <h5 className="fw-bold text-uppercase">
-                Your Order Id: {order._id}
+                Your Order Id: {order.id}
               </h5>
               <p>
                 <span>Shipping Address: </span>
-                <span className="fw-lighter">
+                {/* <span className="fw-lighter">
                   {order.shippingAddress.address}, {order.shippingAddress.city},{" "}
                   {order.shippingAddress.postalCode},{" "}
                   {order.shippingAddress.country}
-                </span>
+                </span> */}
               </p>
               <p>
                 Name: <span className="fw-lighter">{order.user.name}</span>
@@ -165,7 +165,7 @@ export default function OrderDetailsPage() {
                 {order.paymentMethod}
               </span>
             </ListGroup.Item>
-            <ListGroup.Item className="border-0">
+            {/* <ListGroup.Item className="border-0">
               <h5>Order Items:</h5>
               {order.orderItems.length === 0 ? (
                 <Alert variant="info">No items in this order</Alert>
@@ -195,7 +195,7 @@ export default function OrderDetailsPage() {
                   ))}
                 </ListGroup>
               )}
-            </ListGroup.Item>
+            </ListGroup.Item> */}
           </ListGroup>
         </Col>
 
@@ -209,16 +209,16 @@ export default function OrderDetailsPage() {
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>
+                  {/* <Col>
                     <span className="bg-info text-light px-2 py-1 rounded">
-                      {order.totalPrice?.toFixed(2)}
+                      {order.total?.toFixed(2)}
                     </span>{" "}
                     Tk
-                  </Col>
+                  </Col> */}
                 </Row>
               </ListGroup.Item>
             </ListGroup>
-            <div className="text-center mt-2">
+            {/* <div className="text-center mt-2">
               {!isPaid  ? (
                 <Button
                   onClick={paymentHandler}
@@ -245,7 +245,7 @@ export default function OrderDetailsPage() {
                   Mark As Delivered
                 </Button>
               )}
-            </div>
+            </div> */}
           </Card>
         </Col>
       </Row>

@@ -20,8 +20,8 @@ const CartPage = () => {
   };
 
   const handleIncrement = (item) => {
-    if (item.qty < item.countInStock) {
-      dispatch(incrementQuantity(item._id));
+    if (item.qty < item.stock_quantity) {
+      dispatch(incrementQuantity(item.id));
     } else {
       setAlert(true);
       setTimeout(() => {
@@ -60,14 +60,14 @@ const CartPage = () => {
             </thead>
             <tbody>
               {cartItems.map((item) => (
-                <tr key={item._id}>
+                <tr key={item.id}>
                   <td>{item.name}</td>
                   <td>${item.price}</td>
                   <td>
                     <Button
                       variant="secondary"
                       className="p-1 mx-2"
-                      onClick={() => handleDecrement(item._id)}
+                      onClick={() => handleDecrement(item.id)}
                     >
                       <AiOutlineMinus />
                     </Button>
@@ -83,7 +83,7 @@ const CartPage = () => {
                   <td>${(item.price * item.qty).toFixed(2)}</td>
                   <td>
                     <Button
-                      onClick={() => handleRemoveFromCart(item._id)}
+                      onClick={() => handleRemoveFromCart(item.id)}
                       variant="danger"
                       className="btn btn-light text-danger"
                     >

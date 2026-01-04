@@ -40,7 +40,7 @@ export default function PlaceOrderPage() {
       qty: item.qty,
       image: item.image,
       price: item.price,
-      product: item._id,
+      product: item.id,
     }));
     try {
       const res = await createOrder({
@@ -54,7 +54,7 @@ export default function PlaceOrderPage() {
       }).unwrap();
       if (res.success) {
         dispatch(clearCart());
-        navigate(`/orders/${res.data._id}`);
+        navigate(`/orders/${res.data.id}`);
       }
     } catch (error) {
       console.log(`Error in creating Order ${error}`);
