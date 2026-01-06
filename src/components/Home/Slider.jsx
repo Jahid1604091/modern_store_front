@@ -83,7 +83,7 @@ function Slider() {
                 />
                 <div className="carousel-overlay"></div>
               </div>
-              <Carousel.Caption className="custom-caption">
+              {/* <Carousel.Caption className="custom-caption">
                 <div className="caption-content">
                   <span className="product-badge">Featured</span>
                   <h3 className="product-title">{product.name}</h3>
@@ -101,12 +101,11 @@ function Slider() {
                     <i className="bi bi-arrow-right ms-2"></i>
                   </button>
                 </div>
-              </Carousel.Caption>
+              </Carousel.Caption> */}
             </Carousel.Item>
           ))}
       </Carousel>
       
-      {/* Progress indicators */}
       <div className="carousel-progress">
         {productsData?.data.slice(0, 5).map((_, idx) => (
           <div
