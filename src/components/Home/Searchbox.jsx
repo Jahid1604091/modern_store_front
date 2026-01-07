@@ -8,7 +8,7 @@ const Searchbox = ({ searchTerm, setSearchTerm, setPageNumber }) => {
   };
   return (
     <>
-      <Form onSubmit={handleSearch} className="my-4 search-form">
+      <Form onSubmit={handleSearch} className="my-4 search-form d-flex justify-content-center">
         <Form.Control
           type="text"
           placeholder="Search products..."
