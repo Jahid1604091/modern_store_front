@@ -36,11 +36,9 @@ export default function PlaceOrderPage() {
     e.preventDefault();
 
     const orderItems = cart.cartItems.map((item) => ({
-      name: item.name,
       qty: item.qty,
-      image: item.image,
       price: item.price,
-      product: item.id,
+      id: item.id,
     }));
     try {
       const res = await createOrder({

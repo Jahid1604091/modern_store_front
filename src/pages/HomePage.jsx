@@ -22,12 +22,12 @@ const HomePage = () => {
 
   return (
     <Container className="py-4">
-      <Slider />
       <Searchbox
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         setPageNumber={setPageNumber}
       />
+      <Slider />
       <TrendingProducts
         products={productsData?.data}
         isLoading={isLoading}

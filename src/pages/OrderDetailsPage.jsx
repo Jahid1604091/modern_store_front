@@ -21,6 +21,7 @@ import {
 import Loader from "../components/Loader";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
+import NotFound from "./NotFound";
 
 export default function OrderDetailsPage() {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ export default function OrderDetailsPage() {
 
   const changeOrderToPaid = async () => {
     const res = await payOrder(id).unwrap();
-    if(res.success){
+    if (res.success) {
       setIsPaid(true);
     }
   };
@@ -82,7 +83,7 @@ export default function OrderDetailsPage() {
     try {
       const response = await axios.get(`${BASE_URL}/api/orders/myorders/${id}/invoice`, {
         responseType: "blob",
-        headers:{
+        headers: {
           Authorization: `Bearer ${userInfo.token}`
         }
       });
@@ -111,144 +112,176 @@ export default function OrderDetailsPage() {
     );
   }
 
-  return (
-    <Container>
-      <Row>
-        <Col md={8}>
-          <ListGroup variant="flush">
-            <ListGroup.Item className="border-0 pb-0">
-              <h5 className="fw-bold text-uppercase">
-                Your Order Id: {order.id}
-              </h5>
-              <p>
-                <span>Shipping Address: </span>
-                {/* <span className="fw-lighter">
-                  {order.shippingAddress.address}, {order.shippingAddress.city},{" "}
-                  {order.shippingAddress.postalCode},{" "}
-                  {order.shippingAddress.country}
-                </span> */}
-              </p>
-              <p>
-                Name: <span className="fw-lighter">{order.user.name}</span>
-              </p>
-              <p>
-                Email: <span className="fw-lighter ">{order.user.email}</span>
-              </p>
-              <h5 className="fw-bold text-uppercase">Your Order Status</h5>
-              {order.isPaid || isPaid? (
-                <p className="bg-info text-light px-2 fw-bold d-flex align-items-center">
-                  <TiTick size={23} />
-                  &nbsp;Paid at {order.paidAt}
-                </p>
-              ) : (
-                <p className="bg-secondary text-light px-2 fw-bold d-flex align-items-center">
-                  <FaTimesCircle size={15} />
-                  &nbsp;Not Paid
-                </p>
-              )}
-              {order.isDelivered ? (
-                <p className="bg-info text-light px-2 fw-bold d-flex align-items-center">
-                  <TiTick size={23} />
-                  &nbsp;Delivered on {order.deliveredAt}
-                </p>
-              ) : (
-                <p className="bg-secondary text-light px-2 fw-bold d-flex align-items-center">
-                  <FaTimesCircle />
-                  &nbsp;Not Delivered
-                </p>
-              )}
-            </ListGroup.Item>
-            <ListGroup.Item className="border-0 pb-0">
-              Payment Method:{" "}
-              <span className="fw-lighter fst-italic">
-                {" "}
-                {order.paymentMethod}
-              </span>
-            </ListGroup.Item>
-            {/* <ListGroup.Item className="border-0">
-              <h5>Order Items:</h5>
-              {order.orderItems.length === 0 ? (
-                <Alert variant="info">No items in this order</Alert>
-              ) : (
-                <ListGroup variant="flush">
-                  {order.orderItems.map((item, index) => (
-                    <ListGroup.Item key={index} className="border-0">
-                      <Row>
-                        <Col md={1}>
-                          <Image
-                            src={`${BASE_URL}/${item.image}`}
-                            alt={item.name}
-                            fluid
-                          />
-                        </Col>
-                        <Col>
-                          <span className="fw-lighter fst-italic">
-                            {item.name}
-                          </span>
-                        </Col>
-                        <Col md={4}>
-                          {item.qty} x {item.price} ={" "}
-                          {(item.qty * item.price).toFixed(2)} Tk
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
-              )}
-            </ListGroup.Item> */}
-          </ListGroup>
-        </Col>
-
-        <Col md={4}>
-          {error && <Alert variant="danger">{error}</Alert>}
-          <Card className="border-0 shadow py-3">
+  if (isSuccess && order) {
+    return (
+      <Container>
+        <Row>
+          <Col md={8}>
             <ListGroup variant="flush">
-              <ListGroup.Item className="border-0 text-center text-uppercase fw-bold">
-                Order Summary
+              <ListGroup.Item className="border-0 pb-0">
+                <h5 className="fw-bold text-uppercase">
+                  Your Order # {order.order_number}
+                </h5>
+                <p>
+                  <span>Shipping Address: </span>
+                  <span className="fw-lighter">
+                    {order.shipping_address}
+                  </span>
+                </p>
+
+                <p>Your Order Status -<strong className="fw-bold text-uppercase"> {order.payment_status}</strong></p>
+                {/* {order.payment_status === 'paid' || isPaid? (
+                  <p className="bg-info text-light px-2 fw-bold d-flex align-items-center">
+                    <TiTick size={23} />
+                    &nbsp;Paid at {order.paidAt}
+                  </p>
+                ) : (
+                  <p className="bg-secondary text-light px-2 fw-bold d-flex align-items-center">
+                    <FaTimesCircle size={15} />
+                    &nbsp;Not Paid
+                  </p>
+                )} */}
+                {order.isDelivered ? (
+                  <p className="bg-info text-light px-2 fw-bold d-flex align-items-center">
+                    <TiTick size={23} />
+                    &nbsp;Delivered on {order.deliveredAt}
+                  </p>
+                ) : (
+                  <p className="bg-secondary text-light px-2 fw-bold d-flex align-items-center">
+                    <FaTimesCircle />
+                    &nbsp;Not Delivered
+                  </p>
+                )}
               </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Total</Col>
-                  {/* <Col>
-                    <span className="bg-info text-light px-2 py-1 rounded">
-                      {order.total?.toFixed(2)}
-                    </span>{" "}
-                    Tk
-                  </Col> */}
-                </Row>
+              <ListGroup.Item className="border-0 pb-0">
+                Payment Method:{" "}
+                <span className="fw-lighter fst-italic">
+                  {" "}
+                  {order.payment_method}
+                </span>
+              </ListGroup.Item>
+              <ListGroup.Item className="border-0">
+                <h5>Order Items:</h5>
+                {order.items.length === 0 ? (
+                  <Alert variant="info">No items in this order</Alert>
+                ) : (
+                  <ListGroup variant="flush">
+                    {order.items.map((item, index) => (
+                      <ListGroup.Item key={index} className="border-0">
+                        <Row>
+                          <Col md={1}>
+                            <Image
+                              src={`${BASE_URL}/${item.product.image}`}
+                              alt={item.product.name}
+                              fluid
+                            />
+                          </Col>
+                          <Col>
+                            <span className="fw-lighter fst-italic">
+                              {item.product.name}
+                            </span>
+                          </Col>
+                          <Col md={4}>
+                            {item.order_quantity} x {item.product.price} ={" "}
+                            {(item.order_quantity * item.product.price).toFixed(2)} Tk
+                          </Col>
+                        </Row>
+                      </ListGroup.Item>
+                    ))}
+                  </ListGroup>
+                )}
               </ListGroup.Item>
             </ListGroup>
-            {/* <div className="text-center mt-2">
-              {!isPaid  ? (
-                <Button
-                  onClick={paymentHandler}
-                  className="px-4 text-light text-uppercase rounded-0 shadow"
-                  variant="primary"
-                >
-                  Make Payment
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => handleDownload()}
-                  className="px-4 text-light text-uppercase rounded-0 shadow"
-                  variant="primary"
-                >
-                  Download Invoice
-                </Button>
-              )}
-              {userInfo?.data?.role === "admin" && !order.isDelivered && (
-                <Button
-                  onClick={deliverHandler}
-                  className="px-4 text-light text-uppercase rounded-0 shadow"
-                  variant="primary"
-                >
-                  Mark As Delivered
-                </Button>
-              )}
-            </div> */}
-          </Card>
-        </Col>
-      </Row>
-    </Container>
-  );
+          </Col>
+
+          <Col md={4}>
+            {error && <Alert variant="danger">{error}</Alert>}
+            <Card className="border-0 shadow py-3">
+              <ListGroup variant="flush">
+                <ListGroup.Item className="border-0 text-center text-uppercase fw-bold">
+                  Order Summary
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Sub Total</Col>
+                    <Col>
+                      <span className="bg-info text-light px-2 py-1 rounded">
+                        {order.subtotal}
+                      </span>{" "}
+                      Tk
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Discount</Col>
+                    <Col>
+                      <span className="bg-info text-light px-2 py-1 rounded">
+                        {order.discount}
+                      </span>{" "}
+                      Tk
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Shipping Cost</Col>
+                    <Col>
+                      <span className="bg-info text-light px-2 py-1 rounded">
+                        {order.shipping_cost}
+                      </span>{" "}
+                      Tk
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Net Total</Col>
+                    <Col>
+                      <span className="bg-info text-light px-2 py-1 rounded">
+                        {order.total}
+                      </span>{" "}
+                      Tk
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              </ListGroup>
+              <div className="text-center mt-2">
+                {!isPaid ? (
+                  <Button
+                    onClick={paymentHandler}
+                    className="px-4 text-light text-uppercase rounded-0 shadow"
+                    variant="primary"
+                  >
+                    Make Payment
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => handleDownload()}
+                    className="px-4 text-light text-uppercase rounded-0 shadow"
+                    variant="primary"
+                  >
+                    Download Invoice
+                  </Button>
+                )}
+                {userInfo?.data?.role === "admin" && !order.isDelivered && (
+                  <Button
+                    onClick={deliverHandler}
+                    className="px-4 text-light text-uppercase rounded-0 shadow"
+                    variant="primary"
+                  >
+                    Mark As Delivered
+                  </Button>
+                )}
+              </div>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    );
+
+  }
+  else {
+    return <NotFound />
+  }
 }

@@ -170,7 +170,7 @@ export default function ProfilePage() {
                   </td>
                   <td>
                     <Link
-                      to={`/orders/${order._id}`}
+                      to={`/orders/${order.id}`}
                       className="text-dark rounded-0 px-2 py-1"
                     >
                       Details
