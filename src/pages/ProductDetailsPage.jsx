@@ -64,29 +64,29 @@ const ProductDetailsPage = () => {
     setTimeout(() => setSuccessMessage(""), 3000);
   };
 
-  const viewedProductIds =
-    JSON.parse(sessionStorage.getItem("viewedProductIds")) || [];
+  // const viewedProductIds =
+  //   JSON.parse(sessionStorage.getItem("viewedProductIds")) || [];
 
-  const incrementViewCount = useCallback(
-    throttle(async () => {
-      incrementProductView(id);
-      await viewedProductIds.push(id);
-      sessionStorage.setItem(
-        "viewedProductIds",
-        JSON.stringify(viewedProductIds)
-      );
-    }, 5000),
-    [id]
-  );
+  // const incrementViewCount = useCallback(
+  //   throttle(async () => {
+  //     incrementProductView(id);
+  //     await viewedProductIds.push(id);
+  //     sessionStorage.setItem(
+  //       "viewedProductIds",
+  //       JSON.stringify(viewedProductIds)
+  //     );
+  //   }, 5000),
+  //   [id]
+  // );
 
-  useEffect(() => {
-    if (!viewedProductIds.includes(id)) {
-      incrementViewCount();
-      return () => {
-        incrementViewCount.cancel();
-      };
-    }
-  }, [id]);
+  // useEffect(() => {
+  //   if (!viewedProductIds.includes(id)) {
+  //     incrementViewCount();
+  //     return () => {
+  //       incrementViewCount.cancel();
+  //     };
+  //   }
+  // }, [id]);
 
   const handleReview = async (e) => {
     e.preventDefault();
@@ -102,7 +102,7 @@ const ProductDetailsPage = () => {
       console.log(error?.data?.msg || error.error);
     }
   };
-  console.log(product)
+
 
   return (
     <Container className="py-4">

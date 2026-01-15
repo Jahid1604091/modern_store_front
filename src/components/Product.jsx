@@ -1,10 +1,19 @@
-import React from "react";
-import { Card } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 import Rating from "./Rating";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../slices/cartSlice";
 
 const Product = ({ product }) => {
+  const dispatch = useDispatch();
+  const { cartItems } = useSelector((state) => state.cart);
+  const [qty, setQty] = useState(1);
+  const handleAddToCart = () => {
+    dispatch(addToCart({ ...product, qty }));
+
+  };
   return (
     <Card className="h-100">
       <Link to={`/products/${product.id}`}>
@@ -29,9 +38,16 @@ const Product = ({ product }) => {
           <Rating
             rating={product.rating}
             reviews={product.numReviews}
-            // showReviewNumber
+          // showReviewNumber
           />
         </Card.Text>
+        <Button
+          className="mt-2"
+          onClick={handleAddToCart}
+          variant="primary"
+          disabled={product.stock_quantity === 0}>
+          Add to cart
+        </Button>
       </Card.Body>
     </Card>
   );

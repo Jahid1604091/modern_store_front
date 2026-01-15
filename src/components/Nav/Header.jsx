@@ -96,9 +96,9 @@ const Header = () => {
                 <NavDropdown
                   title={
                     <span className="user-dropdown-title">
-                      <div className="user-avatar">
+                      {/* <div className="user-avatar">
                         <i className="bi bi-person-circle"></i>
-                      </div>
+                      </div> */}
                       <span className="user-name">
                         {userInfo.name || "Account"}
                       </span>

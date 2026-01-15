@@ -175,8 +175,8 @@
 
 /* User Dropdown */
 .user-dropdown .dropdown-toggle {
-  background: rgba(255, 255, 255, 0.15) !important;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  /* background: rgba(255, 255, 255, 0.15) !important; */
+  /* border: 2px solid rgba(255, 255, 255, 0.2); */
   border-radius: 25px;
   padding: 0.4rem 1rem !important;
   transition: all 0.3s ease;
@@ -194,7 +194,7 @@
 }
 
 .user-dropdown-title {
-  display: flex;
+  /* display: flex; */
   align-items: center;
   gap: 10px;
 }

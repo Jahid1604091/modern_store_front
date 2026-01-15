@@ -74,18 +74,18 @@ export default function OrderDetailsPage() {
   const handlePaymentModal = () => {
     setShow(true)
   }
-    const handlePayment = async (formData) => {
+  const handlePayment = async (formData) => {
     try {
       const res = await createPayment(formData);
       if (res.success) {
         toast.dismiss()
         toast.success(res.data.msg)
-        
+
       }
       if (res.error) {
         toast.dismiss()
         toast.error(res.error.data.msg)
-        
+
       }
     } catch (error) {
       console.log(error)
@@ -151,6 +151,7 @@ export default function OrderDetailsPage() {
   }
 
   if (isSuccess && order) {
+    const { address, city, country, postalCode } = order.shipping_address
     return (
       <Container>
         <Row>
@@ -163,11 +164,13 @@ export default function OrderDetailsPage() {
                 <p>
                   <span>Shipping Address: </span>
                   <span className="fw-lighter">
-                    {order.shipping_address}
+                    {`${address}, ${city}, ${country} - ${postalCode}`}
+                    {/* {order.shipping_address} */}
                   </span>
                 </p>
 
-                <p>Your Order Status -<strong className="fw-bold text-uppercase"> {order.payment_status}</strong></p>
+                <p>Your Order Status -<strong className="fw-bold text-uppercase"> {order.status}</strong></p>
+                <p>Your Payment Status -<strong className="fw-bold text-uppercase"> {order.payment_status}</strong></p>
                 {/* {order.payment_status === 'paid' || isPaid? (
                   <p className="bg-info text-light px-2 fw-bold d-flex align-items-center">
                     <TiTick size={23} />

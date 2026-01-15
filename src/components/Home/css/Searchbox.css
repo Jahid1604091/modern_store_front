@@ -10,12 +10,19 @@
 .search-form {
   width: 90%;
   max-width: 600px;
-  margin: 0;
   position: fixed;
   top: 12%;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 999999;
-
+  transition: top 0.35s ease, box-shadow 0.35s ease;
 }
+
+.search-form.scrolled {
+  top: 2px; /* change from 12% → 12px */
+  /* box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25); */
+}
+
 
 .search-input-wrapper {
   position: relative;

@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import './css/Searchbox.css';
 
 const Searchbox = ({ searchTerm, setSearchTerm, setPageNumber }) => {
+
+const [isScrolled, setIsScrolled] = useState(false);
+
   const handleSearch = (e) => {
     e.preventDefault();
     setPageNumber(1);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 80); // adjust trigger point
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
     <div className="search-container">
-      <Form onSubmit={handleSearch} className="search-form">
+      <Form onSubmit={handleSearch} className={`search-form ${isScrolled ? "scrolled" : ""}`}>
         <div className="search-input-wrapper">
           <Form.Control
             type="text"
