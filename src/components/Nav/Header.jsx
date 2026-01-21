@@ -20,7 +20,7 @@ const Header = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [scrolled, setScrolled] = useState(false);
 
-  // Handle scroll effect
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -37,16 +37,14 @@ const Header = () => {
   const cartItemCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
 
   return (
-    <header className={`modern-header ${scrolled ? "scrolled" : ""}`}>
+    <div className={`modern-header ${scrolled ? "scrolled" : ""}`}>
       <Navbar expand="lg" className="modern-navbar">
         <Container>
-          {/* Logo/Brand */}
           <LinkContainer to="/">
             <Navbar.Brand className="modern-brand">
               <div className="brand-content">
                 <div className="brand-icon">
                   <BiShoppingBag/>
-                  {/* <i className="bi bi-shop"></i> */}
                 </div>
                 <div className="brand-text">
                   <span className="brand-name">Modern Store</span>
@@ -56,7 +54,7 @@ const Header = () => {
             </Navbar.Brand>
           </LinkContainer>
 
-          {/* Mobile Toggle */}
+
           <Navbar.Toggle aria-controls="modern-navbar-nav">
             <span className="navbar-toggler-icon-custom">
               <i className="bi bi-list"></i>
@@ -66,9 +64,9 @@ const Header = () => {
 
           <Navbar.Collapse id="modern-navbar-nav">
 
-            {/* Navigation Links */}
+
             <Nav className="ms-auto align-items-lg-center">
-              {/* Home Link */}
+
               <LinkContainer to="/">
                 <Nav.Link className="nav-link-modern">
                   <i className="bi bi-house-door"></i>
@@ -76,7 +74,6 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
 
-              {/* Cart Link */}
               <LinkContainer to="/cart">
                 <Nav.Link className="nav-link-modern cart-link">
                   <div className="cart-icon-wrapper">
@@ -91,7 +88,6 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
 
-              {/* User Menu */}
               {userInfo?.token ? (
                 <NavDropdown
                   title={
@@ -144,7 +140,7 @@ const Header = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-    </header>
+    </div>
   );
 };
 

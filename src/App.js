@@ -12,11 +12,11 @@ const App = () => {
     <>
       <Header />
       {/* <Categories /> */}
-      <main className='py-2'>
+      <section className=''>
         <Container>
           <Outlet />
         </Container>
-      </main>
+      </section>
       <Footer />
       <Toaster />
     </>

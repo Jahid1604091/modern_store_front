@@ -3,18 +3,18 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+  box-shadow: var(--dark-shadow);
 }
 
 .modern-header.scrolled {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--dark-shadow);
 }
 
 .modern-navbar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--linear-gradient-background-1);
   padding: 0.75rem 0;
-  transition: all 0.3s ease;
+  transition: var(--transition)
 }
 
 .modern-header.scrolled .modern-navbar {
