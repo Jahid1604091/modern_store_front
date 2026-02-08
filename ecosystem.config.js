@@ -2,19 +2,12 @@ module.exports = {
   apps: [
     {
       name: "modern-store-front",
-      script: "npm",
-      args: "start",
-
+      script: "npx",
+      args: "serve -s build -l 3000",
       exec_mode: "fork",
       instances: 1,
-
-      watch: false,
       autorestart: true,
-
-      env: {
-        NODE_ENV: "production",
-        PORT: 3000
-      }
+      watch: false
     }
   ]
 };
