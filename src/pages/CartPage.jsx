@@ -62,7 +62,7 @@ const CartPage = () => {
               {cartItems.map((item) => (
                 <tr key={item.id}>
                   <td>{item.name}</td>
-                  <td>${item.price}</td>
+                  <td>BDT {item.price}</td>
                   <td>
                     <Button
                       variant="secondary"
@@ -80,7 +80,7 @@ const CartPage = () => {
                       <AiOutlinePlus />
                     </Button>
                   </td>
-                  <td>${(item.price * item.qty).toFixed(2)}</td>
+                  <td>BDT {(item.price * item.qty).toFixed(2)}</td>
                   <td>
                     <Button
                       onClick={() => handleRemoveFromCart(item.id)}
@@ -97,7 +97,7 @@ const CartPage = () => {
 
           <Row>
             <Col className="text-end">
-              <h4>Total Price: ${totalPrice.toFixed(2)}</h4>
+              <h4>Total Price: BDT {totalPrice.toFixed(2)}</h4>
               <Button onClick={()=>navigate('/shipping')} variant="success" className="mt-3">
                 Proceed to Checkout
               </Button>

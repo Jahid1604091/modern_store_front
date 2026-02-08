@@ -11,6 +11,7 @@ import { BASE_URL } from "../../utils/constants";
 import styled from "styled-components";
 import { Card, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Rating from "../Rating";
 
 const TrendingContainer = styled.div`
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -442,22 +443,22 @@ export default function TrendingProducts({
                     <ProductTitle>{product.name}</ProductTitle>
 
                     <RatingWrapper>
-                      {[...Array(5)].map((_, i) => (
+                      <Rating rating={getRandomRating()} />
+                      {/* {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
                           className={`bi bi-star${i < 4 ? "-fill" : ""}`}
                         />
                       ))}
-                      <RatingText>({getRandomRating()})</RatingText>
+                      <RatingText>({getRandomRating()})</RatingText> */}
                     </RatingWrapper>
 
                     <PriceWrapper>
                       <ProductPrice>
-                        {product.currency || "$"} {product.price}
+                        {product.currency || "BDT"} {product.price}
                       </ProductPrice>
                       {index < 3 && (
                         <OldPrice>
-                          {product.currency || "$"}{" "}
                           {(parseFloat(product.price) * 1.3).toFixed(2)}
                         </OldPrice>
                       )}

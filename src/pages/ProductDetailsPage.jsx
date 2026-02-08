@@ -120,8 +120,8 @@ const ProductDetailsPage = () => {
       {isSuccess && product && (
         <>
           <Button
-            variant="outline-secondary"
-            className="my-3"
+            // variant="outline-primary"
+            className="btn my-1"
             onClick={() => navigate(-1)}
           >
             Go Back
