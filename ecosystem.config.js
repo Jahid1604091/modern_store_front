@@ -1,13 +1,14 @@
 module.exports = {
-  apps: [
-    {
-      name: "modern-store-front",
-      script: "npx",
-      args: "serve -s build -l 3000",
-      exec_mode: "fork",
-      instances: 1,
-      autorestart: true,
-      watch: false
-    }
-  ]
+    apps: [
+        {
+            name: "modern-store-front",
+            script: 'npm',
+            args: 'start',
+            instances: 1,
+            exec_mode: 'fork',
+            autorestart: true,
+            watch: false,
+            max_memory_restart: '2G',
+        }
+    ]
 };
