@@ -4,6 +4,7 @@ import { Navbar, Nav, NavDropdown, Container } from "react-bootstrap";
 import { useGetCategoriesQuery } from "../../slices/productApiSlice";
 import Loader from "../Loader";
 import AlertDismissible from "../Alert";
+import { Link } from "react-router-dom";
 
 const Categories = () => {
   const {
@@ -63,7 +64,7 @@ const Categories = () => {
                               title={
                                 <span className="subcategory-title">
                                   <i className="bi bi-chevron-right me-2"></i>
-                                  {subcategory.name}
+                                  <Link to='/products' >{subcategory.name}</Link>
                                 </span>
                               }
                               id={`nav-subdropdown-${category.id || index}-${subIndex}`}
@@ -91,7 +92,7 @@ const Categories = () => {
                               className="subcategory-item"
                             >
                               <i className="bi bi-tag me-2"></i>
-                              {subcategory.name}
+                              <Link to='/products' >{subcategory.name}</Link>
                             </NavDropdown.Item>
                           )
                         )}

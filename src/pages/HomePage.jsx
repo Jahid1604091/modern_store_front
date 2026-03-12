@@ -5,6 +5,7 @@ import TrendingProducts from "../components/Home/TrendingProducts";
 import { useState } from "react";
 import { useGetProductsQuery } from "../slices/productApiSlice";
 import Searchbox from "../components/Home/Searchbox";
+import Categories from "../components/Categories";
 
 const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,6 +29,7 @@ const HomePage = () => {
         setPageNumber={setPageNumber}
       />
       <Slider />
+      <Categories/>
       <TrendingProducts
         products={productsData?.data}
         isLoading={isLoading}
