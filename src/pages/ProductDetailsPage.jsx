@@ -35,7 +35,9 @@ const ProductDetailsPage = () => {
   } = useGetProductQuery(id);
 
   const incrementQty = () => {
-    if (qty < product.stock_quantity) setQty((q) => q + 1);
+    if (qty < product.stock_quantity) {
+      setQty((prevQty) => prevQty + 1);
+    }
   };
 
   const decrementQty = () => {
@@ -82,81 +84,53 @@ const ProductDetailsPage = () => {
 
   if (!isSuccess || !product) return null;
 
-  const inStock = product.stock_quantity > 0;
-
-  return (
-    <div className="pdp-container">
-      {/* ── Back button ── */}
-      <button className="pdp-back-btn" onClick={() => navigate(-1)}>
-        <i className="bi bi-arrow-left" />
-        Back
-      </button>
-
-      <Row className="gy-4">
-        {/* ── 1. Product image ── */}
-        <Col md={5} className="pdp-image-col">
-          <div className="pdp-image-wrapper">
-            <img
-              className="pdp-image"
-              src={`${BASE_URL}/${product.image}`}
-              alt={product.name}
-              onError={(e) => {
-                e.target.src =
-                  "https://via.placeholder.com/600x800?text=No+Image";
-              }}
-            />
-          </div>
-        </Col>
-
-        {/* ── 2. Product info ── */}
-        <Col md={4}>
-          <div className="pdp-info">
-            {/* Category */}
-            {product.category?.name && (
-              <span className="pdp-category-tag">{product.category.name}</span>
-            )}
-
-            {/* Name */}
-            <h1 className="pdp-product-name">{product.name}</h1>
-
-            {/* Rating */}
-            <div className="pdp-rating-row">
-              <Rating
-                rating={product.rating}
-                reviews={product.numReviews}
+      {isSuccess && (
+        <>
+          <Button
+            variant="outline-secondary"
+            className="my-3"
+            onClick={() => navigate(-1)}
+          >
+            Go Back
+          </Button>
+          <Row className="gy-4">
+            {/* Product Image */}
+            <Col md={4}>
+              <Image
+                src={`${BASE_URL}/${product.image}`}
+                alt={product.name || "Product Image"}
+                fluid
+                className="rounded shadow-lg"
+                style={{ maxHeight: "400px", objectFit: "cover" }}
               />
               <span className="pdp-review-count">
                 {product.numReviews || 0} review{product.numReviews !== 1 ? "s" : ""}
               </span>
             </div>
 
-            {/* Price */}
-            <div className="pdp-price">
-              {product.currency || currency} {product.price}
-            </div>
-
-            {/* Description */}
-            {product.description && (
-              <p className="pdp-description">{product.description}</p>
-            )}
-
-            {/* Meta */}
-            <div className="pdp-meta">
-              {product.brand && (
-                <div className="pdp-meta-row">
-                  <strong>Brand</strong>
-                  <span>{product.brand}</span>
-                </div>
-              )}
-              {product.category?.name && (
-                <div className="pdp-meta-row">
-                  <strong>Category</strong>
-                  <span>{product.category.name}</span>
-                </div>
-              )}
-            </div>
-          </div>
-        </Col>
+            {/* Product Details */}
+            <Col md={5}>
+              <ListGroup variant="flush" className="shadow-sm rounded-3">
+                <ListGroup.Item className="py-3">
+                  <h3 className="fw-bold">{product?.name}</h3>
+                </ListGroup.Item>
+                <ListGroup.Item className="py-3">
+                  <Rating
+                    rating={product.rating}
+                    reviews={product.numReviews}
+                    showReviewNumber
+                  />
+                </ListGroup.Item>
+                <ListGroup.Item className="py-3">
+                  <p className="text-muted">{product.description}</p>
+                </ListGroup.Item>
+                <ListGroup.Item className="py-3">
+                  <strong>Brand:</strong> {product.brand}
+                </ListGroup.Item>
+                <ListGroup.Item className="py-3">
+                  <strong>Category:</strong> { product?.category?.name}
+                </ListGroup.Item>
+              </ListGroup>
 
         {/* ── 3. Cart panel ── */}
         <Col md={3}>
@@ -205,11 +179,27 @@ const ProductDetailsPage = () => {
               </div>
             )}
 
-            {/* Success message */}
-            {successMessage && (
-              <div className="pdp-success-alert">
-                <i className="bi bi-check-circle me-1" />
-                {successMessage}
+                {product?.reviews?.length === 0 ? (
+                  <div className="text-muted mt-3">No reviews yet</div>
+                ) : (
+                  <>
+                    <h5 className="fw-bold mt-4">Customer Reviews</h5>
+                    <ListGroup className="mt-3">
+                      {product?.reviews?.map((r) => (
+                        <ListGroup.Item
+                          key={r.id}
+                          className="d-flex justify-content-between align-items-start shadow-sm mb-2 rounded-3"
+                        >
+                          <div className="ms-2 me-auto">
+                            <div className="fw-bold">{r?.name}</div>
+                            <p className="mb-0">{r?.comment}</p>
+                          </div>
+                          <Rating rating={r?.rating} />
+                        </ListGroup.Item>
+                      ))}
+                    </ListGroup>
+                  </>
+                )}
               </div>
             )}
 
@@ -227,81 +217,91 @@ const ProductDetailsPage = () => {
               ) : (
                 "Out of Stock"
               )}
-            </button>
+              <Card className="shadow-lg rounded-3">
+                <ListGroup variant="flush">
+                  <ListGroup.Item className="py-3">
+                    <Row>
+                      <Col>Price:</Col>
+                      <Col>
+                        <strong className="text-success">
+                          {product.currency} {product.price}
+                        </strong>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                  <ListGroup.Item className="py-3">
+                    <Row>
+                      <Col>Status:</Col>
+                      <Col>
+                        {product.stock_quantity > 0 ? (
+                          <span className="text-success">In Stock</span>
+                        ) : (
+                          <span className="text-danger">Out of Stock</span>
+                        )}
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
 
-            {/* Proceed to checkout */}
-            {cartItems.length > 0 && (
-              <Link to="/shipping" className="pdp-checkout-btn">
-                Proceed to Checkout
-                <i className="bi bi-arrow-right ms-2" />
-              </Link>
-            )}
-          </div>
-        </Col>
-      </Row>
+                  {product.stock_quantity > 0 && (
+                    <>
+                      <ListGroup.Item className="py-3">
+                        <Row>
+                          <Col>Quantity:</Col>
+                          <Col className="d-flex align-items-center">
+                            <Button
+                              variant="outline-secondary"
+                              onClick={decrementQty}
+                              disabled={qty <= 1}
+                              className="shadow-sm"
+                            >
+                              -
+                            </Button>
+                            <Form.Control
+                              type="number"
+                              value={qty}
+                              readOnly
+                              className="text-center mx-2 shadow-sm"
+                              style={{ width: "50px" }}
+                            />
+                            <Button
+                              variant="outline-secondary"
+                              onClick={incrementQty}
+                              disabled={qty >= product.stock_quantity}
+                              className="shadow-sm"
+                            >
+                              +
+                            </Button>
+                          </Col>
+                        </Row>
+                      </ListGroup.Item>
 
-      {/* ── Reviews ── */}
-      <div className="pdp-reviews-section">
-        <Row>
-          {/* Write a review */}
-          <Col md={5}>
-            <h3 className="pdp-section-heading">Write a Review</h3>
-            <div className="pdp-review-form">
-              <Form onSubmit={handleReview}>
-                <Form.Group className="mb-3">
-                  <Form.Control
-                    as="textarea"
-                    rows={4}
-                    placeholder="Share your experience with this product..."
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <StarRatingInput setRating={setRating} />
-                </Form.Group>
-                <Button
-                  type="submit"
-                  className="pdp-submit-review-btn"
-                >
-                  Submit Review
-                </Button>
-              </Form>
-            </div>
-          </Col>
-
-          {/* Review list */}
-          <Col md={7}>
-            <h3 className="pdp-section-heading">
-              Customer Reviews
-              {product.reviews?.length > 0 && (
-                <span style={{ fontSize: "0.9rem", fontWeight: 400, marginLeft: "0.5rem", color: "#888" }}>
-                  ({product.reviews.length})
-                </span>
-              )}
-            </h3>
-
-            {!product.reviews?.length ? (
-              <p className="pdp-no-reviews">
-                No reviews yet — be the first to review this product.
-              </p>
-            ) : (
-              <div className="pdp-review-list">
-                {product.reviews.map((r) => (
-                  <div key={r.id} className="pdp-review-item">
-                    <div>
-                      <p className="pdp-reviewer-name">{r.name}</p>
-                      <p className="pdp-review-comment">{r.comment}</p>
-                    </div>
-                    <Rating rating={r?.rating} />
-                  </div>
-                ))}
-              </div>
-            )}
-          </Col>
-        </Row>
-      </div>
-    </div>
+                      <ListGroup.Item className="py-3">
+                        <Button
+                          onClick={handleAddToCart}
+                          className="w-100 mb-2"
+                          variant="primary"
+                          disabled={product.stock_quantity === 0}
+                        >
+                          Add to Cart
+                        </Button>
+                        {cartItems.length > 0 && (
+                          <Link
+                            to="/shipping"
+                            className="btn btn-success w-100"
+                          >
+                            Proceed to Checkout
+                          </Link>
+                        )}
+                      </ListGroup.Item>
+                    </>
+                  )}
+                </ListGroup>
+              </Card>
+            </Col>
+          </Row>
+        </>
+      )}
+    </Container>
   );
 };
 

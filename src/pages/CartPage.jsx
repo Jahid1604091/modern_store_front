@@ -4,11 +4,9 @@ import {
   removeFromCart,
   incrementQuantity,
   decrementQuantity,
-} from "../slices/cartSlice";
+} from "../slices/cartSlice"; 
 import { AiOutlineMinus, AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
-import { useNavigate, Link } from "react-router-dom";
-import { BASE_URL, company_data } from "../utils/constants";
-import "./css/CartPage.css";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const dispatch = useDispatch();

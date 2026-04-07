@@ -20,17 +20,9 @@ const Product = ({ product }) => {
   const outOfStock = product.stock_quantity === 0;
 
   return (
-    <Card className="product-card h-100">
-      {/* ── Image area ── */}
-      <Link
-        to={`/products/${product.id}`}
-        className="product-img-wrapper"
-      >
-        {/* "New" badge on first load – you can swap this with a real flag */}
-        <span className="product-badge-new">New</span>
-
-        <img
-          className="product-img-primary"
+    <Card className="h-100">
+      <Link to={`/products/${product.id}`}>
+        <Card.Img
           src={`${BASE_URL}/${product.image}`}
           alt={product.name}
           onError={(e) => {
@@ -56,11 +48,10 @@ const Product = ({ product }) => {
 
       {/* ── Card body ── */}
       <Card.Body className="d-flex flex-column">
-        <Link
-          to={`/products/${product.id}`}
-          className="text-decoration-none"
-        >
-          <span className="product-name">{product.name}</span>
+        <Link to={`/products/${product.id}`} className="text-decoration-none">
+          <Card.Title as="h5" className="text-dark">
+            {product.name}
+          </Card.Title>
         </Link>
 
         <Rating rating={product.rating} reviews={product.numReviews} />

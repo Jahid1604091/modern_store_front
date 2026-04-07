@@ -364,30 +364,21 @@ export default function TrendingProducts({
             }}
           >
             {products.map((product, index) => (
-              <SwiperSlide key={product.id || index}>
-                <ProductCard>
-                  <ImageWrapper>
-                    <TrendingBadge>Hot</TrendingBadge>
-                    {index % 4 === 0 && (
-                      <DiscountBadge>
-                        {Math.floor(Math.random() * 25 + 10)}% Off
-                      </DiscountBadge>
-                    )}
-                    <ProductImage
-                      variant="top"
-                      src={`${BASE_URL}/${product.image}`}
-                      alt={product.name || `Product ${index + 1}`}
-                      onError={(e) => {
-                        e.target.src =
-                          "https://via.placeholder.com/300x400?text=No+Image";
-                      }}
-                    />
-                    <WishlistButton
-                      onClick={(e) => {
-                        e.preventDefault();
-                        console.log("Wishlist:", product.id);
-                      }}
-                      title="Add to wishlist"
+              <SwiperSlide key={index}>
+                <ProductCard className="text-center">
+                  <ProductImage
+                    variant="top"
+                    src={`${BASE_URL}/${product.image}`}
+                    alt={`Slide ${index + 1}`}
+                  />
+                  <Card.Body>
+                    <ProductTitle>{product.name}</ProductTitle>
+                    <ProductPrice>
+                      {product.currency} {product.price}
+                    </ProductPrice>
+                    <Link
+                      to={`/products/${product.id}`}
+                      className="btn btn-outline-info text-capitalize"
                     >
                       <i className="bi bi-heart" />
                     </WishlistButton>

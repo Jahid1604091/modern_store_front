@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -151,23 +151,50 @@ export default function OrderDetailsPage() {
     );
   }
 
-  if (isSuccess && order) {
-    const { address, city, country, postalCode } = order.shipping_address
-    return (
-      <Container>
-        <Row>
-          <Col md={8}>
-            <ListGroup variant="flush">
-              <ListGroup.Item className="border-0 pb-0">
-                <h5 className="fw-bold text-uppercase">
-                  Your Order # {order.order_number}
-                </h5>
-                <p>
-                  <span>Shipping Address: </span>
-                  <span className="fw-lighter">
-                    {`${address}, ${city}, ${country} - ${postalCode}`}
-                    {/* {order.shipping_address} */}
-                  </span>
+  return (
+    <Container>
+      <Row>
+        <Col md={8}>
+          <ListGroup variant="flush">
+            <ListGroup.Item className="border-0 pb-0">
+              <h5 className="fw-bold text-uppercase">
+                Your Order Id: {order.id}
+              </h5>
+              <p>
+                <span>Shipping Address: </span>
+                <span className="fw-lighter">
+                  {order.shippingAddress.address}, {order.shippingAddress.city},{" "}
+                  {order.shippingAddress.postalCode},{" "}
+                  {order.shippingAddress.country}
+                </span>
+              </p>
+              <p>
+                Name: <span className="fw-lighter">{order.user.name}</span>
+              </p>
+              <p>
+                Email: <span className="fw-lighter ">{order.user.email}</span>
+              </p>
+              <h5 className="fw-bold text-uppercase">Your Order Status</h5>
+              {order.isPaid || isPaid? (
+                <p className="bg-info text-light px-2 fw-bold d-flex align-items-center">
+                  <TiTick size={23} />
+                  &nbsp;Paid at {order.paidAt}
+                </p>
+              ) : (
+                <p className="bg-secondary text-light px-2 fw-bold d-flex align-items-center">
+                  <FaTimesCircle size={15} />
+                  &nbsp;Not Paid
+                </p>
+              )}
+              {order.isDelivered ? (
+                <p className="bg-info text-light px-2 fw-bold d-flex align-items-center">
+                  <TiTick size={23} />
+                  &nbsp;Delivered on {order.deliveredAt}
+                </p>
+              ) : (
+                <p className="bg-secondary text-light px-2 fw-bold d-flex align-items-center">
+                  <FaTimesCircle />
+                  &nbsp;Not Delivered
                 </p>
 
                 <p>Your Order Status -<strong className="fw-bold text-uppercase"> {order.status}</strong></p>
