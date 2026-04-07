@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Table, Button, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   removeFromCart,
@@ -13,99 +12,163 @@ const CartPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { cartItems, totalPrice } = useSelector((state) => state.cart);
-  const [alert, setAlert] = useState(false);
+  const [stockAlert, setStockAlert] = useState(false);
+  const { currency } = company_data;
 
-  const handleRemoveFromCart = (itemId) => {
-    dispatch(removeFromCart(itemId));
-  };
+  const handleRemove = (id) => dispatch(removeFromCart(id));
 
   const handleIncrement = (item) => {
-    if (item.qty < item.countInStock) {
-      dispatch(incrementQuantity(item._id));
+    if (item.qty < item.stock_quantity) {
+      dispatch(incrementQuantity(item.id));
     } else {
-      setAlert(true);
-      setTimeout(() => {
-        setAlert(false);
-      }, 3000);
+      setStockAlert(true);
+      setTimeout(() => setStockAlert(false), 3000);
     }
   };
 
-  const handleDecrement = (itemId) => {
-    dispatch(decrementQuantity(itemId));
-  };
+  const handleDecrement = (id) => dispatch(decrementQuantity(id));
 
   return (
-    <Container className="py-4">
-      <h2 className="text-center mb-4">Shopping Cart</h2>
-      {alert && (
-        <Alert variant="info" className="text-center">
-          Cannot increase quantity beyond stock limit.
-        </Alert>
+    <div className="cart-page">
+      <h1 className="cart-page-title">
+        Shopping Cart
+        {cartItems.length > 0 && (
+          <span style={{ fontSize: "1rem", fontWeight: 400, marginLeft: "0.75rem", color: "#888", letterSpacing: "0.5px" }}>
+            ({cartItems.reduce((a, i) => a + i.qty, 0)} items)
+          </span>
+        )}
+      </h1>
+
+      {/* Stock limit alert */}
+      {stockAlert && (
+        <div className="cart-stock-alert">
+          <i className="bi bi-exclamation-circle" />
+          Cannot increase quantity beyond available stock.
+        </div>
       )}
+
+      {/* Empty state */}
       {cartItems.length === 0 ? (
-        <Alert variant="info" className="text-center">
-          Your cart is empty.
-        </Alert>
+        <div className="cart-empty">
+          <i className="bi bi-bag-x" />
+          <h4>Your cart is empty</h4>
+          <p>Looks like you haven't added any products yet.</p>
+          <Link to="/products" className="cart-empty-btn">
+            <i className="bi bi-arrow-left" />
+            Continue Shopping
+          </Link>
+        </div>
       ) : (
         <>
-          <Table striped bordered hover responsive>
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cartItems.map((item) => (
-                <tr key={item._id}>
-                  <td>{item.name}</td>
-                  <td>${item.price}</td>
-                  <td>
-                    <Button
-                      variant="secondary"
-                      className="p-1 mx-2"
-                      onClick={() => handleDecrement(item._id)}
-                    >
-                      <AiOutlineMinus />
-                    </Button>
-                    {item.qty}
-                    <Button
-                      variant="secondary"
-                      className="p-1 mx-2"
-                      onClick={() => handleIncrement(item)}
-                    >
-                      <AiOutlinePlus />
-                    </Button>
-                  </td>
-                  <td>${(item.price * item.qty).toFixed(2)}</td>
-                  <td>
-                    <Button
-                      onClick={() => handleRemoveFromCart(item._id)}
-                      variant="danger"
-                      className="btn btn-light text-danger"
-                    >
-                      <AiOutlineDelete />
-                    </Button>
-                  </td>
+          {/* ── Cart table ── */}
+          <div className="cart-table-wrapper">
+            <table className="cart-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Subtotal</th>
+                  <th></th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {cartItems.map((item) => (
+                  <tr key={item.id}>
+                    {/* Product */}
+                    <td>
+                      <div className="cart-product-cell">
+                        <img
+                          className="cart-item-img"
+                          src={`${BASE_URL}/${item.image}`}
+                          alt={item.name}
+                          onError={(e) => {
+                            e.target.src =
+                              "https://via.placeholder.com/60x60?text=?";
+                          }}
+                        />
+                        <Link
+                          to={`/products/${item.id}`}
+                          className="cart-item-name"
+                        >
+                          {item.name}
+                        </Link>
+                      </div>
+                    </td>
 
-          <Row>
-            <Col className="text-end">
-              <h4>Total Price: ${totalPrice.toFixed(2)}</h4>
-              <Button onClick={()=>navigate('/shipping')} variant="success" className="mt-3">
-                Proceed to Checkout
-              </Button>
-            </Col>
-          </Row>
+                    {/* Price */}
+                    <td>
+                      <span className="cart-price">
+                        {currency} {item.price}
+                      </span>
+                    </td>
+
+                    {/* Qty */}
+                    <td>
+                      <div className="cart-qty-controls">
+                        <button
+                          className="cart-qty-btn"
+                          onClick={() => handleDecrement(item.id)}
+                          disabled={item.qty <= 1}
+                          aria-label="Decrease quantity"
+                        >
+                          <AiOutlineMinus />
+                        </button>
+                        <span className="cart-qty-value">{item.qty}</span>
+                        <button
+                          className="cart-qty-btn"
+                          onClick={() => handleIncrement(item)}
+                          disabled={item.qty >= item.stock_quantity}
+                          aria-label="Increase quantity"
+                        >
+                          <AiOutlinePlus />
+                        </button>
+                      </div>
+                    </td>
+
+                    {/* Subtotal */}
+                    <td>
+                      <span className="cart-subtotal">
+                        {currency} {(item.price * item.qty).toFixed(2)}
+                      </span>
+                    </td>
+
+                    {/* Remove */}
+                    <td>
+                      <button
+                        className="cart-remove-btn"
+                        onClick={() => handleRemove(item.id)}
+                        aria-label={`Remove ${item.name}`}
+                        title="Remove item"
+                      >
+                        <AiOutlineDelete />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* ── Summary ── */}
+          <div className="cart-summary-row">
+            <div>
+              <span className="cart-total-label">Total</span>
+              <span className="cart-total-value">
+                {currency} {Number(totalPrice).toFixed(2)}
+              </span>
+            </div>
+            <button
+              className="cart-checkout-btn"
+              onClick={() => navigate("/shipping")}
+            >
+              Proceed to Checkout
+              <i className="bi bi-arrow-right" />
+            </button>
+          </div>
         </>
       )}
-    </Container>
+    </div>
   );
 };
 

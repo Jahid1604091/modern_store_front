@@ -15,7 +15,7 @@ export default function PaymentPage() {
         navigate('/shipping')
     }
 
-    const [paymentMethod, setPaymentMethod] = useState('stripe')
+    const [paymentMethod, setPaymentMethod] = useState('bKash')
 
 
     const submitHandler = (e) => {
@@ -46,7 +46,7 @@ export default function PaymentPage() {
                                 >
 
                                 </Form.Check>
-                                {/* <Form.Check
+                                <Form.Check
                                     type='radio'
                                     label='bKash'
                                     id='bKash'
@@ -57,7 +57,7 @@ export default function PaymentPage() {
                                     onChange={e => setPaymentMethod(e.target.value)}
                                 >
 
-                                </Form.Check> */}
+                                </Form.Check>
                             </Col>
                         </Form.Group>
                         <Button type='submit' className='px-4 text-light text-uppercase rounded-0 shadow' variant='primary'>Continue</Button>

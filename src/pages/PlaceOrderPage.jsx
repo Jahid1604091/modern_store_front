@@ -1,46 +1,35 @@
 import React, { useEffect } from "react";
-import {
-  Button,
-  Col,
-  Container,
-  ListGroup,
-  Image,
-  Card,
-  Row,
-} from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import CheckoutSteps from "../components/CheckoutSteps";
 import { useDispatch, useSelector } from "react-redux";
 import AlertDismissible from "../components/Alert";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useCreateOrderMutation } from "../slices/orderApliSlice";
 import { clearCart } from "../slices/cartSlice";
-import { BASE_URL } from "../utils/constants";
+import { BASE_URL, company_data } from "../utils/constants";
+import Loader from "../components/Loader";
+import "./css/PlaceOrderPage.css";
 
 export default function PlaceOrderPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
-  const [createOrder, { isLoading, isError, error, isSuccess }] =
+  const { currency } = company_data;
+
+  const [createOrder, { isLoading, isError, error }] =
     useCreateOrderMutation();
 
   useEffect(() => {
-    if (!cart.shippingAddress.address) {
-      navigate("/shipping");
-    } else if (!cart.paymentMethod) {
-      navigate("/payment");
-    }
+    if (!cart.shippingAddress.address) navigate("/shipping");
+    else if (!cart.paymentMethod) navigate("/payment");
   }, [cart.shippingAddress.address, cart.paymentMethod, navigate]);
 
   const placeOrderHandler = async (e) => {
     e.preventDefault();
-
     const orderItems = cart.cartItems.map((item) => ({
-      name: item.name,
       qty: item.qty,
-      image: item.image,
       price: item.price,
-      product: item._id,
+      id: item.id,
     }));
     try {
       const res = await createOrder({
@@ -54,116 +43,150 @@ export default function PlaceOrderPage() {
       }).unwrap();
       if (res.success) {
         dispatch(clearCart());
-        navigate(`/orders/${res.data._id}`);
+        navigate(`/orders/${res.data.id}`);
       }
-    } catch (error) {
-      console.log(`Error in creating Order ${error}`);
+    } catch (err) {
+      console.error("Error placing order:", err);
     }
   };
+
   return (
-    <Container>
+    <div className="place-order-page">
       <CheckoutSteps step1 step2 step3 step4 />
-      <Row>
+
+      {isError && (
+        <AlertDismissible
+          message={error?.data?.message || "Failed to place order."}
+          variant="danger"
+        />
+      )}
+
+      <Row className="gy-3">
+        {/* ── Left: order details ── */}
         <Col md={8}>
-          <ListGroup variant="flush">
-            <ListGroup.Item className="border-0 pb-0">
-              <p>
-                {" "}
-                <span>Shipping Address : </span>
-                <span className="fw-lighter fst-italic">
-                  {cart.shippingAddress.address},{cart.shippingAddress.city},
-                  {cart.shippingAddress.postalCode},
-                  {cart.shippingAddress.country}
-                </span>
+          {/* Shipping address */}
+          <div className="po-section">
+            <div className="po-section-header">
+              <i className="bi bi-geo-alt" style={{ fontSize: "0.8rem", color: "#888" }} />
+              <span className="po-section-label">Shipping Address</span>
+            </div>
+            <div className="po-section-body">
+              <p className="po-section-value mb-0">
+                {cart.shippingAddress.address}, {cart.shippingAddress.city},{" "}
+                {cart.shippingAddress.postalCode}, {cart.shippingAddress.country}
               </p>
-            </ListGroup.Item>
-            <ListGroup.Item className="border-0 pb-0">
-              Payment Method :{" "}
-              <span className="fw-lighter fst-italic">
-                {" "}
-                {cart.paymentMethod}
+            </div>
+          </div>
+
+          {/* Payment method */}
+          <div className="po-section">
+            <div className="po-section-header">
+              <i className="bi bi-credit-card" style={{ fontSize: "0.8rem", color: "#888" }} />
+              <span className="po-section-label">Payment Method</span>
+            </div>
+            <div className="po-section-body">
+              <p className="po-section-value mb-0">{cart.paymentMethod}</p>
+            </div>
+          </div>
+
+          {/* Order items */}
+          <div className="po-section">
+            <div className="po-section-header">
+              <i className="bi bi-bag" style={{ fontSize: "0.8rem", color: "#888" }} />
+              <span className="po-section-label">
+                Order Items ({cart.cartItems.reduce((a, i) => a + i.qty, 0)})
               </span>
-            </ListGroup.Item>
-            <ListGroup.Item className="border-0">
-              Order Items :
+            </div>
+            <div className="po-section-body">
               {cart.cartItems.length === 0 ? (
-                <AlertDismissible></AlertDismissible>
+                <AlertDismissible
+                  variant="warning"
+                  message="Your cart is empty."
+                />
               ) : (
-                <ListGroup variant="flush">
+                <div className="po-items-list">
                   {cart.cartItems.map((item, index) => (
-                    <ListGroup.Item key={index} className="border-0">
-                      <Row>
-                        <Col md={1}>
-                          <Image
-                            src={`${BASE_URL}/${item.image}`}
-                            alt={item.name}
-                            fluid
-                          />
-                        </Col>
-                        <Col>
-                          <span className="fw-lighter fst-italic">
-                            {item.name}
-                          </span>
-                        </Col>
-                        <Col md={4}>
-                          {item.qty} x {item.price} ={" "}
-                          {(item.qty * item.price).toFixed(2)} Tk
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
+                    <div className="po-item-row" key={index}>
+                      <img
+                        className="po-item-img"
+                        src={`${BASE_URL}/${item.image}`}
+                        alt={item.name}
+                        onError={(e) => {
+                          e.target.src =
+                            "https://via.placeholder.com/52x52?text=?";
+                        }}
+                      />
+                      <Link
+                        to={`/products/${item.id}`}
+                        className="po-item-name"
+                      >
+                        {item.name}
+                      </Link>
+                      <div className="po-item-price">
+                        {item.qty} × {item.price} ={" "}
+                        <strong>
+                          {(item.qty * item.price).toFixed(2)} {currency}
+                        </strong>
+                      </div>
+                    </div>
                   ))}
-                </ListGroup>
+                </div>
               )}
-            </ListGroup.Item>
-          </ListGroup>
+            </div>
+          </div>
         </Col>
 
+        {/* ── Right: summary panel ── */}
         <Col md={4}>
-          {isError && <AlertDismissible message={error} variant="danger" />}
-          <Card className="border-0 shadow py-3">
-            <ListGroup variant="flush">
-              <ListGroup.Item className="border-0 text-center text-uppercase fw-bold">
-                Order Summary
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Product Price</Col>
-                  <Col>{cart.itemsPrice} Tk</Col>
-                </Row>
-                <Row>
-                  <Col>Shipping</Col>
-                  <Col>{cart.shippingPrice} Tk</Col>
-                </Row>
-                <Row>
-                  <Col>Tax</Col>
-                  <Col> {cart.taxPrice} Tk</Col>
-                </Row>
-                <hr />
-                <Row>
-                  <Col>Total</Col>
-                  <Col>
-                    {" "}
-                    <span className="bg-info text-light px-2 py-1 rounded">
-                      {cart.totalPrice}
-                    </span>{" "}
-                    Tk
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            </ListGroup>
-            <div className="text-center mt-2">
-              <Button
-                onClick={placeOrderHandler}
-                type="submit"
-                className="px-4 text-light text-uppercase rounded-0 shadow"
-                variant="primary"
-              >
-                Place Order
-              </Button>
+          <div className="po-summary-panel">
+            <div className="po-summary-title">Order Summary</div>
+
+            <div className="po-summary-rows">
+              <div className="po-summary-row">
+                <span>Products</span>
+                <span>{cart.itemsPrice} {currency}</span>
+              </div>
+              <div className="po-summary-row">
+                <span>Shipping</span>
+                <span>{cart.shippingPrice} {currency}</span>
+              </div>
+              <div className="po-summary-row">
+                <span>Tax</span>
+                <span>{cart.taxPrice} {currency}</span>
+              </div>
             </div>
-          </Card>
+
+            <div className="po-summary-total">
+              <span className="po-summary-total-label">Total</span>
+              <span className="po-summary-total-value">
+                {cart.totalPrice} {currency}
+              </span>
+            </div>
+
+            <button
+              className="po-place-btn"
+              onClick={placeOrderHandler}
+              disabled={cart.cartItems.length === 0 || isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  Placing Order…
+                </>
+              ) : (
+                <>
+                  <i className="bi bi-bag-check me-2" />
+                  Place Order
+                </>
+              )}
+            </button>
+          </div>
         </Col>
       </Row>
-    </Container>
+    </div>
   );
 }

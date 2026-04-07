@@ -1,59 +1,216 @@
 /* Styling for Latest Products Page */
 
 .latest-products-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: 60vh;
+}
+
+/* Loader Wrapper */
+.loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+/* Alert Wrapper */
+.alert-wrapper {
+  max-width: 800px;
+  margin: 40px auto;
+}
+
+/* Products Section */
+.products-section {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  .search-form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .search-input {
-    width: 300px;
-    border-radius: 25px;
-    padding: 10px 20px;
+}
+
+/* Section Header */
+.section-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Product Grid */
+.product-grid {
+  margin-bottom: 48px;
+}
+
+.product-grid > .col {
+  display: flex;
+}
+
+.product-grid .card {
+  width: 100%;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.product-grid .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  border-color: #d0d0d0;
+}
+
+/* Pagination Wrapper */
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 1px solid #e8e8e8;
+}
+
+.pagination {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pagination .page-item {
+  margin: 0;
+}
+
+.pagination .page-link {
+  border-radius: 8px;
+  padding: 10px 16px;
+  border: 1px solid #e0e0e0;
+  color: #333;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: #fff;
+}
+
+.pagination .page-link:hover {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+  transform: translateY(-2px);
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+.pagination .page-item.disabled .page-link {
+  background-color: #f8f9fa;
+  border-color: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .section-title {
+    font-size: 2.2rem;
   }
-  
-  .search-button {
-    border-radius: 25px;
-    padding: 8px 20px;
+}
+
+@media (max-width: 768px) {
+  .latest-products-container {
+    padding: 30px 16px;
   }
-  
-  .product-grid .col {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+  .section-header {
+    margin-bottom: 32px;
   }
-  
-  .product-grid .col .card {
-    transition: transform 0.3s ease;
+
+  .section-title {
+    font-size: 1.8rem;
   }
-  
-  .product-grid .col .card:hover {
-    transform: translateY(-5px);
+
+  .section-subtitle {
+    font-size: 1rem;
   }
-  
-  /* Pagination */
-  .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+
+  .product-grid {
+    margin-bottom: 32px;
   }
-  
+
+  .pagination-wrapper {
+    margin-top: 40px;
+    padding-top: 30px;
+  }
+
   .pagination .page-link {
-    border-radius: 50%;
     padding: 8px 12px;
-    margin: 0 5px;
-    transition: background-color 0.3s ease;
+    font-size: 0.9rem;
   }
-  
-  .pagination .page-link:hover {
-    background-color: #007bff;
-    color: white;
+}
+
+@media (max-width: 576px) {
+  .section-title {
+    font-size: 1.6rem;
   }
-  
+
+  .section-subtitle {
+    font-size: 0.95rem;
+  }
+
+  .pagination {
+    gap: 4px;
+  }
+
+  .pagination .page-link {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Empty State (optional - add if needed) */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  color: #ddd;
+  margin-bottom: 20px;
+}
+
+.empty-state-title {
+  font-size: 1.5rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.empty-state-text {
+  color: #999;
+  font-size: 1rem;
+}

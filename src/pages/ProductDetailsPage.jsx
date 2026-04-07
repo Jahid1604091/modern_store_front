@@ -1,31 +1,19 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Image,
-  ListGroup,
-  Card,
-  Button,
-  Spinner,
-  Alert,
-  Form,
-} from "react-bootstrap";
+import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import {
   useAddReviewMutation,
   useGetProductQuery,
-  useIncrementProductViewMutation,
 } from "../slices/productApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../slices/cartSlice";
-import { throttle } from "lodash";
 import AlertDismissible from "../components/Alert";
 import Loader from "../components/Loader";
-import { BASE_URL } from "../utils/constants";
+import { BASE_URL, company_data } from "../utils/constants";
 import Rating from "../components/Rating";
 import StarRatingInput from "../components/StartRatingInput";
 import toast from "react-hot-toast";
+import "./css/ProductDetailsPage.css"; // ← place the CSS here
 
 const ProductDetailsPage = () => {
   const navigate = useNavigate();
@@ -35,16 +23,16 @@ const ProductDetailsPage = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [addReview] = useAddReviewMutation();
+  const [qty, setQty] = useState(1);
+  const [successMessage, setSuccessMessage] = useState("");
+  const { currency } = company_data;
+
   const {
     data: product,
     isLoading,
     isError,
-    isFetching,
     isSuccess,
   } = useGetProductQuery(id);
-  const [incrementProductView] = useIncrementProductViewMutation();
-  const [qty, setQty] = useState(1);
-  const [successMessage, setSuccessMessage] = useState("");
 
   const incrementQty = () => {
     if (qty < product.stock_quantity) {
@@ -53,68 +41,48 @@ const ProductDetailsPage = () => {
   };
 
   const decrementQty = () => {
-    if (qty > 1) {
-      setQty((prevQty) => prevQty - 1);
-    }
+    if (qty > 1) setQty((q) => q - 1);
   };
 
   const handleAddToCart = () => {
     dispatch(addToCart({ ...product, qty }));
-    setSuccessMessage("Product added to cart!");
+    setSuccessMessage("Added to cart!");
     setTimeout(() => setSuccessMessage(""), 3000);
   };
-
-  const viewedProductIds =
-    JSON.parse(sessionStorage.getItem("viewedProductIds")) || [];
-
-  const incrementViewCount = useCallback(
-    throttle(async () => {
-      incrementProductView(id);
-      await viewedProductIds.push(id);
-      sessionStorage.setItem(
-        "viewedProductIds",
-        JSON.stringify(viewedProductIds)
-      );
-    }, 5000),
-    [id]
-  );
-
-  useEffect(() => {
-    if (!viewedProductIds.includes(id)) {
-      incrementViewCount();
-      return () => {
-        incrementViewCount.cancel();
-      };
-    }
-  }, [id]);
 
   const handleReview = async (e) => {
     e.preventDefault();
     try {
-      const res = await addReview({
-        id,
-        rating: +rating,
-        comment,
-      }).unwrap();
+      const res = await addReview({ id, rating: +rating, comment }).unwrap();
       toast.success(res?.msg);
+      setComment("");
+      setRating(0);
     } catch (error) {
       toast.error(error.data?.msg);
-      console.log(error?.data?.msg || error.error);
     }
   };
 
-  return (
-    <Container className="py-4">
-      <h2 className="text-center mb-4 fw-bold">Product Details</h2>
+  /* ── loading / error states ── */
+  if (isLoading) {
+    return (
+      <Container className="pdp-container">
+        <Loader />
+      </Container>
+    );
+  }
 
-      {isLoading && <Loader />}
-
-      {isError && (
+  if (isError) {
+    return (
+      <Container className="pdp-container">
         <AlertDismissible
           variant="danger"
-          message="An error occurred while fetching the products. Please try again later."
+          message="An error occurred while fetching this product. Please try again later."
         />
-      )}
+      </Container>
+    );
+  }
+
+  if (!isSuccess || !product) return null;
 
       {isSuccess && (
         <>
@@ -135,7 +103,10 @@ const ProductDetailsPage = () => {
                 className="rounded shadow-lg"
                 style={{ maxHeight: "400px", objectFit: "cover" }}
               />
-            </Col>
+              <span className="pdp-review-count">
+                {product.numReviews || 0} review{product.numReviews !== 1 ? "s" : ""}
+              </span>
+            </div>
 
             {/* Product Details */}
             <Col md={5}>
@@ -161,34 +132,52 @@ const ProductDetailsPage = () => {
                 </ListGroup.Item>
               </ListGroup>
 
-              {/* Review Section */}
-              <div className="my-4">
-                <Form>
-                  <Form.Group className="mb-3" controlId="reviewComment">
-                    <h5 className="fw-bold">Add Review</h5>
-                    <Form.Control
-                      as="textarea"
-                      name="comment"
-                      value={comment}
-                      onChange={(e) => setComment(e.target.value)}
-                      rows={3}
-                      placeholder="Write your review..."
-                      className="shadow-sm"
-                    />
-                  </Form.Group>
+        {/* ── 3. Cart panel ── */}
+        <Col md={3}>
+          <div className="pdp-cart-panel">
+            {/* Price row */}
+            <div className="pdp-panel-price-row">
+              <span className="pdp-panel-label">Price</span>
+              <span className="pdp-panel-price">
+                {product.currency || currency} {product.price}
+              </span>
+            </div>
 
-                  <Form.Group className="mb-3" controlId="reviewRating">
-                    <StarRatingInput setRating={setRating} />
-                  </Form.Group>
-                  <Button
-                    variant="primary"
-                    onClick={handleReview}
-                    type="submit"
-                    className="w-100"
+            {/* Stock */}
+            <div className="pdp-panel-price-row">
+              <span className="pdp-panel-label">Status</span>
+              <span
+                className={`pdp-stock-badge ${
+                  inStock ? "in-stock" : "out-of-stock"
+                }`}
+              >
+                {inStock ? "In Stock" : "Out of Stock"}
+              </span>
+            </div>
+
+            {/* Qty */}
+            {inStock && (
+              <div className="pdp-qty-row">
+                <span className="pdp-qty-label">Qty</span>
+                <div className="pdp-qty-controls">
+                  <button
+                    className="pdp-qty-btn"
+                    onClick={decrementQty}
+                    disabled={qty <= 1}
                   >
-                    Submit Review
-                  </Button>
-                </Form>
+                    −
+                  </button>
+                  <span className="pdp-qty-value">{qty}</span>
+                  <button
+                    className="pdp-qty-btn"
+                    onClick={incrementQty}
+                    disabled={qty >= product.stock_quantity}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            )}
 
                 {product?.reviews?.length === 0 ? (
                   <div className="text-muted mt-3">No reviews yet</div>
@@ -212,14 +201,21 @@ const ProductDetailsPage = () => {
                   </>
                 )}
               </div>
-            </Col>
+            )}
 
-            {/* Add to Cart Section */}
-            <Col md={3}>
-              {successMessage && (
-                <Alert variant="success" className="text-center">
-                  {successMessage}
-                </Alert>
+            {/* Add to cart */}
+            <button
+              className="pdp-add-btn"
+              onClick={handleAddToCart}
+              disabled={!inStock}
+            >
+              {inStock ? (
+                <>
+                  <i className="bi bi-bag-plus me-2" />
+                  Add to Cart
+                </>
+              ) : (
+                "Out of Stock"
               )}
               <Card className="shadow-lg rounded-3">
                 <ListGroup variant="flush">

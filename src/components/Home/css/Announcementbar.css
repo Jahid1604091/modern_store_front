@@ -1,0 +1,65 @@
+/* ── AnnouncementBar.css ───────────────────────────────────── */
+
+.announcement-bar {
+  background: #111;
+  color: #fff;
+  text-align: center;
+  padding: 10px 1rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  position: relative;
+  z-index: 100;
+}
+
+.announcement-bar a {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.announcement-bar strong {
+  font-weight: 700;
+}
+
+.announcement-bar .promo-code {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 1px 8px;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  margin: 0 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.announcement-bar .promo-code:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.announcement-bar .announce-close {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.announcement-bar .announce-close:hover {
+  color: #fff;
+}
+
+@media (max-width: 575px) {
+  .announcement-bar {
+    font-size: 0.72rem;
+    padding: 8px 2.5rem 8px 1rem;
+  }
+}
