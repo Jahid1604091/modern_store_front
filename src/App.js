@@ -13,9 +13,9 @@ const App = () => {
       <Header />
       {/* <Categories /> */}
       <section className=''>
-        <Container>
+        <>
           <Outlet />
-        </Container>
+        </>
       </section>
       <Footer />
       <Toaster />

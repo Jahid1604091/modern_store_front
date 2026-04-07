@@ -7,6 +7,10 @@ import { useGetProductsQuery } from "../slices/productApiSlice";
 import Searchbox from "../components/Home/Searchbox";
 import Categories from "../components/Categories";
 
+import Announcementbar from "../components/Home/Announcementbar";
+import FeatureHighlights from "../components/Home/FeatureHighlights";
+
+
 const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
@@ -23,12 +27,14 @@ const HomePage = () => {
 
   return (
     <Container className="py-4">
+      <Announcementbar/>
       <Searchbox
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         setPageNumber={setPageNumber}
       />
       <Slider />
+      <FeatureHighlights/>
       <Categories/>
       <TrendingProducts
         products={productsData?.data}
