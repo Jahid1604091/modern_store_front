@@ -1,360 +1,273 @@
-/* ── Header.css ────────────────────────────────────────────── */
-
-/* ── Wrapper ── */
-.modern-header {
+/* ── Header ── */
+.site-header {
   position: sticky;
   top: 0;
   z-index: 1050;
   background: #fff;
-  border-bottom: 1px solid #e8e8e8;
-  transition: box-shadow 0.25s ease;
+  border-bottom: 1px solid #e5e5e5;
+  transition: box-shadow 0.2s;
+}
+.site-header.scrolled {
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
 }
 
-.modern-header.scrolled {
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-}
-
-/* ── Navbar ── */
-.modern-navbar {
+/* ── Navbar base ── */
+.site-navbar {
   background: #fff !important;
   padding: 0 !important;
 }
-
-.modern-navbar .container {
-  min-height: 64px;
-  display: flex;
-  align-items: center;
+.site-navbar .container {
+  min-height: 60px;
 }
 
 /* ── Brand ── */
-.modern-brand {
-  padding: 0 !important;
-  margin-right: 2.5rem !important;
-  text-decoration: none !important;
-  display: flex;
-  align-items: center;
-}
-
-.brand-content {
-  display: flex;
+.site-brand {
+  display: flex !important;
   align-items: center;
   gap: 10px;
+  padding: 0 !important;
+  text-decoration: none !important;
 }
-
-.brand-icon {
-  width: 38px;
-  height: 38px;
+.brand-box {
+  width: 36px;
+  height: 36px;
   background: #111;
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  font-size: 1.2rem;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 1px;
   flex-shrink: 0;
-  transition: background 0.2s ease;
 }
-
-.modern-brand:hover .brand-icon {
-  background: #333;
-}
-
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
-
 .brand-name {
-  font-family: 'Barlow Condensed', 'Oswald', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   font-weight: 800;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: #111;
 }
-
-.brand-tagline {
-  font-size: 0.62rem;
+.brand-tag {
+  font-size: 0.58rem;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #aaa;
+  color: #bbb;
+  display: none; /* show on wider screens via media query below */
 }
 
-/* ── Mobile toggler ── */
-.modern-navbar .navbar-toggler {
+/* ── Hamburger — override Bootstrap defaults, keep native toggle working ── */
+.site-toggler {
   border: none !important;
   box-shadow: none !important;
-  padding: 0.35rem;
+  outline: none !important;
+  padding: 4px 2px !important;
+  background: transparent !important;
 }
-
-.navbar-toggler-icon-custom {
-  color: #111;
-  font-size: 1.6rem;
-  display: flex;
-  align-items: center;
+.site-toggler:focus {
+  box-shadow: none !important;
+  outline: none !important;
+}
+/* Force the hamburger SVG to be black */
+.site-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23111' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2.5' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+  width: 26px;
+  height: 26px;
 }
 
 /* ── Nav links ── */
-.nav-link-modern {
-  display: flex !important;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.75rem !important;
+.site-link {
+  font-size: 0.72rem !important;
   font-weight: 700 !important;
   letter-spacing: 0.8px;
   text-transform: uppercase;
   color: #111 !important;
-  padding: 1.25rem 0.85rem !important;
+  padding: 1.2rem 0.8rem !important;
   border-bottom: 2px solid transparent;
-  transition: border-color 0.2s ease, color 0.2s ease;
-  border-radius: 0 !important;
-  background: none !important;
+  transition: border-color 0.18s;
   position: relative;
+  white-space: nowrap;
 }
-
-.nav-link-modern i {
-  font-size: 1rem;
-}
-
-.nav-link-modern::before {
-  display: none;
-}
-
-.nav-link-modern:hover {
+.site-link:hover {
   color: #111 !important;
   border-bottom-color: #111;
-  transform: none;
-  background: none !important;
 }
 
-/* ── Cart ── */
-.cart-link {
-  position: relative;
-}
-
-.cart-icon-wrapper {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-}
-
-.cart-badge {
+/* Cart badge */
+.cart-link { padding-right: 1.2rem !important; }
+.cart-count {
   position: absolute;
-  top: -7px;
-  right: -10px;
-  font-size: 0.6rem !important;
-  padding: 2px 5px !important;
-  border-radius: 0 !important;
-  background: #111 !important;
+  top: 10px;
+  right: 4px;
+  background: #111;
   color: #fff;
-  font-weight: 700;
-  letter-spacing: 0;
-  animation: none;
+  font-size: 0.55rem;
+  font-weight: 800;
   min-width: 16px;
-  text-align: center;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  line-height: 1;
 }
 
-/* ── Login button ── */
-.login-link {
-  border: 1px solid #111 !important;
-  padding: 0.45rem 1.1rem !important;
-  margin-left: 0.75rem;
-  border-radius: 0 !important;
-  border-bottom: 1px solid #111 !important;
-  background: none !important;
-  font-size: 0.72rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.8px;
-  transition: background 0.2s ease, color 0.2s ease !important;
+/* Login button */
+.login-btn {
+  border: 1.5px solid #111 !important;
+  padding: 0.4rem 1rem !important;
+  margin-left: 0.5rem;
+  border-bottom: 1.5px solid #111 !important;
+  transition: background 0.18s, color 0.18s !important;
 }
-
-.login-link:hover {
+.login-btn:hover {
   background: #111 !important;
   color: #fff !important;
-  border-color: #111 !important;
-  transform: none;
-  border-bottom-color: #111 !important;
 }
 
-/* ── User dropdown toggle ── */
-.user-dropdown .dropdown-toggle {
-  font-size: 0.75rem !important;
+/* ── Dropdown ── */
+.site-dropdown .dropdown-toggle {
+  font-size: 0.72rem !important;
   font-weight: 700 !important;
   letter-spacing: 0.8px;
   text-transform: uppercase;
   color: #111 !important;
   background: none !important;
   border: none !important;
-  border-radius: 0 !important;
-  padding: 1.25rem 0.85rem !important;
+  padding: 1.2rem 0.8rem !important;
   border-bottom: 2px solid transparent !important;
-  transition: border-color 0.2s ease !important;
+  transition: border-color 0.18s !important;
 }
-
-.user-dropdown .dropdown-toggle:hover,
-.user-dropdown.show .dropdown-toggle {
+.site-dropdown .dropdown-toggle:hover,
+.site-dropdown.show .dropdown-toggle {
   background: none !important;
-  color: #111 !important;
   border-bottom-color: #111 !important;
-  transform: none !important;
 }
-
-.user-dropdown .dropdown-toggle::after {
-  margin-left: 6px;
-  border-top-color: #111;
-  opacity: 0.5;
+.site-dropdown .dropdown-toggle::after {
+  opacity: 0.45;
+  margin-left: 5px;
 }
-
-.user-dropdown-title {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.user-name {
-  font-weight: 700;
-  font-size: 0.75rem;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  color: #111;
-  max-width: 110px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* ── Dropdown menu ── */
-.user-dropdown .dropdown-menu {
-  background: #fff;
-  border: 1px solid #e8e8e8 !important;
+.site-dropdown .dropdown-menu {
   border-radius: 0 !important;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.09) !important;
-  padding: 0.35rem 0 !important;
-  min-width: 180px;
-  margin-top: 0 !important;
-  animation: headerDropFade 0.15s ease;
+  border: 1px solid #e5e5e5 !important;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08) !important;
+  padding: 0.3rem 0 !important;
+  min-width: 160px;
+  animation: dropFade 0.15s ease;
 }
-
-@keyframes headerDropFade {
+@keyframes dropFade {
   from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
-.user-dropdown .dropdown-item {
+.site-dropdown .dropdown-item {
   font-size: 0.78rem;
   font-weight: 500;
-  letter-spacing: 0.4px;
+  padding: 0.55rem 1rem !important;
   color: #333;
-  padding: 0.6rem 1.1rem !important;
-  border-radius: 0 !important;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background 0.15s ease, color 0.15s ease;
-  transform: none !important;
+  transition: background 0.12s, color 0.12s;
 }
-
-.user-dropdown .dropdown-item i {
-  font-size: 0.85rem;
-  width: 16px;
-  text-align: center;
-  color: #888;
-  transition: color 0.15s ease;
-}
-
-.user-dropdown .dropdown-item:hover {
+.site-dropdown .dropdown-item:hover {
   background: #111 !important;
   color: #fff !important;
 }
-
-.user-dropdown .dropdown-item:hover i {
-  color: #fff !important;
+.site-dropdown .dropdown-divider {
+  margin: 0.25rem 0 !important;
+  border-color: #e5e5e5 !important;
 }
-
-/* Logout */
-.logout-item {
-  color: #c0392b !important;
-}
-
-.logout-item i {
-  color: #c0392b !important;
-}
-
-.logout-item:hover {
+.site-dropdown .dropdown-item.logout { color: #c0392b !important; }
+.site-dropdown .dropdown-item.logout:hover {
   background: #c0392b !important;
   color: #fff !important;
 }
 
-.logout-item:hover i {
-  color: #fff !important;
-}
-
-.user-dropdown .dropdown-divider {
-  margin: 0.3rem 0 !important;
-  border-color: #e8e8e8 !important;
-}
-
-/* ── Responsive ── */
+/* ══════════════════════════════════════════
+   MOBILE  (< 992px)
+══════════════════════════════════════════ */
 @media (max-width: 991px) {
-  .modern-navbar .container {
-    min-height: 56px;
-  }
+  .site-navbar .container { min-height: 56px; }
 
-  .navbar-collapse {
-    border-top: 1px solid #e8e8e8;
+  /* Collapse panel */
+  #site-nav {
+    border-top: 1px solid #e5e5e5;
     padding: 0.5rem 0 0.75rem;
-    background: #fff !important;
-    backdrop-filter: none;
-    border-radius: 0;
-    margin-top: 0;
+    background: #fff;
   }
 
-  .nav-link-modern {
-    padding: 0.65rem 0.25rem !important;
+  /* Stack items vertically */
+  #site-nav .navbar-nav {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    width: 100%;
+    gap: 0 !important;
+  }
+
+  /* Mobile nav link */
+  .site-link {
+    padding: 0.7rem 0.5rem !important;
     border-bottom: none !important;
-    border-left: 2px solid transparent;
-    justify-content: flex-start;
+    border-left: 3px solid transparent;
+    width: 100%;
   }
-
-  .nav-link-modern:hover {
+  .site-link:hover {
     border-bottom: none !important;
     border-left-color: #111;
-    padding-left: 0.75rem !important;
+    background: #f7f7f7 !important;
   }
 
-  .user-dropdown .dropdown-toggle {
-    padding: 0.65rem 0.25rem !important;
+  /* Cart count reposition for mobile */
+  .cart-count {
+    position: static;
+    display: inline-flex;
+    margin-left: 6px;
+    top: auto;
+    right: auto;
+  }
+
+  /* Dropdown toggle — inline on mobile */
+  .site-dropdown { width: 100%; }
+  .site-dropdown .dropdown-toggle {
+    padding: 0.7rem 0.5rem !important;
     border-bottom: none !important;
+    border-left: 3px solid transparent !important;
+    width: 100%;
+    text-align: left;
+    display: flex !important;
+    align-items: center;
+  }
+  .site-dropdown.show .dropdown-toggle,
+  .site-dropdown .dropdown-toggle:hover {
+    border-bottom: none !important;
+    border-left-color: #111 !important;
+    background: #f7f7f7 !important;
   }
 
-  .login-link {
-    margin-left: 0;
-    margin-top: 0.5rem;
-    display: inline-flex !important;
-    width: auto;
-  }
-
-  .user-dropdown .dropdown-menu {
+  /* Dropdown expands inline, not floating */
+  .site-dropdown .dropdown-menu {
+    position: static !important;
     box-shadow: none !important;
     border: none !important;
-    border-left: 2px solid #e8e8e8 !important;
-    margin-left: 0.75rem !important;
-    padding: 0 !important;
+    border-left: 3px solid #e5e5e5 !important;
+    margin-left: 1rem !important;
+    animation: none !important;
+    padding: 0.2rem 0 !important;
   }
+
+  /* Login button full-width on mobile */
+  .login-btn {
+    margin-left: 0 !important;
+    margin-top: 0.25rem;
+    display: inline-flex !important;
+    width: auto;
+    align-self: flex-start;
+  }
+}
+
+/* ── Wide screens ── */
+@media (min-width: 992px) {
+  .brand-tag { display: block; }
 }
 
 @media (max-width: 576px) {
-  .brand-tagline {
-    display: none;
-  }
-
-  .brand-name {
-    font-size: 1rem;
-  }
-
-  .brand-icon {
-    width: 32px;
-    height: 32px;
-    font-size: 1rem;
-  }
+  .brand-name { font-size: 0.9rem; }
+  .brand-box  { width: 30px; height: 30px; font-size: 0.85rem; }
 }

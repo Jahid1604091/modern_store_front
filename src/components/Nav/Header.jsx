@@ -1,128 +1,95 @@
 import React, { useState, useEffect } from "react";
-import { Badge, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../slices/authSlice";
 import { useNavigate } from "react-router-dom";
+import { company_data } from "../../utils/constants";
 import "./Header.css";
-import { BiShoppingBag } from "react-icons/bi";
 
 const Header = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { company_name, tagline } = company_data;
+  const dispatch  = useDispatch();
+  const navigate  = useNavigate();
   const { cartItems } = useSelector((state) => state.cart);
-  const { userInfo } = useSelector((state) => state.auth);
+  const { userInfo }  = useSelector((state) => state.auth);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const cartCount = cartItems.reduce((a, i) => a + i.qty, 0);
 
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login");
   };
 
-  const cartItemCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
-
   return (
-    <div className={`modern-header ${scrolled ? "scrolled" : ""}`}>
-      <Navbar expand="lg" className="modern-navbar">
+    <header className={`site-header${scrolled ? " scrolled" : ""}`}>
+      {/* ── React Bootstrap Navbar — expand at lg breakpoint ── */}
+      <Navbar expand="lg" className="site-navbar">
         <Container>
-          {/* ── Brand ── */}
+
+          {/* Brand */}
           <LinkContainer to="/">
-            <Navbar.Brand className="modern-brand">
-              <div className="brand-content">
-                <div className="brand-icon">
-                  <BiShoppingBag />
-                </div>
-                <div className="brand-text">
-                  <span className="brand-name">Modern Store</span>
-                  <span className="brand-tagline">Shop Smart</span>
-                </div>
-              </div>
+            <Navbar.Brand className="site-brand">
+              <span className="brand-box">S</span>
+              <span className="brand-name">{company_name}</span>
+              {tagline && <span className="brand-tag">{tagline}</span>}
             </Navbar.Brand>
           </LinkContainer>
 
-          {/* ── Mobile toggle ── */}
-          <Navbar.Toggle aria-controls="modern-navbar-nav">
-            <span className="navbar-toggler-icon-custom">
-              <i className="bi bi-list" />
-            </span>
-          </Navbar.Toggle>
+          {/* ── Hamburger — let React Bootstrap render it natively ── */}
+          <Navbar.Toggle aria-controls="site-nav" className="site-toggler" />
 
-          {/* ── Nav items ── */}
-          <Navbar.Collapse id="modern-navbar-nav">
-            <Nav className="ms-auto align-items-lg-center">
+          {/* Nav items */}
+          <Navbar.Collapse id="site-nav">
+            <Nav className="ms-auto align-items-lg-center gap-lg-1">
 
-              {/* Home */}
               <LinkContainer to="/">
-                <Nav.Link className="nav-link-modern">
-                  <i className="bi bi-house-door" />
-                  <span>Home</span>
-                </Nav.Link>
+                <Nav.Link className="site-link">Home</Nav.Link>
               </LinkContainer>
 
-              {/* Cart */}
               <LinkContainer to="/cart">
-                <Nav.Link className="nav-link-modern cart-link">
-                  <div className="cart-icon-wrapper">
-                    <i className="bi bi-bag" />
-                    {cartItemCount > 0 && (
-                      <Badge className="cart-badge">{cartItemCount}</Badge>
-                    )}
-                  </div>
-                  <span>Cart</span>
+                <Nav.Link className="site-link cart-link">
+                  Cart
+                  {cartCount > 0 && (
+                    <span className="cart-count">{cartCount}</span>
+                  )}
                 </Nav.Link>
               </LinkContainer>
 
-              {/* Auth */}
               {userInfo?.token ? (
                 <NavDropdown
-                  title={
-                    <span className="user-dropdown-title">
-                      <i className="bi bi-person-circle" style={{ fontSize: "1rem" }} />
-                      <span className="user-name">
-                        {userInfo.name || "Account"}
-                      </span>
-                    </span>
-                  }
-                  id="user-dropdown"
-                  className="user-dropdown"
+                  title={userInfo.name || "Account"}
+                  id="user-menu"
                   align="end"
+                  className="site-dropdown"
                 >
                   <LinkContainer to="/profile">
-                    <NavDropdown.Item>
-                      <i className="bi bi-person" />
-                      Profile
-                    </NavDropdown.Item>
+                    <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>
-
                   <NavDropdown.Divider />
-
-                  <NavDropdown.Item
-                    onClick={handleLogout}
-                    className="logout-item"
-                  >
-                    <i className="bi bi-box-arrow-right" />
+                  <NavDropdown.Item onClick={handleLogout} className="logout">
                     Logout
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
                 <LinkContainer to="/login">
-                  <Nav.Link className="nav-link-modern login-link">
-                    <i className="bi bi-box-arrow-in-right" />
-                    <span>Login</span>
-                  </Nav.Link>
+                  <Nav.Link className="site-link login-btn">Login</Nav.Link>
                 </LinkContainer>
               )}
+
             </Nav>
           </Navbar.Collapse>
+
         </Container>
       </Navbar>
-    </div>
+    </header>
   );
 };
 

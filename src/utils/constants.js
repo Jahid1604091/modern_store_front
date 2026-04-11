@@ -4,7 +4,7 @@ export const BASE_URL = process.env.REACT_APP_BASE_URL
 
 export const company_data = {
     id:1,
-    company_name: "XYZ Ltd",
+    company_name: "WoopackerSportswear",
     tag_line: "Quality Products, Trusted Service",
     logo: "/image/logo/logo.png",
     currency: "BDT",
@@ -12,10 +12,10 @@ export const company_data = {
     is_active: true,
 
     details:
-        "XYZ Ltd is a modern eCommerce company providing quality consumer products across Bangladesh with fast delivery and secure payment systems.",
+        "WoopackerSportswear is a modern jersey selling site, providing quality consumer products across Bangladesh with fast delivery and secure payment systems.",
 
     about_company:
-        "Founded in 2020, XYZ Ltd aims to simplify online shopping for customers by offering reliable products, transparent pricing, and responsive customer support.",
+        "Founded in 2020, WoopackerSportswear aims to simplify online shopping for customers by offering reliable products, transparent pricing, and responsive customer support.",
 
     no_customers: 12000,
 
