@@ -369,11 +369,7 @@ const RegisterPage = () => {
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
 
       <div style={S.page}>
-        {/* ── Top bar ── */}
-        <div style={S.topBar}>
-          <a href="/" style={S.brand}>ZOOF</a>
-          <span style={S.topNav}>Best Quality · Fast Delivery · Online Payment</span>
-        </div>
+
 
         {/* ── Main body ── */}
         <div style={S.body}>
@@ -532,10 +528,7 @@ const RegisterPage = () => {
           </div>
         </div>
 
-        {/* ── Bottom bar ── */}
-        <div style={S.bottomBar}>
-          © 2025 ZOOFSTORE · All Rights Reserved · Dhaka, Bangladesh
-        </div>
+
       </div>
     </>
   );
