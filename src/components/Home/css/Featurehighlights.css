@@ -1,0 +1,89 @@
+/* ── FeatureHighlights.css ─────────────────────────────────── */
+
+.feature-highlights {
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 1.5rem 1rem;
+}
+
+.feature-highlights-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 2rem;
+  border-right: 1px solid #e8e8e8;
+  transition: background 0.2s ease;
+}
+
+.feature-item:last-child {
+  border-right: none;
+}
+
+.feature-item:hover {
+  background: #f7f7f7;
+}
+
+.feature-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-icon i,
+.feature-icon svg {
+  color: #fff;
+  font-size: 1.15rem;
+  width: 20px;
+  height: 20px;
+}
+
+.feature-text h5 {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #111;
+  margin: 0 0 2px;
+}
+
+.feature-text p {
+  font-size: 0.75rem;
+  color: #888;
+  margin: 0;
+  line-height: 1.4;
+}
+
+@media (max-width: 767px) {
+  .feature-highlights-inner {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .feature-item {
+    border-right: none;
+    border-bottom: 1px solid #e8e8e8;
+    padding: 0.9rem 1.25rem;
+  }
+
+  .feature-item:last-child {
+    border-bottom: none;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .feature-item {
+    padding: 0.75rem 1.25rem;
+  }
+}

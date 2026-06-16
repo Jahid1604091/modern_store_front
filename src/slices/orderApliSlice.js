@@ -8,24 +8,27 @@ export const orderApiSlice = apiSlice.injectEndpoints({
             query: (data) => ({
                 url: `${BASE_URL}/api/orders`,
                 method: "POST",
-                body: {...data}
+                body: { ...data }
             })
         }),
-        
+
         getMyOrders: builder.query({
             query: () => `${BASE_URL}/api/orders/myorders`,
             providesTags: ['Order'],
-            keepUnusedDataFor:5,
-            transformResponse: res=>res.data
+            keepUnusedDataFor: 5,
+            transformResponse: res => res.data
         }),
-        
+
         getMyOrder: builder.query({
             query: (id) => `${BASE_URL}/api/orders/myorders/${id}`,
-            providesTags: ['Order'],
-            keepUnusedDataFor:5,
-            transformResponse: res=>res.data
+            providesTags: (result, error, id) => [
+                { type: 'Order', id },
+                { type: 'Payment', id },
+            ],
+            keepUnusedDataFor: 5,
+            transformResponse: res => res.data
         }),
-        
+
         payOrder: builder.mutation({
             query: (id) => ({
                 url: `${BASE_URL}/api/orders/myorders/${id}/pay`,
@@ -36,7 +39,7 @@ export const orderApiSlice = apiSlice.injectEndpoints({
         downloadInvoice: builder.query({
             query: (id) => `${BASE_URL}/api/orders/myorders/${id}/invoice`,
             providesTags: ['Order'],
-            keepUnusedDataFor:5,
+            keepUnusedDataFor: 5,
         }),
 
     })

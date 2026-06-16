@@ -18,16 +18,23 @@ import PaymentPage from './pages/PaymentPage';
 import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderDetailsPage from './pages/OrderDetailsPage';
 import ProfilePage from './pages/ProfilePage';
+import ProductsPage from './pages/ProductsPage';
+import NotFoundPage from './pages/NotFound';
+import ReturnRefundPage from './pages/ReturnRefundPage';
+
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index path='/' element={<HomePage />} />
+      <Route index path='/products' element={<ProductsPage />} />
       <Route path='/products/:id' element={<ProductDetailsPage />} />
       <Route path='/cart' element={<CartPage />} />
       <Route path='/login' element={<LoginPage />} />
       <Route path='/register' element={<RegisterPage />} />
+      <Route path='/return-refund' element={<ReturnRefundPage />} />
+      {/* <Route path='/shipping-info' element={<ShippingInfoPage />} /> */}
       <Route element={<PrivateRoute />}>
         <Route path='/shipping' element={<ShippingAddressPage />} />
         <Route path='/payment' element={<PaymentPage />} />
@@ -35,6 +42,7 @@ const router = createBrowserRouter(
         <Route path='/orders/:id' element={<OrderDetailsPage />} />
         <Route path='/profile' element={<ProfilePage />} />
       </Route>
+      <Route path='*' element={<NotFoundPage />} />
     </Route>
   )
 )

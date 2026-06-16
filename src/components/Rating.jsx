@@ -4,7 +4,7 @@ export default function Rating({ rating, reviews, showReviewNumber }) {
   return (
     <div className="rating d-flex align-items-center justify-content-between">
       <div>
-        <span className="text-warning me-1">
+        <span className="text-warning">
           {rating >= 1 ? (
             <BsStarFill size={23} />
           ) : rating >= 0.5 ? (
@@ -13,7 +13,7 @@ export default function Rating({ rating, reviews, showReviewNumber }) {
             <BsStar size={23} />
           )}
         </span>
-        <span className="text-warning me-1">
+        <span className="text-warning ">
           {rating >= 2 ? (
             <BsStarFill size={23} />
           ) : rating >= 1.5 ? (
@@ -22,7 +22,7 @@ export default function Rating({ rating, reviews, showReviewNumber }) {
             <BsStar size={23} />
           )}
         </span>
-        <span className="text-warning me-1">
+        <span className="text-warning">
           {rating >= 3 ? (
             <BsStarFill size={23} />
           ) : rating >= 2.5 ? (
@@ -31,7 +31,7 @@ export default function Rating({ rating, reviews, showReviewNumber }) {
             <BsStar size={23} />
           )}
         </span>
-        <span className="text-warning me-1">
+        <span className="text-warning">
           {rating >= 4 ? (
             <BsStarFill size={23} />
           ) : rating >= 3.5 ? (
@@ -40,7 +40,7 @@ export default function Rating({ rating, reviews, showReviewNumber }) {
             <BsStar size={23} />
           )}
         </span>
-        <span className="text-warning me-1">
+        <span className="text-warning">
           {rating >= 5 ? (
             <BsStarFill size={23} />
           ) : rating >= 4.5 ? (
