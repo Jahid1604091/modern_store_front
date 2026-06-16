@@ -1,0 +1,230 @@
+/* ── Product.css ───────────────────────────────────────────── */
+
+/* Import with: import "../css/Product.css"  (or wherever you place it) */
+
+.product-card-outer {
+  position: relative;
+  height: 100%;
+}
+
+/* ── Card wrapper ── */
+.product-card {
+  border: 1px solid #e8e8e8 !important;
+  border-radius: 0 !important;
+  background: #fff;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.product-card:hover {
+  border-color: #111 !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ── Image area ── */
+.product-img-wrapper {
+  position: relative;
+  overflow: hidden;
+  background: #f7f7f7;
+  aspect-ratio: 3 / 4;
+  display: block;
+}
+
+/* Primary image */
+.product-img-primary {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 1rem;
+  transition: opacity 0.4s ease, transform 0.5s ease;
+}
+
+/* Secondary (hover) image */
+.product-img-secondary {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 1rem;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 0.4s ease, transform 0.5s ease;
+}
+
+.product-img-wrapper:hover .product-img-primary {
+  opacity: 0;
+}
+
+.product-img-wrapper:hover .product-img-secondary {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── Quick-action overlay buttons ── */
+.product-actions {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.3s ease;
+  z-index: 3;
+  white-space: nowrap;
+}
+
+.product-card:hover .product-actions {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.product-action-btn {
+  background: #fff;
+  border: 1px solid #ddd;
+  color: #111;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.product-action-btn:hover {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+/* ── Badge ── */
+.product-badge-sale {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #e63946;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  z-index: 2;
+}
+
+.product-badge-new {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #111;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  z-index: 2;
+}
+
+/* ── Card body ── */
+.product-card .card-body {
+  padding: 1rem 0.9rem 1.1rem !important;
+  border-top: 1px solid #f0f0f0;
+}
+
+/* Category tag */
+.product-category {
+  font-size: 0.7rem;
+  color: #999;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+  display: block;
+}
+
+/* Product name */
+.product-card .card-title,
+.product-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #111;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-decoration: none !important;
+}
+
+.product-name:hover {
+  color: #111;
+  text-decoration: underline !important;
+}
+
+/* Price row */
+.product-price-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.4rem 0 0.75rem;
+}
+
+.product-price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.product-price-old {
+  font-size: 0.82rem;
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+/* Rating */
+.product-card .rating {
+  margin-bottom: 0.6rem;
+}
+
+.product-card .rating .text-warning svg,
+.product-card .rating .text-warning {
+  font-size: 0.8rem !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+/* Add to cart button */
+.product-card .btn-primary,
+.btn-add-cart {
+  background: #111 !important;
+  border-color: #111 !important;
+  border-radius: 0 !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.8px !important;
+  text-transform: uppercase !important;
+  padding: 0.55rem !important;
+  width: 100%;
+  transition: background 0.2s ease !important;
+}
+
+.product-card .btn-primary:hover,
+.btn-add-cart:hover {
+  background: #333 !important;
+  border-color: #333 !important;
+}
+
+.product-card .btn-primary:disabled,
+.btn-add-cart:disabled {
+  background: #ccc !important;
+  border-color: #ccc !important;
+  cursor: not-allowed;
+}

@@ -1,10 +1,9 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation, Pagination, EffectCoverflow } from "swiper/modules";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "swiper/css/effect-coverflow";
 import Loader from "../Loader";
 import AlertDismissible from "../Alert";
 import { BASE_URL } from "../../utils/constants";
@@ -13,214 +12,200 @@ import { Card, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Rating from "../Rating";
 
-const TrendingContainer = styled.div`
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  padding: 4rem 0;
-  position: relative;
-  overflow: hidden;
+/* ─── Design tokens ─────────────────────────────────────────── */
+const T = {
+  bg: "#f7f7f7",
+  white: "#ffffff",
+  black: "#111111",
+  mid: "#555555",
+  muted: "#999999",
+  border: "#e8e8e8",
+  sale: "#e63946",
+  shadow: "rgba(0,0,0,0.08)",
+  shadowHover: "rgba(0,0,0,0.14)",
+};
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: -50%;
-    right: -10%;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
-    border-radius: 50%;
-  }
+/* ─── Styled components ─────────────────────────────────────── */
 
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: -50%;
-    left: -10%;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(118, 75, 162, 0.1) 0%, transparent 70%);
-    border-radius: 50%;
-  }
+const TrendingContainer = styled.section`
+  background: ${T.bg};
+  padding: 3.5rem 0 4rem;
+  border-top: 1px solid ${T.border};
+  border-bottom: 1px solid ${T.border};
 `;
 
 const SectionHeader = styled.div`
   text-align: center;
-  margin-bottom: 3rem;
-  position: relative;
-  z-index: 1;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid ${T.border};
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 2.5rem;
+  font-family: 'Barlow Condensed', 'Oswald', sans-serif;
+  font-size: 1.9rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 0.5rem;
-  position: relative;
-  display: inline-block;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: ${T.black};
+  margin-bottom: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 4px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 2px;
+  i {
+    font-size: 1.5rem;
+    color: ${T.sale};
   }
 `;
 
 const SectionSubtitle = styled.p`
-  color: #6c757d;
-  font-size: 1.1rem;
-  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: ${T.muted};
+  letter-spacing: 0.4px;
+  margin: 0;
 `;
 
+/* ── Product Card ── */
 const ProductCard = styled(Card)`
-  border: none;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  background: white;
+  border: 1px solid ${T.border} !important;
+  border-radius: 0 !important;
+  background: ${T.white};
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
   height: 100%;
+  overflow: visible;
   position: relative;
 
   &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.2);
-  }
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
-  }
-
-  &:hover::before {
-    transform: scaleX(1);
+    border-color: ${T.black} !important;
+    box-shadow: 0 4px 18px ${T.shadowHover};
   }
 `;
 
 const ImageWrapper = styled.div`
   position: relative;
-  background: #f8f9fa;
+  background: #f0f0f0;
   overflow: hidden;
-  padding: 1.5rem;
-  height: 220px;
+  aspect-ratio: 3 / 4;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
 const ProductImage = styled(Card.Img)`
-  height: 100%;
   width: 100%;
+  height: 100%;
   object-fit: contain;
-  transition: transform 0.4s ease;
+  padding: 1rem;
+  transition: transform 0.45s ease, opacity 0.35s ease;
 
   ${ProductCard}:hover & {
-    transform: scale(1.1);
+    transform: scale(1.05);
+    opacity: 0.9;
   }
 `;
 
 const TrendingBadge = styled(Badge)`
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 0.4rem 0.8rem;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  border-radius: 20px;
-  box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+  top: 10px;
+  right: 10px;
+  background: ${T.black} !important;
+  color: ${T.white};
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 0;
   z-index: 2;
 `;
 
 const DiscountBadge = styled(Badge)`
   position: absolute;
-  top: 12px;
-  left: 12px;
-  background: #ff4757;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.7rem;
-  font-weight: 600;
-  border-radius: 20px;
-  box-shadow: 0 2px 10px rgba(255, 71, 87, 0.3);
+  top: 10px;
+  left: 10px;
+  background: ${T.sale} !important;
+  color: ${T.white};
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 0;
   z-index: 2;
 `;
 
+const WishlistButton = styled.button`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  background: ${T.white};
+  border: 1px solid ${T.border};
+  color: ${T.black};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
+  z-index: 3;
+
+  ${ProductCard}:hover & {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &:hover {
+    background: ${T.black};
+    color: ${T.white};
+    border-color: ${T.black};
+  }
+
+  i {
+    font-size: 0.85rem;
+  }
+`;
+
 const CardBodyStyled = styled(Card.Body)`
-  padding: 1.5rem;
+  padding: 0.85rem 0.9rem 1rem !important;
+  border-top: 1px solid ${T.border};
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
 `;
 
 const ProductTitle = styled(Card.Title)`
-  font-size: 1.1rem;
+  font-size: 0.88rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: ${T.black};
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.45;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
-  min-height: 2.8em;
+  min-height: 2.6em;
 `;
 
 const PriceWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 0.5rem;
-  margin: 0.5rem 0;
 `;
 
 const ProductPrice = styled.span`
-  font-size: 1.4rem;
+  font-size: 1rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: ${T.black};
 `;
 
 const OldPrice = styled.span`
-  font-size: 1rem;
-  color: #999;
+  font-size: 0.82rem;
+  color: ${T.muted};
   text-decoration: line-through;
-`;
-
-const RatingWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  margin: 0.25rem 0;
-`;
-
-const Star = styled.i`
-  color: #ffc107;
-  font-size: 0.9rem;
-`;
-
-const RatingText = styled.span`
-  font-size: 0.85rem;
-  color: #6c757d;
-  margin-left: 0.25rem;
 `;
 
 const ViewDetailsButton = styled(Link)`
@@ -229,94 +214,68 @@ const ViewDetailsButton = styled(Link)`
   justify-content: center;
   gap: 0.5rem;
   width: 100%;
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  padding: 0.6rem 1rem;
+  background: ${T.black};
+  color: ${T.white};
   border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95rem;
+  border-radius: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   text-decoration: none;
-  text-transform: capitalize;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  transition: background 0.2s ease;
+  margin-top: auto;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    color: white;
-  }
-
-  &:active {
-    transform: translateY(0);
+    background: #333;
+    color: ${T.white};
   }
 
   i {
-    transition: transform 0.3s ease;
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
   }
 
   &:hover i {
-    transform: translateX(4px);
+    transform: translateX(3px);
   }
 `;
 
-const QuickActionButton = styled.button`
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: white;
-  border: 2px solid #667eea;
-  color: #667eea;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  opacity: 0;
-  transform: translateY(10px);
-  z-index: 2;
-
-  ${ProductCard}:hover & {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  &:hover {
-    background: #667eea;
-    color: white;
-    transform: scale(1.1);
-  }
-`;
+/* ── States ── */
 
 const LoaderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 400px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 16px;
+  min-height: 360px;
 `;
 
 const EmptyState = styled.div`
   text-align: center;
   padding: 4rem 2rem;
-  color: #6c757d;
+  color: ${T.muted};
 
   i {
-    font-size: 4rem;
-    color: #667eea;
-    opacity: 0.5;
-    margin-bottom: 1rem;
+    font-size: 3.5rem;
+    opacity: 0.35;
+    display: block;
+    margin-bottom: 0.75rem;
   }
 
   h4 {
-    color: #495057;
-    margin-bottom: 0.5rem;
+    color: ${T.mid};
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  p {
+    font-size: 0.85rem;
   }
 `;
+
+/* ─── Component ─────────────────────────────────────────────── */
 
 export default function TrendingProducts({
   products,
@@ -324,9 +283,6 @@ export default function TrendingProducts({
   isError,
   isSuccess,
 }) {
-  // Generate random rating for demo purposes
-  const getRandomRating = () => (Math.random() * 2 + 3).toFixed(1);
-
   if (isLoading) {
     return (
       <TrendingContainer>
@@ -357,7 +313,7 @@ export default function TrendingProducts({
       <TrendingContainer>
         <div className="container">
           <EmptyState>
-            <i className="bi bi-bag-x"></i>
+            <i className="bi bi-bag-x" />
             <h4>No Trending Products</h4>
             <p>Check back soon for exciting new products!</p>
           </EmptyState>
@@ -369,10 +325,10 @@ export default function TrendingProducts({
   if (isSuccess) {
     return (
       <TrendingContainer>
-        <div className="container position-relative">
+        <div className="container">
           <SectionHeader>
             <SectionTitle>
-              <i className="bi bi-fire me-2"></i>
+              <i className="bi bi-fire" />
               Trending Now
             </SectionTitle>
             <SectionSubtitle>
@@ -382,41 +338,39 @@ export default function TrendingProducts({
 
           <Swiper
             modules={[Autoplay, Navigation, Pagination]}
-            spaceBetween={20}
+            spaceBetween={16}
             breakpoints={{
-              320: { slidesPerView: 1 },
-              576: { slidesPerView: 2 },
-              768: { slidesPerView: 2 },
-              992: { slidesPerView: 3 },
-              1200: { slidesPerView: 4 },
+              320: { slidesPerView: 1.3 },
+              480: { slidesPerView: 2 },
+              768: { slidesPerView: 3 },
+              992: { slidesPerView: 4 },
+              1200: { slidesPerView: 5 },
             }}
-            loop={products.length > 4}
+            loop={products.length > 5}
             autoplay={{
               delay: 4000,
               disableOnInteraction: false,
               pauseOnMouseEnter: true,
             }}
-            navigation={{
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
+            navigation
+            pagination={{ clickable: true, dynamicBullets: true }}
+            className="trending-swiper pb-4"
+            style={{
+              "--swiper-navigation-color": "#111",
+              "--swiper-navigation-size": "20px",
+              "--swiper-pagination-color": "#111",
+              "--swiper-pagination-bullet-inactive-color": "#ccc",
+              "--swiper-pagination-bullet-inactive-opacity": "1",
             }}
-            pagination={{
-              clickable: true,
-              dynamicBullets: true,
-            }}
-            className="trending-swiper pb-5"
           >
             {products.map((product, index) => (
               <SwiperSlide key={product.id || index}>
                 <ProductCard>
                   <ImageWrapper>
-                    <TrendingBadge>
-                      <i className="bi bi-lightning-fill me-1"></i>
-                      TRENDING
-                    </TrendingBadge>
-                    {index < 3 && (
+                    <TrendingBadge>Hot</TrendingBadge>
+                    {index % 4 === 0 && (
                       <DiscountBadge>
-                        {Math.floor(Math.random() * 30 + 10)}% OFF
+                        {Math.floor(Math.random() * 25 + 10)}% Off
                       </DiscountBadge>
                     )}
                     <ProductImage
@@ -424,49 +378,40 @@ export default function TrendingProducts({
                       src={`${BASE_URL}/${product.image}`}
                       alt={product.name || `Product ${index + 1}`}
                       onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/300x300?text=No+Image";
+                        e.target.src =
+                          "https://via.placeholder.com/300x400?text=No+Image";
                       }}
                     />
-                    <QuickActionButton
+                    <WishlistButton
                       onClick={(e) => {
                         e.preventDefault();
-                        // Add to wishlist functionality
-                        console.log("Added to wishlist:", product.id);
+                        console.log("Wishlist:", product.id);
                       }}
                       title="Add to wishlist"
                     >
-                      <i className="bi bi-heart"></i>
-                    </QuickActionButton>
+                      <i className="bi bi-heart" />
+                    </WishlistButton>
                   </ImageWrapper>
 
                   <CardBodyStyled>
                     <ProductTitle>{product.name}</ProductTitle>
 
-                    <RatingWrapper>
-                      <Rating rating={getRandomRating()} />
-                      {/* {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`bi bi-star${i < 4 ? "-fill" : ""}`}
-                        />
-                      ))}
-                      <RatingText>({getRandomRating()})</RatingText> */}
-                    </RatingWrapper>
+                    <Rating rating={product.rating || 4} reviews={product.numReviews} />
 
                     <PriceWrapper>
                       <ProductPrice>
                         {product.currency || "BDT"} {product.price}
                       </ProductPrice>
-                      {index < 3 && (
+                      {index % 4 === 0 && (
                         <OldPrice>
-                          {(parseFloat(product.price) * 1.3).toFixed(2)}
+                          {(parseFloat(product.price) * 1.25).toFixed(0)}
                         </OldPrice>
                       )}
                     </PriceWrapper>
 
                     <ViewDetailsButton to={`/products/${product.id}`}>
                       View Details
-                      <i className="bi bi-arrow-right"></i>
+                      <i className="bi bi-arrow-right" />
                     </ViewDetailsButton>
                   </CardBodyStyled>
                 </ProductCard>

@@ -107,6 +107,11 @@ input:focus {
   box-shadow: none !important;
 }
 
+.long-slider {
+  width: 30%; /* Adjust the value as needed (e.g., 80%, 300px) */
+}
+
+
 /* .row, .col{
   padding: 0 !important;
   margin: 0 !important;

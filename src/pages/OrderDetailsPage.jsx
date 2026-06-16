@@ -20,7 +20,7 @@ import {
 } from "../slices/orderApliSlice";
 import Loader from "../components/Loader";
 import axios from "axios";
-import { BASE_URL } from "../utils/constants";
+import { BASE_URL, company_data } from "../utils/constants";
 import NotFound from "./NotFound";
 import PaymentModal from "../components/Payemrnt/PaymentModal";
 import { useCreatePaymentMutation } from "../slices/paymentSlice";
@@ -58,6 +58,7 @@ export default function OrderDetailsPage() {
     },
     acc_no: '', //bank/mfs
   })
+  const { currency } = company_data;
   const changeOrderToPaid = async () => {
     const res = await payOrder(id).unwrap();
     // if (res.success) {
@@ -182,17 +183,7 @@ export default function OrderDetailsPage() {
                     &nbsp;Not Paid
                   </p>
                 )} */}
-                {order.isDelivered ? (
-                  <p className="bg-info text-light px-2 fw-bold d-flex align-items-center">
-                    <TiTick size={23} />
-                    &nbsp;Delivered on {order.deliveredAt}
-                  </p>
-                ) : (
-                  <p className="bg-secondary text-light px-2 fw-bold d-flex align-items-center">
-                    <FaTimesCircle />
-                    &nbsp;Not Delivered
-                  </p>
-                )}
+
               </ListGroup.Item>
               <ListGroup.Item className="border-0 pb-0">
                 Payment Method:{" "}
@@ -224,7 +215,7 @@ export default function OrderDetailsPage() {
                           </Col>
                           <Col md={4}>
                             {item.order_quantity} x {item.product.price} ={" "}
-                            {(item.order_quantity * item.product.price).toFixed(2)} Tk
+                            {(item.order_quantity * item.product.price).toFixed(2)} {currency}
                           </Col>
                         </Row>
                       </ListGroup.Item>
@@ -249,7 +240,7 @@ export default function OrderDetailsPage() {
                       <span className="px-2 py-1 rounded">
                         {order.subtotal}
                       </span>{" "}
-                      Tk
+                      {currency}
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -260,7 +251,7 @@ export default function OrderDetailsPage() {
                       <span className="px-2 py-1 rounded">
                         {order.discount}
                       </span>{" "}
-                      Tk
+                      {currency}
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -271,7 +262,7 @@ export default function OrderDetailsPage() {
                       <span className="px-2 py-1 rounded">
                         {order.shipping_cost}
                       </span>{" "}
-                      Tk
+                      {currency}
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -282,7 +273,7 @@ export default function OrderDetailsPage() {
                       <span className="text-xl fw-bold px-2 py-1 rounded">
                         {order.total}
                       </span>{" "}
-                      Tk
+                      {currency}
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -299,7 +290,7 @@ export default function OrderDetailsPage() {
                               0
                             )}
                           </span>{" "}
-                          Tk
+                          {currency}
                         </Col>
 
                       </Row>
@@ -311,7 +302,7 @@ export default function OrderDetailsPage() {
                           <span className="text-xl fw-bold px-2 py-1 rounded">
                             {order.payment_details[0].payable_amount}
                           </span>{" "}
-                          Tk
+                          {currency}
                         </Col>
                       </Row>
                     </ListGroup.Item>

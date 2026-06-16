@@ -5,7 +5,7 @@ import { BASE_URL } from "../utils/constants";
 export const productApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getProducts: builder.query({
-            query: ({ search = '', page = 1 }) => `${BASE_URL}/api/products?q=${search}&page=${page}`,
+            query: ({ search = '', page = 1, sort='', max_price=1000000,categories='' }) => `${BASE_URL}/api/products?q=${search}&page=${page}&sort=${sort}&max_price=${max_price}&categories=${categories}`,
             providesTags: ['Product'],
             keepUnusedDataFor: 5, //data will be cached for 5 seconds after it’s no longer in use.
         }),

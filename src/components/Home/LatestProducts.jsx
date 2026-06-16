@@ -35,7 +35,7 @@ const LatestProducts = ({ productsData, isLoading, isError, isSuccess }) => {
 
           <Row className="gy-4 gx-4 product-grid">
             {productsData.data.map((product) => (
-              <Col key={product.id} xs={12} sm={6} md={4} lg={3}>
+              <Col key={product.id} sm={12} md={6} lg={4} xl={3}>
                 <Product product={product} />
               </Col>
             ))}
