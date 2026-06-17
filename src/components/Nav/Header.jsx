@@ -5,12 +5,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import useCompany from "../../hooks/useCompany";
+import { BASE_URL } from "../../utils/constants";
 import "./Header.css";
 
 const Header = () => {
   const { data: company } = useCompany();
   const company_name = company?.company_name || '';
   const tagline = company?.tag_line || '';
+  const logo = company?.logo;
   const dispatch  = useDispatch();
   const navigate  = useNavigate();
   const { cartItems } = useSelector((state) => state.cart);
@@ -39,7 +41,11 @@ const Header = () => {
           {/* Brand */}
           <LinkContainer to="/">
             <Navbar.Brand className="site-brand">
-              <span className="brand-box">S</span>
+              {logo ? (
+                <img src={`${BASE_URL}/${logo}`} alt={company_name} className="brand-logo" />
+              ) : (
+                <span className="brand-box">{company_name?.charAt(0) || 'S'}</span>
+              )}
               <span className="brand-name">{company_name}</span>
               {tagline && <span className="brand-tag">{tagline}</span>}
             </Navbar.Brand>
