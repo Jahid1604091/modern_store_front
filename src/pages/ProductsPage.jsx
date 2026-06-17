@@ -196,12 +196,12 @@ const ProductsPage = () => {
 
   const [sort, setSort]                             = useState('');
   const [pageNumber, setPageNumber]                 = useState(1);
-  const [range, setRange]                           = useState(1000); // live — drives the slider UI
-  const [debouncedRange, setDebouncedRange]         = useState(1000); // delayed — sent to the API
+  const [range, setRange]                           = useState(null); // live — drives the slider UI; null = not yet touched by the user
+  const [debouncedRange, setDebouncedRange]         = useState(null); // delayed — sent to the API; null = no filter (show full catalog range)
   const [selectedCategories, setSelectedCategories] = useState([]);   // array of strings
 
   // ── Debounce range: only fire the API 400 ms after the user stops dragging
-  useEffect(() => { 
+  useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedRange(range);
       setPageNumber(1);
@@ -220,9 +220,14 @@ const ProductsPage = () => {
   } = useGetProductsQuery({
     page: pageNumber,
     sort,
-    max_price: debouncedRange,   // debounced — avoids an API call per pixel
+    max_price: debouncedRange ?? undefined, // until the user drags the slider, don't filter — show the full catalog
     categories: categoriesParam, // properly formatted for the endpoint
   });
+
+  // ── Real price bounds from the catalog (falls back to a sane default while loading)
+  const sliderMin = productsData?.price_bounds?.min ?? 0;
+  const sliderMax = productsData?.price_bounds?.max ?? 1000;
+  const displayRange = range ?? sliderMax;
 
   const {
     data: categories,
@@ -320,19 +325,19 @@ const ProductsPage = () => {
               {/* Price range */}
               <p style={styles.sidebarHeading}>Price</p>
               <div style={styles.rangeRow}>
-                <span style={styles.rangeLabel}>0</span>
+                <span style={styles.rangeLabel}>{sliderMin}</span>
                 <input
                   type="range"
                   step={10}
-                  value={range}
-                  min={0}
-                  max={1000}
+                  value={displayRange}
+                  min={sliderMin}
+                  max={sliderMax}
                   onChange={(e) => setRange(Number(e.target.value))}
                   // Note: setPageNumber(1) happens inside the debounce effect
                 />
-                <span style={styles.rangeLabel}> 1000</span>
+                <span style={styles.rangeLabel}> {sliderMax}</span>
               </div>
-              <span style={styles.rangeBadge}>Up to {currency} {range}</span>
+              <span style={styles.rangeBadge}>Up to {currency} {displayRange}</span>
             </aside>
 
             {/* ════ Main ════ */}
