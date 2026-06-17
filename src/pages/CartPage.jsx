@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 import {
   removeFromCart,
   incrementQuantity,
   decrementQuantity,
+  applyCoupon,
+  removeCoupon,
 } from "../slices/cartSlice";
+import { useValidateCouponMutation } from "../slices/couponApiSlice";
 import { AiOutlineMinus, AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
 import { useNavigate, Link } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
@@ -14,10 +18,30 @@ import "./css/CartPage.css";
 const CartPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { cartItems, totalPrice } = useSelector((state) => state.cart);
+  const { cartItems, itemsPrice, totalPrice, couponCode, discountAmount } = useSelector((state) => state.cart);
   const [stockAlert, setStockAlert] = useState(false);
+  const [couponInput, setCouponInput] = useState("");
+  const [validateCoupon, { isLoading: applyingCoupon }] = useValidateCouponMutation();
   const { data: company } = useCompany();
   const currency = company?.currency || 'BDT';
+
+  const handleApplyCoupon = async (e) => {
+    e.preventDefault();
+    if (!couponInput.trim()) return;
+    try {
+      const res = await validateCoupon({ code: couponInput.trim(), subtotal: itemsPrice }).unwrap();
+      dispatch(applyCoupon({ code: res.data.code, discountAmount: res.data.discount_amount }));
+      toast.success(res.msg || "Coupon applied!");
+      setCouponInput("");
+    } catch (err) {
+      toast.error(err?.data?.msg || "Invalid coupon code.");
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    dispatch(removeCoupon());
+    toast.success("Coupon removed.");
+  };
 
   const handleRemove = (item) =>
     dispatch(removeFromCart({ id: item.id, selectedSize: item.selectedSize }));
@@ -161,13 +185,52 @@ const CartPage = () => {
             </table>
           </div>
 
+          {/* ── Coupon code ── */}
+          <div className="cart-coupon-box">
+            {couponCode ? (
+              <div className="cart-coupon-applied">
+                <span>
+                  <i className="bi bi-check-circle-fill" /> Coupon <strong>{couponCode}</strong> applied — you saved {currency} {Number(discountAmount).toFixed(2)}
+                </span>
+                <button type="button" onClick={handleRemoveCoupon} className="cart-coupon-remove">
+                  Remove
+                </button>
+              </div>
+            ) : (
+              <form className="cart-coupon-form" onSubmit={handleApplyCoupon}>
+                <input
+                  type="text"
+                  placeholder="Enter coupon code"
+                  value={couponInput}
+                  onChange={(e) => setCouponInput(e.target.value)}
+                  className="cart-coupon-input"
+                />
+                <button type="submit" disabled={applyingCoupon} className="cart-coupon-apply-btn">
+                  {applyingCoupon ? "Applying..." : "Apply"}
+                </button>
+              </form>
+            )}
+          </div>
+
           {/* ── Summary ── */}
           <div className="cart-summary-row">
-            <div>
-              <span className="cart-total-label">Total</span>
-              <span className="cart-total-value">
-                {currency} {Number(totalPrice).toFixed(2)}
-              </span>
+            <div className="cart-summary-lines">
+              <div className="cart-summary-line">
+                <span className="cart-total-label">Subtotal</span>
+                <span>{currency} {Number(itemsPrice).toFixed(2)}</span>
+              </div>
+              {discountAmount > 0 && (
+                <div className="cart-summary-line cart-summary-discount">
+                  <span className="cart-total-label">Discount</span>
+                  <span>− {currency} {Number(discountAmount).toFixed(2)}</span>
+                </div>
+              )}
+              <div className="cart-summary-line">
+                <span className="cart-total-label">Total</span>
+                <span className="cart-total-value">
+                  {currency} {Number(totalPrice).toFixed(2)}
+                </span>
+              </div>
             </div>
             <button
               className="cart-checkout-btn"

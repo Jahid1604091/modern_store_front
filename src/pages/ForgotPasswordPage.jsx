@@ -52,12 +52,12 @@ const ForgotPasswordPage = () => {
             </div>
             <button
               type="submit" disabled={isLoading}
-              style={{ width: "100%", background: "#2563eb", color: "#fff", border: "none", borderRadius: "8px", padding: "12px", fontSize: "15px", fontWeight: 700, cursor: isLoading ? "not-allowed" : "pointer" }}
+              style={{ width: "100%", background: "var(--clr-primary-5)", color: "#fff", border: "none", borderRadius: "8px", padding: "12px", fontSize: "15px", fontWeight: 700, cursor: isLoading ? "not-allowed" : "pointer" }}
             >
               {isLoading ? "Sending..." : "Send Reset Link"}
             </button>
             <p style={{ textAlign: "center", marginTop: "16px", fontSize: "13px", color: "#64748b" }}>
-              <Link to="/login" style={{ color: "#2563eb" }}>← Back to Login</Link>
+              <Link to="/login" style={{ color: "var(--clr-primary-5)" }}>← Back to Login</Link>
             </p>
           </form>
         )}

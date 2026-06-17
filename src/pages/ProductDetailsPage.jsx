@@ -8,6 +8,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../slices/cartSlice";
 import AlertDismissible from "../components/Alert";
+import FitCalculator from "../components/FitCalculator";
+import TryonModal from "../components/tryon/TryonModal";
 import Loader from "../components/Loader";
 import { BASE_URL } from "../utils/constants";
 import Rating from "../components/Rating";
@@ -15,6 +17,9 @@ import StarRatingInput from "../components/StartRatingInput";
 import toast from "react-hot-toast";
 import useCompany from "../hooks/useCompany";
 import "./css/ProductDetailsPage.css";
+
+// Disabled for now — overlay positioning isn't reliable yet. Flip to true once fixed.
+const TRYON_FEATURE_ENABLED = false;
 
 const ProductDetailsPage = () => {
   const navigate = useNavigate();
@@ -26,6 +31,7 @@ const ProductDetailsPage = () => {
   const [activeImage, setActiveImage] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeError, setSizeError] = useState(false);
+  const [showTryon, setShowTryon] = useState(false);
   const [addReview] = useAddReviewMutation();
   const [qty, setQty] = useState(1);
   const [successMessage, setSuccessMessage] = useState("");
@@ -136,6 +142,16 @@ const ProductDetailsPage = () => {
               ))}
             </div>
           )}
+          {TRYON_FEATURE_ENABLED && product.tryon_image && (
+            <button
+              type="button"
+              className="btn btn-outline-dark mt-3 w-100"
+              onClick={() => setShowTryon(true)}
+            >
+              <i className="bi bi-camera me-2" />
+              Try It On
+            </button>
+          )}
         </Col>
 
         {/* ── 2. Product info ── */}
@@ -185,6 +201,16 @@ const ProductDetailsPage = () => {
                 </div>
               )}
             </div>
+
+            {product.metadata?.size_chart && (
+              <FitCalculator
+                sizeChart={product.metadata.size_chart}
+                onSelectSize={(size) => {
+                  setSelectedSize(size);
+                  setSizeError(false);
+                }}
+              />
+            )}
           </div>
         </Col>
 
@@ -356,6 +382,15 @@ const ProductDetailsPage = () => {
           </Col>
         </Row>
       </div>
+
+      {TRYON_FEATURE_ENABLED && product.tryon_image && (
+        <TryonModal
+          show={showTryon}
+          onClose={() => setShowTryon(false)}
+          tryonImagePath={product.tryon_image}
+          productName={product.name}
+        />
+      )}
     </div>
   );
 };

@@ -10,6 +10,22 @@
 
 .categories-navbar .container {
   padding: 0 1.5rem;
+  max-width: 100%;
+}
+
+/* ── Prevent horizontal page overflow when there are many categories ──
+   Wrap onto additional rows instead of a horizontal scroll: a scrollable
+   bar would need overflow-x on an ancestor of the dropdowns, which clips
+   the subcategory flyout menus vertically. Wrapping avoids that entirely. */
+@media (min-width: 992px) {
+  .categories-navbar .navbar-collapse {
+    max-width: 100%;
+  }
+
+  .categories-navbar .navbar-nav {
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+  }
 }
 
 /* ── Nav items (top level) ── */

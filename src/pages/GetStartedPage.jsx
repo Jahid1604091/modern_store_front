@@ -15,7 +15,7 @@ const GetStartedPage = () => {
   return (
     <div style={{ minHeight: "100vh", background: "#f8fafc", fontFamily: "'Inter', 'Segoe UI', sans-serif" }}>
       {/* Hero */}
-      <div style={{ background: "linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%)", color: "#fff", padding: "64px 24px", textAlign: "center" }}>
+      <div style={{ background: "linear-gradient(135deg, #111 0%, var(--clr-primary-5) 140%)", color: "#fff", padding: "64px 24px", textAlign: "center" }}>
         <div style={{ fontSize: "48px", marginBottom: "12px" }}>🎉</div>
         <h1 style={{ fontSize: "36px", fontWeight: 800, margin: 0 }}>
           {company ? `${company.company_name} is live!` : "Your store is ready!"}
@@ -44,11 +44,11 @@ const GetStartedPage = () => {
               style={{
                 display: "flex", flexDirection: "column", alignItems: "center", gap: "8px",
                 padding: "20px 16px", borderRadius: "12px", textDecoration: "none",
-                background: primary ? "#2563eb" : "#fff",
+                background: primary ? "var(--clr-primary-5)" : "#fff",
                 color: primary ? "#fff" : "#374151",
-                border: `2px solid ${primary ? "#2563eb" : "#e2e8f0"}`,
+                border: `2px solid ${primary ? "var(--clr-primary-5)" : "#e2e8f0"}`,
                 fontWeight: 600, fontSize: "14px", textAlign: "center",
-                boxShadow: primary ? "0 4px 12px rgba(37,99,235,0.25)" : "none",
+                boxShadow: primary ? "0 4px 12px rgba(255,83,20,0.3)" : "none",
               }}
             >
               <span style={{ fontSize: "28px" }}>{icon}</span>
@@ -69,7 +69,7 @@ const GetStartedPage = () => {
             >
               <div style={{
                 width: "32px", height: "32px", minWidth: "32px", borderRadius: "50%",
-                background: "#eff6ff", color: "#2563eb", fontWeight: 800, fontSize: "14px",
+                background: "var(--clr-primary-10)", color: "var(--clr-primary-3)", fontWeight: 800, fontSize: "14px",
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>
                 {num}

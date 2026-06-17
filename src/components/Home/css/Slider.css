@@ -80,6 +80,48 @@
   pointer-events: none;
 }
 
+/* ── Banner caption (title/subtitle/CTA configured by the admin) ── */
+.carousel-caption-custom {
+  position: absolute;
+  left: 6%;
+  bottom: 12%;
+  z-index: 2;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+  max-width: 80%;
+}
+
+.carousel-caption-custom h3 {
+  font-family: var(--ff-heading, inherit);
+  font-size: clamp(1.25rem, 3vw, 2.25rem);
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+
+.carousel-caption-custom p {
+  font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+  margin-bottom: 0.75rem;
+  opacity: 0.95;
+}
+
+.carousel-caption-custom .btn-shop-now {
+  display: inline-block;
+  background: var(--clr-primary-5, #111);
+  color: #fff;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 575px) {
+  .carousel-caption-custom {
+    bottom: 8%;
+  }
+}
+
 /* ── Bootstrap indicator override ── */
 .custom-carousel .carousel-indicators {
   bottom: 50px;

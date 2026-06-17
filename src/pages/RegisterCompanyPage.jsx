@@ -79,12 +79,12 @@ const RegisterCompanyPage = () => {
               <div style={{
                 width: "32px", height: "32px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
                 fontWeight: 700, fontSize: "14px",
-                background: step >= s ? "#2563eb" : "#e2e8f0",
+                background: step >= s ? "var(--clr-primary-5)" : "#e2e8f0",
                 color: step >= s ? "#fff" : "#94a3b8",
               }}>
                 {s}
               </div>
-              {s < 2 && <div style={{ width: "60px", height: "2px", background: step > s ? "#2563eb" : "#e2e8f0" }} />}
+              {s < 2 && <div style={{ width: "60px", height: "2px", background: step > s ? "var(--clr-primary-5)" : "#e2e8f0" }} />}
             </React.Fragment>
           ))}
         </div>
@@ -151,7 +151,7 @@ const RegisterCompanyPage = () => {
               <button
                 onClick={() => setStep(2)}
                 style={{
-                  background: "#2563eb", color: "#fff", border: "none", borderRadius: "8px",
+                  background: "var(--clr-primary-5)", color: "#fff", border: "none", borderRadius: "8px",
                   padding: "14px 40px", fontSize: "15px", fontWeight: 700, cursor: "pointer",
                 }}
               >
@@ -263,7 +263,7 @@ const RegisterCompanyPage = () => {
               <button
                 type="submit" disabled={isLoading}
                 style={{
-                  width: "100%", marginTop: "24px", background: isLoading ? "#93c5fd" : "#2563eb",
+                  width: "100%", marginTop: "24px", background: isLoading ? "var(--clr-primary-8)" : "var(--clr-primary-5)",
                   color: "#fff", border: "none", borderRadius: "8px", padding: "14px",
                   fontSize: "15px", fontWeight: 700, cursor: isLoading ? "not-allowed" : "pointer",
                 }}
@@ -273,13 +273,13 @@ const RegisterCompanyPage = () => {
 
               <p style={{ textAlign: "center", fontSize: "12px", color: "#94a3b8", marginTop: "16px" }}>
                 By registering you agree to our{" "}
-                <Link to="/return-refund" style={{ color: "#2563eb" }}>Terms of Service</Link>.
+                <Link to="/return-refund" style={{ color: "var(--clr-primary-5)" }}>Terms of Service</Link>.
               </p>
             </form>
 
             <p style={{ textAlign: "center", color: "#64748b", fontSize: "14px", marginTop: "20px" }}>
               Already have a store?{" "}
-              <Link to="/login" style={{ color: "#2563eb", fontWeight: 600 }}>Sign in</Link>
+              <Link to="/login" style={{ color: "var(--clr-primary-5)", fontWeight: 600 }}>Sign in</Link>
             </p>
           </>
         )}

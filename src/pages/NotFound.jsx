@@ -196,10 +196,10 @@ const S = {
 
 const QUICK_LINKS = [
   { label: "Home", to: "/" },
-  { label: "Shop All Products", to: "/shop" },
-  { label: "Popular Clubs", to: "/clubs" },
-  { label: "National Teams", to: "/national" },
-  { label: "Retro Jerseys", to: "/retro" },
+  { label: "Shop All Products", to: "/products" },
+  { label: "Your Cart", to: "/cart" },
+  { label: "FAQ", to: "/faq" },
+  { label: "Shipping Info", to: "/shipping-info" },
 ];
 
 const QuickLink = ({ label, to }) => {
@@ -235,12 +235,6 @@ const NotFoundPage = () => {
 
   return (
     <div style={S.page}>
-      {/* Top bar */}
-      <div style={S.topBar}>
-        <a href="/" style={S.brand}>ZOOF</a>
-        <span style={S.topNav}>Best Quality · Fast Delivery · Online Payment</span>
-      </div>
-
       {/* Main body */}
       <div style={S.body}>
         {/* Left dark panel */}
@@ -291,10 +285,6 @@ const NotFoundPage = () => {
         </div>
       </div>
 
-      {/* Bottom bar */}
-      <div style={S.bottomBar}>
-        © 2025 ZOOFSTORE · All Rights Reserved · Dhaka, Bangladesh
-      </div>
     </div>
   );
 };

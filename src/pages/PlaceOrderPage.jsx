@@ -43,6 +43,7 @@ export default function PlaceOrderPage() {
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
         totalPrice: cart.totalPrice,
+        coupon_code: cart.couponCode || undefined,
       }).unwrap();
       if (res.success) {
         dispatch(clearCart());
@@ -158,6 +159,12 @@ export default function PlaceOrderPage() {
                 <span>Tax</span>
                 <span>{cart.taxPrice} {currency}</span>
               </div>
+              {cart.discountAmount > 0 && (
+                <div className="po-summary-row">
+                  <span>Discount {cart.couponCode && `(${cart.couponCode})`}</span>
+                  <span>− {cart.discountAmount} {currency}</span>
+                </div>
+              )}
             </div>
 
             <div className="po-summary-total">

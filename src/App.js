@@ -49,7 +49,7 @@ const SaaSTopBanner = () => {
     }}>
       <span>Want to sell online? Start your own store for free.</span>
       <Link to="/start" style={{
-        background: '#fff', color: '#111', borderRadius: '4px',
+        background: 'var(--clr-primary-5)', color: '#fff', borderRadius: '4px',
         padding: '3px 12px', fontWeight: 700, fontSize: '12px', textDecoration: 'none',
       }}>
         Start Free Trial
@@ -68,7 +68,7 @@ const SaaSTopBanner = () => {
 
 const CompanyLoader = () => (
   <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16 }}>
-    <div style={{ width: 44, height: 44, border: '4px solid #e5e7eb', borderTopColor: '#4f46e5', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+    <div style={{ width: 44, height: 44, border: '4px solid #e5e7eb', borderTopColor: 'var(--clr-primary-5)', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
     <p style={{ color: '#6b7280', fontSize: 14 }}>Loading store...</p>
     <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
   </div>

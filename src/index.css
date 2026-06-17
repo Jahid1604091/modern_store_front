@@ -160,3 +160,43 @@ input:focus {
     width: 95vw;
   }
 }
+
+/*
+===============
+Bootstrap override — replace the default blue with the brand accent
+everywhere react-bootstrap's variant="primary" / form controls are used,
+so the whole app shares one color combination instead of orange + leftover
+Bootstrap blue.
+===============
+*/
+.btn-primary {
+  --bs-btn-bg: var(--clr-primary-5);
+  --bs-btn-border-color: var(--clr-primary-5);
+  --bs-btn-hover-bg: var(--clr-primary-3);
+  --bs-btn-hover-border-color: var(--clr-primary-3);
+  --bs-btn-active-bg: var(--clr-primary-2);
+  --bs-btn-active-border-color: var(--clr-primary-2);
+  --bs-btn-disabled-bg: var(--clr-primary-7);
+  --bs-btn-disabled-border-color: var(--clr-primary-7);
+  --bs-btn-focus-shadow-rgb: 255, 83, 20;
+}
+
+.form-check-input:checked {
+  background-color: var(--clr-primary-5);
+  border-color: var(--clr-primary-5);
+}
+
+.form-check-input:focus {
+  border-color: var(--clr-primary-6);
+  box-shadow: 0 0 0 0.25rem rgba(255, 83, 20, 0.25);
+}
+
+.form-control:focus {
+  border-color: var(--clr-primary-6);
+  box-shadow: 0 0 0 0.25rem rgba(255, 83, 20, 0.25);
+}
+
+.page-link,
+.nav-link.active {
+  color: var(--clr-primary-3);
+}

@@ -308,21 +308,16 @@ export const S = {
 
 const NAV_LINKS = [
   { label: "Shipping Info", to: "/shipping-info" },
-  { label: "Returns & Refunds", to: "/returns" },
+  { label: "Returns & Refunds", to: "/return-refund" },
   { label: "FAQ", to: "/faq" },
-  { label: "Privacy Policy", to: "/privacy-policy" },
+  { label: "Privacy Policy", to: "/privacy" },
   { label: "Terms & Conditions", to: "/terms" },
 ];
 
 /* ─── Shared page shell ───────────────────────────────────────── */
-export const PageShell = ({ active, eyebrow, title, subtitle, children }) => (
+export const PageShell = ({ active, eyebrow, title, subtitle, children }) => {
+  return (
   <div style={S.page}>
-    {/* Top bar */}
-    <div style={S.topBar}>
-      <Link to="/" style={S.brand}>ZOOF</Link>
-      <span style={S.topNav}>Best Quality · Fast Delivery · Online Payment</span>
-    </div>
-
     {/* Hero */}
     <div style={S.hero}>
       <div style={S.heroGrid} />
@@ -336,7 +331,7 @@ export const PageShell = ({ active, eyebrow, title, subtitle, children }) => (
     <div style={S.breadcrumb}>
       <Link to="/" style={S.breadcrumbLink}>Home</Link>
       <span style={S.breadcrumbSep}>›</span>
-      <Link to="/support" style={S.breadcrumbLink}>Customer Service</Link>
+      <span style={S.breadcrumbLink}>Customer Service</span>
       <span style={S.breadcrumbSep}>›</span>
       <span style={S.breadcrumbActive}>{title}</span>
     </div>
@@ -357,12 +352,8 @@ export const PageShell = ({ active, eyebrow, title, subtitle, children }) => (
       {/* Page content */}
       <main style={S.main}>{children}</main>
     </div>
-
-    {/* Bottom bar */}
-    <div style={S.bottomBar}>
-      © 2025 ZOOFSTORE · All Rights Reserved · Dhaka, Bangladesh
-    </div>
   </div>
-);
+  );
+};
 
 export default PageShell;

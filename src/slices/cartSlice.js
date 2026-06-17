@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = localStorage.getItem('cart')
   ? JSON.parse(localStorage.getItem('cart'))
-  : { cartItems: [], taxPrice: 0, shippingPrice: 0, itemsPrice: 0, totalPrice: 0, shippingAddress: {}, paymentMethod: 'bKash' };
+  : { cartItems: [], taxPrice: 0, shippingPrice: 0, itemsPrice: 0, totalPrice: 0, shippingAddress: {}, paymentMethod: 'bKash', couponCode: null, discountAmount: 0 };
 
 const cartSlice = createSlice({
   name: "cart",
@@ -22,7 +22,9 @@ const cartSlice = createSlice({
         state.cartItems.push(item);
       }
 
-      // Calculate prices
+      // A coupon's discount is computed against the subtotal at apply-time —
+      // the cart changed, so it must be re-validated before it can apply again.
+      invalidateCoupon(state);
       calculatePrices(state);
     },
     removeFromCart: (state, action) => {
@@ -31,7 +33,7 @@ const cartSlice = createSlice({
         c => !(c.id === id && c.selectedSize === selectedSize)
       );
 
-      // Recalculate prices
+      invalidateCoupon(state);
       calculatePrices(state);
     },
     incrementQuantity: (state, action) => {
@@ -44,7 +46,7 @@ const cartSlice = createSlice({
         existingItem.qty += 1; // Increment quantity
       }
 
-      // Recalculate prices
+      invalidateCoupon(state);
       calculatePrices(state);
     },
     decrementQuantity: (state, action) => {
@@ -57,16 +59,29 @@ const cartSlice = createSlice({
         existingItem.qty -= 1; // Decrement quantity
       }
 
-      // Recalculate prices
+      invalidateCoupon(state);
       calculatePrices(state);
     },
     clearCart: (state) => {
       state.cartItems = [];
       state.itemsPrice = 0;
       state.totalPrice = 0;
+      state.couponCode = null;
+      state.discountAmount = 0;
 
       // Clear cart from local storage
       localStorage.removeItem('cart');
+    },
+    applyCoupon: (state, action) => {
+      const { code, discountAmount } = action.payload;
+      state.couponCode = code;
+      state.discountAmount = discountAmount;
+      calculatePrices(state);
+    },
+    removeCoupon: (state) => {
+      state.couponCode = null;
+      state.discountAmount = 0;
+      calculatePrices(state);
     },
     saveShippingAddress: (state, action) => {
       state.shippingAddress = action.payload;
@@ -79,14 +94,29 @@ const cartSlice = createSlice({
   }
 });
 
+// Clears a previously-applied coupon — used whenever cart contents change,
+// since the discount was computed against a subtotal that's no longer current.
+const invalidateCoupon = (state) => {
+  if (state.couponCode) {
+    state.couponCode = null;
+    state.discountAmount = 0;
+  }
+};
+
 // Helper function to calculate prices
 const calculatePrices = (state) => {
   state.itemsPrice = state.cartItems.reduce((acc, item) => acc + Number(item.price) * Number(item.qty), 0);
-  state.totalPrice = Number(state.itemsPrice) + Number(state.shippingPrice) + Number(state.taxPrice);
+  state.totalPrice = Math.max(
+    Number(state.itemsPrice) + Number(state.shippingPrice) + Number(state.taxPrice) - Number(state.discountAmount || 0),
+    0
+  );
 
   // Save updated cart to local storage
   localStorage.setItem('cart', JSON.stringify(state));
 };
 
-export const { addToCart, removeFromCart, incrementQuantity, decrementQuantity, clearCart, saveShippingAddress, savePaymentMethod } = cartSlice.actions;
+export const {
+  addToCart, removeFromCart, incrementQuantity, decrementQuantity, clearCart,
+  saveShippingAddress, savePaymentMethod, applyCoupon, removeCoupon,
+} = cartSlice.actions;
 export default cartSlice.reducer;

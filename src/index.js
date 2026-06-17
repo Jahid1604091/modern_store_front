@@ -21,6 +21,10 @@ import ProfilePage from './pages/ProfilePage';
 import ProductsPage from './pages/ProductsPage';
 import NotFoundPage from './pages/NotFound';
 import ReturnRefundPage from './pages/ReturnRefundPage';
+import ShippingInfoPage from './pages/ShippingInfoPage';
+import FAQPage from './pages/FAQPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage';
+import TermsPage from './pages/TermsPage';
 import RegisterCompanyPage from './pages/RegisterCompanyPage';
 import PricingPage from './pages/PricingPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
@@ -39,6 +43,10 @@ const router = createBrowserRouter(
       <Route path='/login' element={<LoginPage />} />
       <Route path='/register' element={<RegisterPage />} />
       <Route path='/return-refund' element={<ReturnRefundPage />} />
+      <Route path='/shipping-info' element={<ShippingInfoPage />} />
+      <Route path='/faq' element={<FAQPage />} />
+      <Route path='/privacy' element={<PrivacyPolicyPage />} />
+      <Route path='/terms' element={<TermsPage />} />
 
       {/* SaaS store-owner pages */}
       <Route path='/start' element={<RegisterCompanyPage />} />

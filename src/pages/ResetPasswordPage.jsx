@@ -53,11 +53,11 @@ const ResetPasswordPage = () => {
                 style={{ width: "100%", border: "1.5px solid #d1d5db", borderRadius: "7px", padding: "10px 12px", fontSize: "14px", outline: "none", boxSizing: "border-box" }} />
             </div>
             <button type="submit" disabled={isLoading}
-              style={{ width: "100%", background: "#2563eb", color: "#fff", border: "none", borderRadius: "8px", padding: "12px", fontSize: "15px", fontWeight: 700, cursor: isLoading ? "not-allowed" : "pointer" }}>
+              style={{ width: "100%", background: "var(--clr-primary-5)", color: "#fff", border: "none", borderRadius: "8px", padding: "12px", fontSize: "15px", fontWeight: 700, cursor: isLoading ? "not-allowed" : "pointer" }}>
               {isLoading ? "Resetting..." : "Set New Password"}
             </button>
             <p style={{ textAlign: "center", marginTop: "16px", fontSize: "13px" }}>
-              <Link to="/login" style={{ color: "#2563eb" }}>← Back to Login</Link>
+              <Link to="/login" style={{ color: "var(--clr-primary-5)" }}>← Back to Login</Link>
             </p>
           </form>
         )}

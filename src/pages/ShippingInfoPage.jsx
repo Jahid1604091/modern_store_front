@@ -1,5 +1,5 @@
 import React from "react";
-import { PageShell, S } from "./CustomerServiceShell";
+import { PageShell, S } from "./PageShell";
 
 const ShippingInfoPage = () => (
   <PageShell
