@@ -33,12 +33,17 @@
 
 .feature-icon {
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  background: #111;
+  width: 46px;
+  height: 46px;
+  background: var(--clr-primary-5);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.feature-item:hover .feature-icon {
+  transform: scale(1.08) rotate(-4deg);
 }
 
 .feature-icon i,
@@ -50,7 +55,8 @@
 }
 
 .feature-text h5 {
-  font-size: 0.82rem;
+  font-family: var(--ff-heading);
+  font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.6px;
   text-transform: uppercase;

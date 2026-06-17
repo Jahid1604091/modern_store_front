@@ -6,7 +6,7 @@ import Loader from "../Loader";
 import AlertDismissible from "../Alert";
 import "./css/LatestProducts.css";
 
-const LatestProducts = ({ productsData, isLoading, isError, isSuccess }) => {
+const LatestProducts = ({ productsData, isLoading, isError, isSuccess, onPageChange }) => {
   return (
     <Container fluid className="latest-products-container">
       {isLoading && (
@@ -46,7 +46,7 @@ const LatestProducts = ({ productsData, isLoading, isError, isSuccess }) => {
               <Pagination
                 pages={productsData.pages}
                 page={productsData.page || 1}
-                onPageChange={(page) => console.log('Page changed:', page)}
+                onPageChange={onPageChange}
               />
             </div>
           )}

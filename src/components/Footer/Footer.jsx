@@ -1,19 +1,37 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import "./Footer.css";
-import { company_data } from "../../utils/constants";
 import { Link } from "react-router-dom";
+import useCompany from "../../hooks/useCompany";
+import { FaFacebookF, FaLinkedinIn, FaXTwitter, FaYoutube, FaInstagram } from "react-icons/fa6";
+
+// Maps social network names to icon components (case-insensitive)
+const SOCIAL_ICON_MAP = {
+  facebook: FaFacebookF,
+  linkedin: FaLinkedinIn,
+  x: FaXTwitter,
+  twitter: FaXTwitter,
+  youtube: FaYoutube,
+  instagram: FaInstagram,
+};
 
 const Footer = () => {
+  const { data: company } = useCompany();
+
+  if (!company) return null;
+
   const {
     company_name,
     details,
     no_customers,
-    contact: { support_email, support_mobile },
+    contact,
     address,
     social_links,
     payment_methods,
-  } = company_data;
+  } = company;
+
+  const supportEmail = contact?.support_email || contact?.contact_email || '';
+  const supportMobile = contact?.support_mobile || contact?.contact_mobile || '';
 
   return (
     <footer className="modern-footer">
@@ -25,10 +43,12 @@ const Footer = () => {
             <div className="footer-section">
               <h5 className="footer-title">{company_name}</h5>
               <p className="footer-text">{details}</p>
-              <div className="footer-badge">
-                <i className="bi bi-shield-check" />
-                <span>Trusted by {no_customers}+ customers</span>
-              </div>
+              {no_customers > 0 && (
+                <div className="footer-badge">
+                  <i className="bi bi-shield-check" />
+                  <span>Trusted by {no_customers}+ customers</span>
+                </div>
+              )}
             </div>
           </Col>
 
@@ -64,37 +84,47 @@ const Footer = () => {
             <div className="footer-section">
               <h5 className="footer-title">Connect With Us</h5>
               <div className="footer-contact">
-                <div className="contact-item">
-                  <i className="bi bi-envelope" />
-                  <span>{support_email}</span>
-                </div>
-                <div className="contact-item">
-                  <i className="bi bi-telephone" />
-                  <span>{support_mobile}</span>
-                </div>
-                <div className="contact-item">
-                  <i className="bi bi-geo-alt" />
-                  <span>{address}</span>
-                </div>
+                {supportEmail && (
+                  <div className="contact-item">
+                    <i className="bi bi-envelope" />
+                    <span>{supportEmail}</span>
+                  </div>
+                )}
+                {supportMobile && (
+                  <div className="contact-item">
+                    <i className="bi bi-telephone" />
+                    <span>{supportMobile}</span>
+                  </div>
+                )}
+                {address && (
+                  <div className="contact-item">
+                    <i className="bi bi-geo-alt" />
+                    <span>{address}</span>
+                  </div>
+                )}
               </div>
 
-              <div className="social-links">
-                {social_links.map((social, i) => {
-                  const Icon = social.icon;
-                  return (
-                    <a
-                      key={i}
-                      href={social.url}
-                      className="social-icon"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={social.name || `Social link ${i + 1}`}
-                    >
-                      <Icon />
-                    </a>
-                  );
-                })}
-              </div>
+              {Array.isArray(social_links) && social_links.length > 0 && (
+                <div className="social-links">
+                  {social_links.map((social, i) => {
+                    // Support both {icon: Component, ...} (constants) and {name, url} (API)
+                    const Icon = social.icon || SOCIAL_ICON_MAP[social.name?.toLowerCase()];
+                    if (!Icon && !social.url) return null;
+                    return (
+                      <a
+                        key={i}
+                        href={social.url}
+                        className="social-icon"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={social.name || `Social link ${i + 1}`}
+                      >
+                        {Icon ? <Icon /> : social.name}
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </Col>
         </Row>
@@ -102,16 +132,16 @@ const Footer = () => {
         {/* ── Bottom bar ── */}
         <Row className="footer-bottom">
           <Col md={6} className="text-center text-md-start">
-            <p>
-              &copy; {new Date().getFullYear()} {company_name}. All rights reserved.
-            </p>
+            <p>&copy; {new Date().getFullYear()} {company_name}. All rights reserved.</p>
           </Col>
           <Col md={6}>
-            <ul className="payment-methods">
-              {payment_methods.map((pm, i) => (
-                <li key={i}>{pm.name}</li>
-              ))}
-            </ul>
+            {Array.isArray(payment_methods) && (
+              <ul className="payment-methods">
+                {payment_methods.filter(pm => pm.is_active !== false).map((pm, i) => (
+                  <li key={i}>{pm.name}</li>
+                ))}
+              </ul>
+            )}
           </Col>
         </Row>
       </div>

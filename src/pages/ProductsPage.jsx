@@ -5,9 +5,7 @@ import Loader from '../components/Loader';
 import AlertDismissible from '../components/Alert';
 import Product from '../components/Product';
 import Pagination from '../components/Pagination';
-import { company_data } from '../utils/constants';
-
-const { currency } = company_data;
+import useCompany from '../hooks/useCompany';
 const styles = {
   page: {
     minHeight: '100vh',
@@ -193,6 +191,9 @@ const mediaStyle = `
 `;
 
 const ProductsPage = () => {
+  const { data: company } = useCompany();
+  const currency = company?.currency || 'BDT';
+
   const [sort, setSort]                             = useState('');
   const [pageNumber, setPageNumber]                 = useState(1);
   const [range, setRange]                           = useState(1000); // live — drives the slider UI
@@ -372,7 +373,10 @@ const ProductsPage = () => {
                   <Pagination
                     pages={productsData.pages}
                     page={productsData.page || pageNumber}
-                    onPageChange={(page) => setPageNumber(page)}
+                    onPageChange={(page) => {
+                      setPageNumber(page);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
                   />
                 </div>
               )}

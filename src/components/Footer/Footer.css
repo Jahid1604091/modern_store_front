@@ -20,8 +20,8 @@
 }
 
 .footer-title {
-  font-family: 'Barlow Condensed', 'Oswald', sans-serif;
-  font-size: 0.75rem;
+  font-family: var(--ff-heading);
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -36,9 +36,9 @@
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 24px;
-  height: 2px;
-  background: #fff;
+  width: 28px;
+  height: 3px;
+  background: var(--clr-primary-5);
 }
 
 /* ── Body text ── */
@@ -64,7 +64,7 @@
 }
 
 .footer-badge:hover {
-  border-color: rgba(255, 255, 255, 0.5);
+  border-color: var(--clr-primary-5);
   color: #fff;
   transform: none;
   background: none;
@@ -72,7 +72,7 @@
 
 .footer-badge i {
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--clr-primary-5);
 }
 
 /* ── Footer links ── */
@@ -102,7 +102,7 @@
 }
 
 .footer-links a:hover {
-  color: #fff;
+  color: var(--clr-primary-6);
   padding-left: 8px;
 }
 
@@ -162,11 +162,11 @@
 }
 
 .social-icon:hover {
-  background: #fff;
-  border-color: #fff;
-  color: #111;
-  transform: none;
-  box-shadow: none;
+  background: var(--clr-primary-5);
+  border-color: var(--clr-primary-5);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* ── Bottom bar ── */
@@ -209,8 +209,8 @@
 }
 
 .payment-methods li:hover {
-  border-color: rgba(255, 255, 255, 0.4);
-  color: rgba(255, 255, 255, 0.7);
+  border-color: var(--clr-primary-5);
+  color: #fff;
 }
 
 /* ── Responsive ── */

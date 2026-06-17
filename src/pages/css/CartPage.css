@@ -7,7 +7,7 @@
 }
 
 .cart-page-title {
-  font-family: 'Barlow Condensed', 'Oswald', sans-serif;
+  font-family: var(--ff-heading);
   font-size: 1.6rem;
   font-weight: 700;
   letter-spacing: 2px;
@@ -162,6 +162,16 @@
   color: #111;
 }
 
+.cart-item-size {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--clr-primary-3);
+  background: var(--clr-primary-10);
+  padding: 1px 7px;
+  margin-top: 0.3rem;
+}
+
 /* ── Price & total cells ── */
 .cart-price,
 .cart-subtotal {
@@ -172,7 +182,7 @@
 
 .cart-subtotal {
   font-weight: 700;
-  color: #111;
+  color: var(--clr-primary-3);
 }
 
 /* ── Qty controls ── */
@@ -198,7 +208,7 @@
 }
 
 .cart-qty-btn:hover:not(:disabled) {
-  background: #111;
+  background: var(--clr-primary-5);
   color: #fff;
 }
 
@@ -264,14 +274,14 @@
 .cart-total-value {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #111;
+  color: var(--clr-primary-3);
 }
 
 .cart-checkout-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  background: #111;
+  background: var(--clr-primary-5);
   border: none;
   border-radius: 0;
   color: #fff;
@@ -286,7 +296,7 @@
 }
 
 .cart-checkout-btn:hover {
-  background: #333;
+  background: var(--clr-primary-3);
 }
 
 /* ── Responsive ── */

@@ -7,7 +7,8 @@ import {
 } from "../slices/cartSlice";
 import { AiOutlineMinus, AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
 import { useNavigate, Link } from "react-router-dom";
-import { BASE_URL, company_data } from "../utils/constants";
+import { BASE_URL } from "../utils/constants";
+import useCompany from "../hooks/useCompany";
 import "./css/CartPage.css";
 
 const CartPage = () => {
@@ -15,20 +16,23 @@ const CartPage = () => {
   const navigate = useNavigate();
   const { cartItems, totalPrice } = useSelector((state) => state.cart);
   const [stockAlert, setStockAlert] = useState(false);
-  const { currency } = company_data;
+  const { data: company } = useCompany();
+  const currency = company?.currency || 'BDT';
 
-  const handleRemove = (id) => dispatch(removeFromCart(id));
+  const handleRemove = (item) =>
+    dispatch(removeFromCart({ id: item.id, selectedSize: item.selectedSize }));
 
   const handleIncrement = (item) => {
     if (item.qty < item.stock_quantity) {
-      dispatch(incrementQuantity(item.id));
+      dispatch(incrementQuantity({ id: item.id, selectedSize: item.selectedSize }));
     } else {
       setStockAlert(true);
       setTimeout(() => setStockAlert(false), 3000);
     }
   };
 
-  const handleDecrement = (id) => dispatch(decrementQuantity(id));
+  const handleDecrement = (item) =>
+    dispatch(decrementQuantity({ id: item.id, selectedSize: item.selectedSize }));
 
   return (
     <div className="cart-page">
@@ -76,7 +80,7 @@ const CartPage = () => {
               </thead>
               <tbody>
                 {cartItems.map((item) => (
-                  <tr key={item.id}>
+                  <tr key={`${item.id}-${item.selectedSize || ""}`}>
                     {/* Product */}
                     <td>
                       <div className="cart-product-cell">
@@ -89,12 +93,17 @@ const CartPage = () => {
                               "https://via.placeholder.com/60x60?text=?";
                           }}
                         />
-                        <Link
-                          to={`/products/${item.id}`}
-                          className="cart-item-name"
-                        >
-                          {item.name}
-                        </Link>
+                        <div>
+                          <Link
+                            to={`/products/${item.id}`}
+                            className="cart-item-name"
+                          >
+                            {item.name}
+                          </Link>
+                          {item.selectedSize && (
+                            <div className="cart-item-size">Size: {item.selectedSize}</div>
+                          )}
+                        </div>
                       </div>
                     </td>
 
@@ -110,7 +119,7 @@ const CartPage = () => {
                       <div className="cart-qty-controls">
                         <button
                           className="cart-qty-btn"
-                          onClick={() => handleDecrement(item.id)}
+                          onClick={() => handleDecrement(item)}
                           disabled={item.qty <= 1}
                           aria-label="Decrease quantity"
                         >
@@ -139,7 +148,7 @@ const CartPage = () => {
                     <td>
                       <button
                         className="cart-remove-btn"
-                        onClick={() => handleRemove(item.id)}
+                        onClick={() => handleRemove(item)}
                         aria-label={`Remove ${item.name}`}
                         title="Remove item"
                       >

@@ -31,7 +31,7 @@
 .brand-box {
   width: 36px;
   height: 36px;
-  background: #111;
+  background: var(--clr-primary-5);
   color: #fff;
   display: flex;
   align-items: center;
@@ -40,10 +40,12 @@
   font-weight: 900;
   letter-spacing: 1px;
   flex-shrink: 0;
+  font-family: var(--ff-heading);
 }
 .brand-name {
-  font-size: 1.05rem;
-  font-weight: 800;
+  font-family: var(--ff-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: #111;
@@ -90,7 +92,7 @@
 }
 .site-link:hover {
   color: #111 !important;
-  border-bottom-color: #111;
+  border-bottom-color: var(--clr-primary-5);
 }
 
 /* Cart badge */
@@ -99,7 +101,7 @@
   position: absolute;
   top: 10px;
   right: 4px;
-  background: #111;
+  background: var(--clr-primary-5);
   color: #fff;
   font-size: 0.55rem;
   font-weight: 800;
@@ -118,11 +120,21 @@
   padding: 0.4rem 1rem !important;
   margin-left: 0.5rem;
   border-bottom: 1.5px solid #111 !important;
-  transition: background 0.18s, color 0.18s !important;
+  transition: background 0.18s, color 0.18s, border-color 0.18s !important;
 }
 .login-btn:hover {
-  background: #111 !important;
+  background: var(--clr-primary-5) !important;
+  border-color: var(--clr-primary-5) !important;
   color: #fff !important;
+}
+
+/* Start Free Trial CTA */
+.start-trial-btn {
+  background: var(--clr-primary-5) !important;
+  transition: background 0.18s !important;
+}
+.start-trial-btn:hover {
+  background: var(--clr-primary-3) !important;
 }
 
 /* ── Dropdown ── */

@@ -21,6 +21,8 @@ const T = {
   muted: "#999999",
   border: "#e8e8e8",
   sale: "#e63946",
+  accent: "var(--clr-primary-5)",
+  accentDark: "var(--clr-primary-3)",
   shadow: "rgba(0,0,0,0.08)",
   shadowHover: "rgba(0,0,0,0.14)",
 };
@@ -42,7 +44,7 @@ const SectionHeader = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-family: 'Barlow Condensed', 'Oswald', sans-serif;
+  font-family: var(--ff-heading);
   font-size: 1.9rem;
   font-weight: 700;
   letter-spacing: 2px;
@@ -77,7 +79,7 @@ const ProductCard = styled(Card)`
   position: relative;
 
   &:hover {
-    border-color: ${T.black} !important;
+    border-color: ${T.accent} !important;
     box-shadow: 0 4px 18px ${T.shadowHover};
   }
 `;
@@ -109,7 +111,7 @@ const TrendingBadge = styled(Badge)`
   position: absolute;
   top: 10px;
   right: 10px;
-  background: ${T.black} !important;
+  background: ${T.accent} !important;
   color: ${T.white};
   font-size: 0.62rem;
   font-weight: 700;
@@ -159,9 +161,9 @@ const WishlistButton = styled.button`
   }
 
   &:hover {
-    background: ${T.black};
+    background: ${T.accent};
     color: ${T.white};
-    border-color: ${T.black};
+    border-color: ${T.accent};
   }
 
   i {
@@ -197,9 +199,9 @@ const PriceWrapper = styled.div`
 `;
 
 const ProductPrice = styled.span`
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  color: ${T.black};
+  color: ${T.accentDark};
 `;
 
 const OldPrice = styled.span`
@@ -228,7 +230,7 @@ const ViewDetailsButton = styled(Link)`
   margin-top: auto;
 
   &:hover {
-    background: #333;
+    background: ${T.accent};
     color: ${T.white};
   }
 
@@ -356,9 +358,9 @@ export default function TrendingProducts({
             pagination={{ clickable: true, dynamicBullets: true }}
             className="trending-swiper pb-4"
             style={{
-              "--swiper-navigation-color": "#111",
+              "--swiper-navigation-color": "var(--clr-primary-5)",
               "--swiper-navigation-size": "20px",
-              "--swiper-pagination-color": "#111",
+              "--swiper-pagination-color": "var(--clr-primary-5)",
               "--swiper-pagination-bullet-inactive-color": "#ccc",
               "--swiper-pagination-bullet-inactive-opacity": "1",
             }}

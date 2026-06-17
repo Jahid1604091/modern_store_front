@@ -47,6 +47,10 @@ const HomePage = () => {
         isLoading={isLoading}
         isError={isError}
         isSuccess={isSuccess}
+        onPageChange={(page) => {
+          setPageNumber(page);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
       />
     </Container>
   );

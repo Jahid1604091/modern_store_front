@@ -86,8 +86,8 @@ export default function ShippingAddressPage() {
             <div className="text-center">
               <Button
                 type="submit"
-                className="px-4 text-light text-uppercase rounded-0 shadow"
-                variant="primary"
+                className="px-4 py-2 text-light text-uppercase rounded-0 fw-bold"
+                style={{ background: 'var(--clr-primary-5)', borderColor: 'var(--clr-primary-5)', letterSpacing: '1px', fontSize: '0.8rem' }}
               >
                 Continue
               </Button>

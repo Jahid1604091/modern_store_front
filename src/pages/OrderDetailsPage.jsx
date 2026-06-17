@@ -20,7 +20,8 @@ import {
 } from "../slices/orderApliSlice";
 import Loader from "../components/Loader";
 import axios from "axios";
-import { BASE_URL, company_data } from "../utils/constants";
+import { BASE_URL } from "../utils/constants";
+import useCompany from "../hooks/useCompany";
 import NotFound from "./NotFound";
 import PaymentModal from "../components/Payemrnt/PaymentModal";
 import { useCreatePaymentMutation } from "../slices/paymentSlice";
@@ -58,7 +59,8 @@ export default function OrderDetailsPage() {
     },
     acc_no: '', //bank/mfs
   })
-  const { currency } = company_data;
+  const { data: company } = useCompany();
+  const currency = company?.currency || 'BDT';
   const changeOrderToPaid = async () => {
     const res = await payOrder(id).unwrap();
     // if (res.success) {
@@ -211,6 +213,7 @@ export default function OrderDetailsPage() {
                           <Col>
                             <span className="fw-lighter fst-italic">
                               {item.product.name}
+                              {item.selected_size && ` (Size: ${item.selected_size})`}
                             </span>
                           </Col>
                           <Col md={4}>

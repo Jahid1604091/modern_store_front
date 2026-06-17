@@ -4,11 +4,13 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../slices/authSlice";
 import { useNavigate } from "react-router-dom";
-import { company_data } from "../../utils/constants";
+import useCompany from "../../hooks/useCompany";
 import "./Header.css";
 
 const Header = () => {
-  const { company_name, tagline } = company_data;
+  const { data: company } = useCompany();
+  const company_name = company?.company_name || '';
+  const tagline = company?.tag_line || '';
   const dispatch  = useDispatch();
   const navigate  = useNavigate();
   const { cartItems } = useSelector((state) => state.cart);
@@ -63,9 +65,13 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
 
+              <LinkContainer to="/pricing">
+                <Nav.Link className="site-link">Pricing</Nav.Link>
+              </LinkContainer>
+
               {userInfo?.token ? (
                 <NavDropdown
-                  title={userInfo.name || "Account"}
+                  title={userInfo.data?.name || userInfo.name || "Account"}
                   id="user-menu"
                   align="end"
                   className="site-dropdown"
@@ -79,9 +85,16 @@ const Header = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
-                <LinkContainer to="/login">
-                  <Nav.Link className="site-link login-btn">Login</Nav.Link>
-                </LinkContainer>
+                <>
+                  <LinkContainer to="/login">
+                    <Nav.Link className="site-link login-btn">Login</Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/start">
+                    <Nav.Link className="site-link start-trial-btn" style={{ color: "#fff", padding: "6px 14px", fontSize: "13px", fontWeight: 700 }}>
+                      Start Free Trial
+                    </Nav.Link>
+                  </LinkContainer>
+                </>
               )}
 
             </Nav>

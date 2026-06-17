@@ -1,7 +1,7 @@
 /* ── AnnouncementBar.css ───────────────────────────────────── */
 
 .announcement-bar {
-  background: #111;
+  background: linear-gradient(90deg, #111 0%, #1d1d1d 100%);
   color: #fff;
   text-align: center;
   padding: 10px 1rem;
@@ -24,18 +24,20 @@
 
 .announcement-bar .promo-code {
   display: inline-block;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: var(--clr-primary-5);
+  border: 1px solid var(--clr-primary-5);
+  color: #fff;
   padding: 1px 8px;
   letter-spacing: 1.5px;
   font-weight: 700;
   margin: 0 4px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.2s;
 }
 
 .announcement-bar .promo-code:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: var(--clr-primary-4);
+  transform: scale(1.05);
 }
 
 .announcement-bar .announce-close {

@@ -9,11 +9,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../slices/cartSlice";
 import AlertDismissible from "../components/Alert";
 import Loader from "../components/Loader";
-import { BASE_URL, company_data } from "../utils/constants";
+import { BASE_URL } from "../utils/constants";
 import Rating from "../components/Rating";
 import StarRatingInput from "../components/StartRatingInput";
 import toast from "react-hot-toast";
-import "./css/ProductDetailsPage.css"; // ← place the CSS here
+import useCompany from "../hooks/useCompany";
+import "./css/ProductDetailsPage.css";
 
 const ProductDetailsPage = () => {
   const navigate = useNavigate();
@@ -22,10 +23,14 @@ const ProductDetailsPage = () => {
   const { id } = useParams();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const [activeImage, setActiveImage] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [sizeError, setSizeError] = useState(false);
   const [addReview] = useAddReviewMutation();
   const [qty, setQty] = useState(1);
   const [successMessage, setSuccessMessage] = useState("");
-  const { currency } = company_data;
+  const { data: company } = useCompany();
+  const currency = company?.currency || 'BDT';
 
   const {
     data: product,
@@ -43,7 +48,13 @@ const ProductDetailsPage = () => {
   };
 
   const handleAddToCart = () => {
-    dispatch(addToCart({ ...product, qty }));
+    const availableSizes = product.metadata?.sizes || [];
+    if (availableSizes.length && !selectedSize) {
+      setSizeError(true);
+      return;
+    }
+    setSizeError(false);
+    dispatch(addToCart({ ...product, qty, selectedSize }));
     setSuccessMessage("Added to cart!");
     setTimeout(() => setSuccessMessage(""), 3000);
   };
@@ -83,6 +94,8 @@ const ProductDetailsPage = () => {
   if (!isSuccess || !product) return null;
 
   const inStock = product.stock_quantity > 0;
+  const galleryImages = product.gallery?.length ? product.gallery : [product.image];
+  const displayedImage = activeImage || galleryImages[0];
 
   return (
     <div className="pdp-container">
@@ -98,7 +111,7 @@ const ProductDetailsPage = () => {
           <div className="pdp-image-wrapper">
             <img
               className="pdp-image"
-              src={`${BASE_URL}/${product.image}`}
+              src={`${BASE_URL}/${displayedImage}`}
               alt={product.name}
               onError={(e) => {
                 e.target.src =
@@ -106,6 +119,23 @@ const ProductDetailsPage = () => {
               }}
             />
           </div>
+          {galleryImages.length > 1 && (
+            <div className="pdp-thumbnail-strip">
+              {galleryImages.map((img) => (
+                <img
+                  key={img}
+                  src={`${BASE_URL}/${img}`}
+                  alt={product.name}
+                  className={`pdp-thumbnail ${displayedImage === img ? "pdp-thumbnail-active" : ""}`}
+                  onClick={() => setActiveImage(img)}
+                  onError={(e) => {
+                    e.target.src =
+                      "https://via.placeholder.com/100x100?text=No+Image";
+                  }}
+                />
+              ))}
+            </div>
+          )}
         </Col>
 
         {/* ── 2. Product info ── */}
@@ -180,6 +210,31 @@ const ProductDetailsPage = () => {
                 {inStock ? "In Stock" : "Out of Stock"}
               </span>
             </div>
+
+            {/* Size */}
+            {inStock && product.metadata?.sizes?.length > 0 && (
+              <div className="pdp-size-row">
+                <span className="pdp-qty-label">Size</span>
+                <div className="pdp-size-options">
+                  {product.metadata.sizes.map((size) => (
+                    <button
+                      key={size}
+                      type="button"
+                      className={`pdp-size-btn ${selectedSize === size ? "pdp-size-btn-active" : ""}`}
+                      onClick={() => {
+                        setSelectedSize(size);
+                        setSizeError(false);
+                      }}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+                {sizeError && (
+                  <p className="pdp-size-error">Please select a size.</p>
+                )}
+              </div>
+            )}
 
             {/* Qty */}
             {inStock && (

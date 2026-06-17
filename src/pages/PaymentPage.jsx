@@ -36,31 +36,37 @@ export default function PaymentPage() {
                             <Col>
                                 <Form.Check
                                     type='radio'
-                                    label='stripe'
-                                    id='stripe'
+                                    label='bKash'
+                                    id='bKash'
                                     name='paymentMethod'
-                                    value='stripe'
+                                    value='bKash'
                                     className='rounded-0 mb-2'
-                                    checked
+                                    checked={paymentMethod === 'bKash'}
                                     onChange={e => setPaymentMethod(e.target.value)}
                                 >
 
                                 </Form.Check>
                                 <Form.Check
                                     type='radio'
-                                    label='bKash'
-                                    id='bKash'
+                                    label='Stripe (Card)'
+                                    id='stripe'
                                     name='paymentMethod'
-                                    value='bKash'
+                                    value='stripe'
                                     className='rounded-0 mb-2'
-
+                                    checked={paymentMethod === 'stripe'}
                                     onChange={e => setPaymentMethod(e.target.value)}
                                 >
 
                                 </Form.Check>
                             </Col>
                         </Form.Group>
-                        <Button type='submit' className='px-4 text-light text-uppercase rounded-0 shadow' variant='primary'>Continue</Button>
+                        <Button
+                            type='submit'
+                            className='px-4 py-2 text-light text-uppercase rounded-0 fw-bold'
+                            style={{ background: 'var(--clr-primary-5)', borderColor: 'var(--clr-primary-5)', letterSpacing: '1px', fontSize: '0.8rem' }}
+                        >
+                            Continue
+                        </Button>
                     </Form>
 
                 </Col>

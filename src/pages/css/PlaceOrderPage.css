@@ -102,13 +102,13 @@
 }
 
 .po-summary-title {
-  font-size: 0.7rem;
+  font-family: var(--ff-heading);
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  color: #111;
   padding: 0.75rem 1.25rem;
-  border-bottom: 2px solid #111;
+  border-bottom: 2px solid var(--clr-primary-5);
   background: #111;
   color: #fff;
 }
@@ -157,9 +157,9 @@
 }
 
 .po-summary-total-value {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  color: #111;
+  color: var(--clr-primary-3);
 }
 
 /* ── Place order button ── */
@@ -167,7 +167,7 @@
   display: block;
   width: 100%;
   padding: 0.85rem;
-  background: #111 !important;
+  background: var(--clr-primary-5) !important;
   border: none !important;
   border-radius: 0 !important;
   color: #fff !important;
@@ -180,7 +180,7 @@
 }
 
 .po-place-btn:hover:not(:disabled) {
-  background: #333 !important;
+  background: var(--clr-primary-3) !important;
 }
 
 .po-place-btn:disabled {

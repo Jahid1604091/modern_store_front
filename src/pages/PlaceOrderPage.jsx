@@ -6,7 +6,8 @@ import AlertDismissible from "../components/Alert";
 import { useNavigate, Link } from "react-router-dom";
 import { useCreateOrderMutation } from "../slices/orderApliSlice";
 import { clearCart } from "../slices/cartSlice";
-import { BASE_URL, company_data } from "../utils/constants";
+import { BASE_URL } from "../utils/constants";
+import useCompany from "../hooks/useCompany";
 import Loader from "../components/Loader";
 import "./css/PlaceOrderPage.css";
 
@@ -14,7 +15,8 @@ export default function PlaceOrderPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
-  const { currency } = company_data;
+  const { data: company } = useCompany();
+  const currency = company?.currency || 'BDT';
 
   const [createOrder, { isLoading, isError, error }] =
     useCreateOrderMutation();
@@ -30,6 +32,7 @@ export default function PlaceOrderPage() {
       qty: item.qty,
       price: item.price,
       id: item.id,
+      size: item.selectedSize || null,
     }));
     try {
       const res = await createOrder({
@@ -121,6 +124,7 @@ export default function PlaceOrderPage() {
                         className="po-item-name"
                       >
                         {item.name}
+                        {item.selectedSize && ` (Size: ${item.selectedSize})`}
                       </Link>
                       <div className="po-item-price">
                         {item.qty} × {item.price} ={" "}

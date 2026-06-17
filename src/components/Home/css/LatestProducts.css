@@ -44,11 +44,27 @@
 }
 
 .section-title {
+  font-family: var(--ff-heading);
   font-size: 2.5rem;
   font-weight: 700;
   color: #1a1a1a;
   margin-bottom: 12px;
-  letter-spacing: -0.5px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 14px;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: var(--clr-primary-5);
 }
 
 .section-subtitle {
@@ -80,7 +96,7 @@
 .product-grid .card:hover {
   transform: translateY(-8px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-  border-color: #d0d0d0;
+  border-color: var(--clr-primary-5);
 }
 
 /* Pagination Wrapper */
@@ -90,48 +106,6 @@
   margin-top: 60px;
   padding-top: 40px;
   border-top: 1px solid #e8e8e8;
-}
-
-.pagination {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.pagination .page-item {
-  margin: 0;
-}
-
-.pagination .page-link {
-  border-radius: 8px;
-  padding: 10px 16px;
-  border: 1px solid #e0e0e0;
-  color: #333;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  background: #fff;
-}
-
-.pagination .page-link:hover {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
-  transform: translateY(-2px);
-}
-
-.pagination .page-item.active .page-link {
-  background-color: #007bff;
-  border-color: #007bff;
-  color: white;
-  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
-}
-
-.pagination .page-item.disabled .page-link {
-  background-color: #f8f9fa;
-  border-color: #e0e0e0;
-  color: #999;
-  cursor: not-allowed;
 }
 
 /* Responsive Design */
