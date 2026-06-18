@@ -282,6 +282,12 @@
   font-weight: 600;
 }
 
+.pdp-size-guide-note {
+  color: #6b7280;
+  font-size: 0.75rem;
+  margin: 0.35rem 0 0;
+}
+
 /* ── Qty selector ── */
 .pdp-qty-row {
   display: flex;

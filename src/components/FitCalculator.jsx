@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import AlertDismissible from "./Alert";
 
-const EASE = { cm: 5, in: 2 };
+const EASE = { in: 1, cm: 2.5 };
 
 function recommendSize(sizeChart, userMeasurement) {
-  const unit = sizeChart.unit || "cm";
-  const ease = EASE[unit] ?? 5;
+  const unit = sizeChart.unit || "in";
+  const ease = EASE[unit] ?? 1;
   const rows = Object.entries(sizeChart.rows || {})
-    .filter(([, v]) => typeof v?.chest === "number" && v.chest > 0)
-    .sort((a, b) => a[1].chest - b[1].chest);
+    .filter(([, v]) => typeof v?.width === "number" && v.width > 0)
+    .sort((a, b) => a[1].width - b[1].width);
 
   if (!rows.length) return null;
 
   for (const [size, data] of rows) {
-    if (userMeasurement <= data.chest + ease) {
+    if (userMeasurement <= data.width + ease) {
       let note = "true to size";
-      if (userMeasurement > data.chest) note = "will fit snug";
-      else if (userMeasurement < data.chest - ease) note = "will fit loose";
+      if (userMeasurement > data.width) note = "will fit snug";
+      else if (userMeasurement < data.width - ease) note = "will fit loose";
       return { size, note };
     }
   }
@@ -28,16 +28,16 @@ function recommendSize(sizeChart, userMeasurement) {
 // Pure client-side size recommendation against the merchant's size chart
 // (product.metadata.size_chart). No backend call involved.
 const FitCalculator = ({ sizeChart, onSelectSize }) => {
-  const [chest, setChest] = useState("");
+  const [width, setWidth] = useState("");
   const [result, setResult] = useState(null);
 
   if (!sizeChart?.rows || !Object.keys(sizeChart.rows).length) return null;
 
-  const unit = sizeChart.unit || "cm";
+  const unit = sizeChart.unit || "in";
 
   const handleCheck = (e) => {
     e.preventDefault();
-    const value = Number(chest);
+    const value = Number(width);
     if (!value || value <= 0) return;
     setResult(recommendSize(sizeChart, value));
   };
@@ -48,16 +48,16 @@ const FitCalculator = ({ sizeChart, onSelectSize }) => {
       <form onSubmit={handleCheck} className="d-flex align-items-end" style={{ gap: "0.5rem" }}>
         <div className="flex-grow-1">
           <label className="form-label mb-1" style={{ fontSize: "0.85rem" }}>
-            Your chest measurement ({unit})
+            Your chest width, side to side ({unit})
           </label>
           <input
             type="number"
             min="1"
             step="0.5"
-            value={chest}
-            onChange={(e) => setChest(e.target.value)}
+            value={width}
+            onChange={(e) => setWidth(e.target.value)}
             className="form-control"
-            placeholder="e.g. 100"
+            placeholder="e.g. 19"
           />
         </div>
         <button type="submit" className="pdp-fit-check-btn">

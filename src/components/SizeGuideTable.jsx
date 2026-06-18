@@ -1,10 +1,8 @@
 import React from "react";
 
 const MEASUREMENTS = [
-  { key: "chest", label: "Chest" },
-  { key: "length", label: "Length" },
-  { key: "shoulder", label: "Shoulder" },
-  { key: "sleeve", label: "Sleeve" },
+  { key: "height", label: "Height" },
+  { key: "width", label: "Width" },
 ];
 
 // Reference table of every size's measurements, with the currently selected
@@ -12,7 +10,7 @@ const MEASUREMENTS = [
 // exactly what a size means instead of guessing from the label alone.
 const SizeGuideTable = ({ sizes = [], sizeChart, selectedSize }) => {
   const rows = sizeChart?.rows || {};
-  const unit = sizeChart?.unit || "cm";
+  const unit = sizeChart?.unit || "in";
 
   const columns = MEASUREMENTS.filter((m) =>
     sizes.some((size) => rows[size]?.[m.key] !== undefined && rows[size]?.[m.key] !== "")
@@ -42,6 +40,7 @@ const SizeGuideTable = ({ sizes = [], sizeChart, selectedSize }) => {
           ))}
         </tbody>
       </table>
+      <p className="pdp-size-guide-note">Size may vary ±1 {unit}.</p>
     </div>
   );
 };
