@@ -20,6 +20,17 @@ const PaymentModal = ({
 
             if (advance > total) return; // stop update
         }
+        if (name === 'payment_medium' && value === 'cod') {
+            // COD has no online advance - clear any amount left over from
+            // switching away from bKash/bank rather than carrying it over.
+            // The payable_amount effect below recomputes from advance_paid.
+            setPaymentData(prev => ({
+                ...prev,
+                payment_medium: value,
+                advance_paid: 0,
+            }));
+            return;
+        }
         setPaymentData(prev => ({
             ...prev,
             [name]: value,

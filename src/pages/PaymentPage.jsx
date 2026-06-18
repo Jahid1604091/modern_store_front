@@ -58,6 +58,18 @@ export default function PaymentPage() {
                                 >
 
                                 </Form.Check>
+                                <Form.Check
+                                    type='radio'
+                                    label='Cash on Delivery'
+                                    id='cod'
+                                    name='paymentMethod'
+                                    value='cod'
+                                    className='rounded-0 mb-2'
+                                    checked={paymentMethod === 'cod'}
+                                    onChange={e => setPaymentMethod(e.target.value)}
+                                >
+
+                                </Form.Check>
                             </Col>
                         </Form.Group>
                         <Button

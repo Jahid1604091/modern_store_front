@@ -313,7 +313,20 @@ export default function OrderDetailsPage() {
                 }
               </ListGroup>
               <div className="text-center mt-2">
-                {(order.payment_details.length > 0 && order.payment_details[0].payable_amount > 0) || (order.payment_details.length === 0) ? (
+                {order.payment_method === 'cod' ? (
+                  <>
+                    <p className="text-muted mb-2">
+                      Pay {order.total} {currency} in cash on delivery.
+                    </p>
+                    <Button
+                      onClick={() => handleDownload()}
+                      className="px-4 text-light text-uppercase rounded-0 shadow"
+                      variant="primary"
+                    >
+                      Download Invoice
+                    </Button>
+                  </>
+                ) : (order.payment_details.length > 0 && order.payment_details[0].payable_amount > 0) || (order.payment_details.length === 0) ? (
                   <Button
                     onClick={handlePaymentModal}
                     className="px-4 text-light text-uppercase rounded-0 shadow"

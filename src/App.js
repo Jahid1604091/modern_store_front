@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from './components/Nav/Header';
 import { Toaster } from 'react-hot-toast';
 import Footer from './components/Footer/Footer';
+import WhatsAppButton from './components/WhatsAppButton';
 import { setCompany, setCompanyError, setCompanyLoading } from './slices/companySlice';
 import { BASE_URL } from './utils/constants';
 
@@ -102,6 +103,7 @@ const App = () => {
         <Outlet />
       </section>
       <Footer />
+      <WhatsAppButton />
       <Toaster />
     </>
   );
