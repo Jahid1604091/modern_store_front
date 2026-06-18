@@ -253,6 +253,35 @@
   margin: 0.5rem 0 0;
 }
 
+/* ── Size guide table ── */
+.pdp-size-guide {
+  margin-top: 0.75rem;
+  overflow-x: auto;
+}
+
+.pdp-size-guide-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.pdp-size-guide-table th,
+.pdp-size-guide-table td {
+  padding: 0.35rem 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.pdp-size-guide-table th {
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.pdp-size-guide-row-active {
+  background: color-mix(in srgb, var(--clr-primary-5) 10%, transparent);
+  font-weight: 600;
+}
+
 /* ── Qty selector ── */
 .pdp-qty-row {
   display: flex;

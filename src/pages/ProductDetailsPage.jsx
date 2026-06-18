@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../slices/cartSlice";
 import AlertDismissible from "../components/Alert";
 import FitCalculator from "../components/FitCalculator";
+import SizeGuideTable from "../components/SizeGuideTable";
 import TryonModal from "../components/tryon/TryonModal";
 import Loader from "../components/Loader";
 import { BASE_URL } from "../utils/constants";
@@ -258,6 +259,13 @@ const ProductDetailsPage = () => {
                 </div>
                 {sizeError && (
                   <p className="pdp-size-error">Please select a size.</p>
+                )}
+                {product.metadata?.size_chart && (
+                  <SizeGuideTable
+                    sizes={product.metadata.sizes}
+                    sizeChart={product.metadata.size_chart}
+                    selectedSize={selectedSize}
+                  />
                 )}
               </div>
             )}

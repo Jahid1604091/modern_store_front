@@ -8,7 +8,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
             query: (data) => ({
                 url: `${BASE_URL}/api/users/register`,
                 method: "POST",
-                body: data
+                body: { ...data, company_id: process.env.REACT_APP_COMPANY_ID }
             })
         }),
 
