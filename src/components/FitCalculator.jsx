@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import AlertDismissible from "./Alert";
 
 const EASE = { in: 1, cm: 2.5 };
 
@@ -12,17 +11,20 @@ function recommendSize(sizeChart, userMeasurement) {
 
   if (!rows.length) return null;
 
-  for (const [size, data] of rows) {
-    if (userMeasurement <= data.width + ease) {
-      let note = "true to size";
-      if (userMeasurement > data.width) note = "will fit snug";
-      else if (userMeasurement < data.width - ease) note = "will fit loose";
-      return { size, note };
-    }
+  // Prefer the smallest size that's actually wide enough for the
+  // measurement (an exact match wins outright) over a smaller size that's
+  // merely within tolerance of it.
+  const fitting = rows.find(([, data]) => data.width >= userMeasurement);
+  if (fitting) {
+    const [size, data] = fitting;
+    const note = data.width - userMeasurement <= ease ? "true to size" : "will fit loose";
+    return { size, note };
   }
 
-  const [largestSize] = rows[rows.length - 1];
-  return { size: largestSize, note: "largest size available — will fit snug" };
+  // Measurement exceeds every configured size - recommend the largest.
+  const [largestSize, largestData] = rows[rows.length - 1];
+  const note = userMeasurement - largestData.width <= ease ? "will fit snug" : "may run small";
+  return { size: largestSize, note };
 }
 
 // Pure client-side size recommendation against the merchant's size chart
@@ -67,11 +69,9 @@ const FitCalculator = ({ sizeChart, onSelectSize }) => {
 
       {result && (
         <div className="mt-2">
-          <AlertDismissible
-            key={`${result.size}-${result.note}`}
-            variant="info"
-            message={`Recommended: ${result.size} — ${result.note}`}
-          />
+          <div className="pdp-fit-result">
+            Recommended: <strong>{result.size}</strong> — {result.note}
+          </div>
           {onSelectSize && (
             <button
               type="button"
